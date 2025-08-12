@@ -1,4 +1,3 @@
-dasdad<<<<<<< HEAD
 ## Causal Impact of Financial Information on Investment Decisions
 
 During my postdoc at Oxford, I designed and analyzed a randomized controlled trial (RCT) with 2,500 participants to measure how financial information affects investment portfolio allocation. This project demonstrates advanced causal inference techniques using Python.
