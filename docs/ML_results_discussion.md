@@ -4,7 +4,7 @@
 First, we analyse the propensity score. This is important because, in a perfectly randomised experiment (such as flipping a fair coin), everyone should have a 50% chance of receiving the treatment. The propensity score helps us to check whether our randomisation was successful. As can be seen in the graph on the left (Propensity Score Distribution), most people have propensity scores clustered around 0.5 (the red dashed line), which is exactly what we would expect in a well-randomised experiment. The bell-shaped distribution centred at 0.5 is a good sign; it means the randomisation worked well. The graph on the right (Scores by Treatment Group) shows that the distributions of propensity scores for both the treatment group (red) and the control group (blue) are similar. The substantial purple overlap area is good because it means the two groups are comparable. If the distributions were very different, it would suggest that the randomisation had failed.
 
 
-<img src="../Figures/ML_fig_1.png" width="60%" height="60%" alt="Propensity Score Analysis">
+<img src="../Figures/ML_fig_1.png" width="90%" height="90%" alt="Propensity Score Analysis">
 
 ## Cross-Validation and Tuning
 
@@ -26,7 +26,7 @@ A histogram displaying the distribution of individualised treatment effects is s
 
 The plot on the right shows how the treatment effect varied across the whole population. It reveals substantial heterogeneity in individual responses. The blue line represents the point estimates, ranging from approximately 8 to 27 percentage points. In other words, some participants responded nearly three times more strongly to the treatment than others did. The pink shaded area shows the 95% confidence intervals, which remain consistently above zero and narrow.
 
-<img src="../Figures/ML_fig_2.png" width="60%" height="60%" alt="Heterogeneity Analysis">
+<img src="../Figures/ML_fig_2.png" width="90%" height="90%" alt="Heterogeneity Analysis">
 
 ## Features of Importance
 
@@ -36,7 +36,7 @@ The results reveal a clear hierarchy of influence. Subjective financial knowledg
 
 The cumulative importance plot shows that the seven most important variables account for almost 80% of the treatment effect heterogeneity, while the remaining variables contribute only marginally. These seven variables are subjective financial knowledge, risk tolerance, age, trust in government, social origin, political placement and education.
 
-<img src="../Figures/ML_fig_3.png" width="50%" height="50%" alt="Propensity Score Analysis">
+<img src="../Figures/ML_fig_3.png" width="90%" height="90%" alt="Propensity Score Analysis">
 
 ## Heterogneity Analysis by Features of Importance
  
@@ -45,7 +45,7 @@ We extract the individual treatment effects directly from the top four variables
 There is a negative relationship between risk tolerance and the treatment effect. This suggests that risk-averse individuals respond more strongly to financial information. It is not surprising that individuals with lower risk tolerance respond better to financial information. Many individuals do not know much about ETFs; once they were given information about the short-term and long-term risks of ETFs compared with other investment instruments, they opted to invest more in ETFs. Finally, we found that people who trust the government less responded better to the treatment.
 
 
-<img src="../Figures/ML_fig_4.png" width="50%" height="50%" alt="Propensity Score Analysis">
+<img src="../Figures/ML_fig_4.png" width="90%" height="90%" alt="Propensity Score Analysis">
 
 ## Policy Tree Decision 
 
