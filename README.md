@@ -1,4 +1,5 @@
 
+
 # 🎯 Business Problem
 Financial services companies struggle with low adoption rates of profitable investment products. This project demonstrates how data science can drive 18% increases in a product adoption.
 
@@ -14,6 +15,7 @@ A two-phase data science project combining:
 
 
 
+## **Part 1: A/B Testing: Information Design for Product Adoption**
 ## **Part 1: A/B Testing: Information Design for Product Adoption**
 
 ### Business Context
@@ -31,6 +33,7 @@ A two-phase data science project combining:
 
 
 ## **Part 2: Machine Learning Using Causal Forest for Personalized Marketing**
+## **Part 2: Machine Learning Using Causal Forest for Personalized Marketing**
 
 ### Business Objective
 Identify which customers respond best to financial education interventions 
@@ -42,14 +45,18 @@ to optimize marketing spend and personalization strategies.
 
 ##### Technologies used:
 - EconML's CausalForestDML
+##### Technologies used:
+- EconML's CausalForestDML
 - 5-fold cross-validation with stratification
 - Hyperparameter grid search (9 configurations)
 - Custom scoring function balancing heterogeneity detection (40%) and precision (60%)
 
 ##### Optimal Model Configuration:
+##### Optimal Model Configuration:
 - Trees: 4,000
 - Min samples per leaf: 20
 - Sampling rate: 45%
+- Feature selection: sqrt
 - Feature selection: sqrt
 
 
@@ -65,16 +72,19 @@ to optimize marketing spend and personalization strategies.
 #### 3. Customer Segmentation Results
 
 ##### **High-Response Segments** (20-27% effect):
+##### **High-Response Segments** (20-27% effect):
 
 * Low financial confidence and Age 60+
 * Lower socioeconomic background and Risk-averse
 * **Business Insight:** Target these segments first 
 
 ##### **Medium-Response Segments** (15-20% effect):
+##### **Medium-Response Segments** (15-20% effect):
 
 * Moderate financial knowledge
 * Middle-aged (40-60)
 
+##### **Low-Response Segments** (8-15% effect):
 ##### **Low-Response Segments** (8-15% effect):
 
 * High financial confidence
@@ -110,4 +120,5 @@ to optimize marketing spend and personalization strategies.
 - Personalization Strategies
 - ROI Calculation
 - KPI Development
+
 
