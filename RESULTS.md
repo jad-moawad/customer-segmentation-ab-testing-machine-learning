@@ -11,7 +11,7 @@ Our baseline analysis revealed critical insights into customer investment patter
 
 **Business Implication:** These gaps represented untapped revenue potential worth millions in management fees.
 
-<img src="Figures/A_B_fig_1.png" width="70%" height="70%" alt="Baseline Investment Allocations">
+<img src="Figures/A_B_fig_1.png" width="100%" height="100%" alt="Baseline Investment Allocations">
 
 ### 🎯 Impact: 18% Increase in Product Adoption
 **Main Result:** Information intervention drove **18 percentage point increase** in ETF allocations (p < 0.001)
