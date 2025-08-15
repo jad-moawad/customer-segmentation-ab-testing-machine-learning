@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETF Adoption: From Experiment to $2.67M Impact</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            /* Removed animation */
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Removed animation */
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .metric-value {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            opacity: 0.95;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-detail {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .journey-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .journey-title {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            color: #333;
+            text-align: center;
+        }
+
+        .journey-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .journey-step {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            min-width: 200px;
+            /* Removed animation */
+        }
+
+        .journey-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            color: #667eea;
+            opacity: 0.5;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .step-detail {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .comparison-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .comparison-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-card.before {
+            border-left: 5px solid #ef4444;
+        }
+
+        .comparison-card.after {
+            border-left: 5px solid #10b981;
+        }
+
+        .comparison-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .before-icon,
+        .after-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .before-icon {
+            background: #ef4444;
+        }
+
+        .after-icon {
+            background: #10b981;
+        }
+
+        .allocation-bar {
+            margin-bottom: 15px;
+        }
+
+        .allocation-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        .allocation-progress {
+            height: 25px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .allocation-fill {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            color: white;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .etf-fill {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        .savings-fill {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+
+        .gold-fill {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+
+        .stocks-fill {
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+        }
+
+        .crypto-fill {
+            background: linear-gradient(90deg, #E3120B, #E3120B);
+        }
+
+        .segment-explorer {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .segment-title {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: #333;
+            text-align: center;
+        }
+
+        .segment-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .segments-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .segment-card {
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            background: white;
+        }
+
+        .segment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .segment-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .segment-response {
+            font-size: 2em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .segment-characteristics {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .segment-metrics {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .segment-metric {
+            text-align: center;
+        }
+
+        .segment-metric-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .segment-metric-label {
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        .roi-calculator {
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .calculator-title {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .calculator-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .input-field {
+            padding: 10px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1.1em;
+            width: 200px;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .roi-result {
+            margin-top: 30px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            display: block;
+            /* Changed from none */
+        }
+
+        .roi-value {
+            font-size: 3em;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 10px;
+        }
+
+        .roi-detail {
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.8em;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-section {
+                grid-template-columns: 1fr;
+            }
+
+            .journey-step:not(:last-child)::after {
+                display: none;
+            }
+        }
+
+        .pulse-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- Hero Section with Key Metrics -->
+        <div class="hero-section">
+            <h1 class="title">From A/B Test to AI: Driving $2.67M in Revenue</h1>
+            <p class="subtitle">How I Used Causal ML to Increase ETF Adoption by 18%</p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">18%</div>
+                    <div class="metric-label">Adoption Increase</div>
+                    <div class="metric-detail">Beating industry average by 50% through targeted interventions</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">$2.67M</div>
+                    <div class="metric-label">Potential Revenue Impact</div>
+                    <div class="metric-detail">Annual recurring revenue for 50,000 customers</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">4</div>
+                    <div class="metric-label">Segments Identified</div>
+                    <div class="metric-detail">ML-powered personalization with 8-27% conversion rates</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journey Visualization -->
+        <div class="journey-section">
+            <h2 class="journey-title">The Data Science Journey</h2>
+            <div class="journey-steps">
+                <div class="journey-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Problem Discovery</div>
+                    <div class="step-detail">72% of investors missing out on ETF benefits</div>
+                </div>
+                <div class="journey-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">A/B Testing</div>
+                    <div class="step-detail">2,568 users in controlled experiment</div>
+                </div>
+                <div class="journey-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Machine Learning (ML) Analysis</div>
+                    <div class="step-detail">Causal Forest with 4,000 trees</div>
+                </div>
+                <div class="journey-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Impact</div>
+                    <div class="step-detail">12:1 ROI achieved</div>
+                </div>
+            </div>
+
+            <div class="comparison-section">
+                <div class="comparison-card before">
+                    <div class="comparison-title">
+                        <span class="before-icon">✗</span>
+                        Before: Traditional Approach
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>ETFs</span>
+                            <span>28%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill etf-fill" style="width: 28%;">28%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>Gold</span>
+                            <span>27%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill gold-fill" style="width: 27%;">27%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>Individual Stocks</span>
+                            <span>20%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill stocks-fill" style="width: 20%;">20%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>Cryptocurrency</span>
+                            <span>11%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill crypto-fill" style="width: 11%;">11%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>Savings (Low Yield)</span>
+                            <span>14%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill savings-fill" style="width: 14%;">14%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="comparison-card after">
+                    <div class="comparison-title">
+                        <span class="after-icon">✓</span>
+                        After: AI-Powered Targeting
+                        <span class="pulse-dot"></span>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>ETFs</span>
+                            <span>43%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill etf-fill" style="width: 43%;">43%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>Gold</span>
+                            <span>10%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill gold-fill" style="width: 10%;">10%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>Individual Stocks</span>
+                            <span>14%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill stocks-fill" style="width: 14%;">14%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>Cryptocurrency</span>
+                            <span>14%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill crypto-fill" style="width: 14%;">14%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>Savings (Low Yield)</span>
+                            <span>18%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill savings-fill" style="width: 18%;">18%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ML Segment Explorer -->
+        <div class="segment-explorer">
+            <h2 class="segment-title">ML-Identified Customer Segments</h2>
+            <p class="segment-subtitle">Click to explore how different segments respond to interventions</p>
+
+            <div class="segments-container">
+                <div class="segment-card">
+                    <div class="segment-name">🎯 Humble Learners</div>
+                    <div class="segment-response">22%</div>
+                    <div class="segment-characteristics">Low financial confidence, eager to learn, responsive to
+                        education</div>
+                    <div class="segment-metrics">
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">31%</div>
+                            <div class="segment-metric-label">of customers</div>
+                        </div>
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">$0.8M</div>
+                            <div class="segment-metric-label">revenue potential</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="segment-card">
+                    <div class="segment-name">⚖️ Middle Ground</div>
+                    <div class="segment-response">18%</div>
+                    <div class="segment-characteristics">Moderate knowledge, middle-aged, balanced approach</div>
+                    <div class="segment-metrics">
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">39%</div>
+                            <div class="segment-metric-label">of customers</div>
+                        </div>
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">$0.7M</div>
+                            <div class="segment-metric-label">revenue potential</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="segment-card">
+                    <div class="segment-name">💪 Confident Traders</div>
+                    <div class="segment-response">14%</div>
+                    <div class="segment-characteristics">High knowledge, risk-tolerant, prefer active trading</div>
+                    <div class="segment-metrics">
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">30%</div>
+                            <div class="segment-metric-label">of customers</div>
+                        </div>
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">$0.2M</div>
+                            <div class="segment-metric-label">revenue potential</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROI Calculator -->
+        <div class="roi-calculator">
+            <h2 class="calculator-title">Calculate Your Potential Impact</h2>
+            <div class="calculator-inputs">
+                <div class="input-group">
+                    <label class="input-label">Number of Customers</label>
+                    <input type="number" class="input-field" id="customers" value="50000" min="1000">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Avg Portfolio Size ($)</label>
+                    <input type="number" class="input-field" id="portfolio" value="30000" min="1000">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Management Fee (%)</label>
+                    <input type="number" class="input-field" id="fee" value="0.5" step="0.1" min="0.1">
+                </div>
+            </div>
+            <button class="calculate-btn" onclick="calculateROI()">Calculate Revenue Impact</button>
+            <div class="roi-result" id="roiResult">
+                <div class="roi-value" id="roiValue">$2.67M</div>
+                <div class="roi-detail" id="roiDetail">Annual recurring revenue from 18% adoption increase across 50,000
+                    customers</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateROI() {
+            const customers = parseFloat(document.getElementById('customers').value);
+            const portfolio = parseFloat(document.getElementById('portfolio').value);
+            const fee = parseFloat(document.getElementById('fee').value) / 100;
+
+            // Calculate impact: 18% increase in ETF adoption
+            const adoptionIncrease = 0.18;
+            const totalAUM = customers * portfolio;
+            const additionalETFAssets = totalAUM * adoptionIncrease;
+            const annualRevenue = additionalETFAssets * fee;
+
+            const valueDiv = document.getElementById('roiValue');
+            const detailDiv = document.getElementById('roiDetail');
+
+            if (annualRevenue >= 1000000) {
+                valueDiv.textContent = `$${(annualRevenue / 1000000).toFixed(2)}M`;
+            } else {
+                valueDiv.textContent = `$${(annualRevenue / 1000).toFixed(0)}K`;
+            }
+
+            detailDiv.textContent = `Annual recurring revenue from 18% adoption increase across ${customers.toLocaleString()} customers`;
+        }
+
+        // Add interactive hover effects for journey steps
+        document.querySelectorAll('.journey-step').forEach(step => {
+            step.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-10px)';
+            });
+
+            step.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Add interactive hover for segment cards
+        document.querySelectorAll('.segment-card').forEach(card => {
+            card.addEventListener('click', function () {
+                // Remove previous highlights
+                document.querySelectorAll('.segment-card').forEach(c => {
+                    c.style.transform = '';
+                    c.style.boxShadow = '';
+                    c.style.borderColor = '';
+                });
+
+                // Highlight selected card
+                this.style.transform = 'translateY(-10px) scale(1.05)';
+                this.style.boxShadow = '0 20px 40px rgba(102, 126, 234, 0.3)';
+                this.style.borderColor = '#667eea';
+            });
+        });
+    </script>
+</body>
+
+</html>
