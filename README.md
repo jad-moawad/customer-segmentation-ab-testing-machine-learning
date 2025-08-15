@@ -41,13 +41,10 @@ to optimize marketing spend and personalization strategies.
 
 ##### Technologies used:
 - EconML's CausalForestDML
-##### Technologies used:
-- EconML's CausalForestDML
 - 5-fold cross-validation with stratification
 - Hyperparameter grid search (9 configurations)
 - Custom scoring function balancing heterogeneity detection (40%) and precision (60%)
 
-##### Optimal Model Configuration:
 ##### Optimal Model Configuration:
 - Trees: 4,000
 - Min samples per leaf: 20
@@ -68,19 +65,16 @@ to optimize marketing spend and personalization strategies.
 #### 3. Customer Segmentation Results
 
 ##### **High-Response Segments** (20-27% effect):
-##### **High-Response Segments** (20-27% effect):
 
 * Low financial confidence and Age 60+
 * Lower socioeconomic background and Risk-averse
 * **Business Insight:** Target these segments first 
 
 ##### **Medium-Response Segments** (15-20% effect):
-##### **Medium-Response Segments** (15-20% effect):
 
 * Moderate financial knowledge
 * Middle-aged (40-60)
 
-##### **Low-Response Segments** (8-15% effect):
 ##### **Low-Response Segments** (8-15% effect):
 
 * High financial confidence
