@@ -27,7 +27,7 @@ The treatment successfully shifted customer behavior from low-margin to high-mar
 - 45% increase in per-customer profitability
 - ROI of 12:1 on intervention costs
 
-<img src="Figures/A_B_fig_2.png" width="70%" height="70%" alt="Average Treatment Effects">
+<img src="Figures/A_B_fig_2.png" width="60%" height="60%" alt="Average Treatment Effects">
 
 ### 🔍 Personalization Opportunities: Segment-Specific Effects
 **Discovery:** Underserved segments showed 33-44% stronger response to intervention
@@ -61,7 +61,7 @@ Our propensity score analysis validated the randomization quality:
 
 **Business Value:** Stakeholders can trust that our 18% lift is real and replicable, not a statistical artifact.
 
-<img src="Figures/ML_fig_1.png" width="100%" height="100%" alt="Propensity Score Validation">
+<img src="Figures/ML_fig_1.png" width="90%" height="90%" alt="Propensity Score Validation">
 
 ### 🎯 Causal Forest Model: Finding Hidden Customer Segments
 **Innovation:** Deployed advanced ML to discover which customers respond 3x better to marketing
@@ -73,7 +73,7 @@ Our propensity score analysis validated the randomization quality:
 
 **Key Finding:** Not all customers are equal - some segments show **27% conversion rates** while others show only **8%**. This heterogeneity represents millions in untapped revenue.
 
-<img src="Figures/ML_fig_2.png" width="100%" height="100%" alt="Treatment Effect Distribution">
+<img src="Figures/ML_fig_2.png" width="90%" height="90%" alt="Treatment Effect Distribution">
 
 ### 📊 Feature Importance: The Drivers of Customer Response
 **Discovery:** 80% of response variation explained by just 7 customer attributes
@@ -84,7 +84,7 @@ Our propensity score analysis validated the randomization quality:
 3. **Age (13.1%):** 60+ age group shows 25% higher conversion
 4. **Trust in Institutions (9.9%):** Lower trust correlates with higher response
 
-<img src="Figures/ML_fig_3.png" width="100%" height="100%" alt="Feature Importance Analysis">
+<img src="Figures/ML_fig_3.png" width="80%" height="80%" alt="Feature Importance Analysis">
 
 
 **Strategic Insight:** We can predict customer response before launching campaigns, enabling:
