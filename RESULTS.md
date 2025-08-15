@@ -27,7 +27,7 @@ The treatment successfully shifted customer behavior from low-margin to high-mar
 - 45% increase in per-customer profitability
 - ROI of 12:1 on intervention costs
 
-<img src="Figures/A_B_fig_2.png" width="100%" height="100%" alt="Average Treatment Effects">
+<img src="Figures/A_B_fig_2.png" width="70%" height="70%" alt="Average Treatment Effects">
 
 ### 🔍 Personalization Opportunities: Segment-Specific Effects
 **Discovery:** Underserved segments showed 33-44% stronger response to intervention
@@ -39,7 +39,7 @@ Our heterogeneous treatment effect analysis uncovered powerful targeting opportu
 - **Non-degree holders:** 6.1pp higher response  
 - **Lower socioeconomic background:** 8.0pp higher response 
 
-<img src="Figures/A_B_fig_3.png" width="100%" height="100%" alt="Heterogeneous Treatment Effects">
+<img src="Figures/A_B_fig_3.png" width="70%" height="70%" alt="Heterogeneous Treatment Effects">
 
 
 **Key Insight:** These traditionally underserved segments shifted investments from gold and low-yield savings directly into ETFs, demonstrating that targeted education can close adoption gaps.
