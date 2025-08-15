@@ -14,8 +14,6 @@ A two-phase data science project combining:
 - **$2.67 million potential revenue impact** for a medium-sized brokerage 
 
 
-
-## **Part 1: A/B Testing: Information Design for Product Adoption**
 ## **Part 1: A/B Testing: Information Design for Product Adoption**
 
 ### Business Context
@@ -31,8 +29,6 @@ A two-phase data science project combining:
 - **Primary Metric**: % allocation to ETF products
 - **Secondary Metrics**: Allocation shifts from low-yield products
 
-
-## **Part 2: Machine Learning Using Causal Forest for Personalized Marketing**
 ## **Part 2: Machine Learning Using Causal Forest for Personalized Marketing**
 
 ### Business Objective
