@@ -3,31 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Causal ML for Investment Behavior: RCT + Heterogeneous Treatment Effects</title>
+    <title>Causal ML for Investment Behavior | Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-cream: #FAF8F5;
-            --bg-warm: #F5F2ED;
-            --sage-light: #E8F0E8;
-            --sage-medium: #A8C5A8;
-            --sage-dark: #6B8E6B;
-            --sage-deep: #4A6B4A;
-            --peach-light: #FDF5F0;
-            --peach-medium: #F5D5C8;
-            --peach-accent: #E8A889;
-            --gold-soft: #E8DCC8;
-            --gold-accent: #C9A86C;
-            --sky-light: #E8F4F8;
-            --sky-medium: #A8D0E0;
-            --text-primary: #3D4A3D;
-            --text-secondary: #6B7B6B;
-            --text-muted: #8A9A8A;
-            --white-soft: #FFFEFB;
-            --shadow-soft: rgba(107, 142, 107, 0.08);
-            --shadow-medium: rgba(107, 142, 107, 0.12);
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a2332;
+            --bg-elevated: #232d3f;
+            --accent-gold: #d4a853;
+            --accent-gold-dim: rgba(212, 168, 83, 0.15);
+            --accent-blue: #4a9eff;
+            --accent-green: #34d399;
+            --accent-red: #f87171;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-subtle: rgba(148, 163, 184, 0.1);
+            --border-accent: rgba(212, 168, 83, 0.3);
         }
 
         * {
@@ -36,35 +31,907 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Nunito', sans-serif;
-            background: var(--bg-cream);
-            min-height: 100vh;
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+            background: var(--bg-primary);
             color: var(--text-primary);
-            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .mono {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .serif {
+            font-family: 'DM Serif Display', serif;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 0;
+            background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 100%);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-link {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 120px 0 80px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(74, 158, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(212, 168, 83, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        .hero-tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-gold);
+            padding: 6px 14px;
+            border: 1px solid var(--border-accent);
+            border-radius: 4px;
+        }
+
+        .hero-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .hero-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.1s forwards;
+        }
+
+        .hero-title span {
+            color: var(--accent-gold);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 48px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.2s forwards;
+        }
+
+        /* Hero Metrics */
+        .hero-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border-subtle);
+            border-radius: 8px;
+            overflow: hidden;
+            max-width: 800px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.3s forwards;
+        }
+
+        .hero-metric {
+            background: var(--bg-card);
+            padding: 32px;
+            position: relative;
+        }
+
+        .hero-metric::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 32px;
+            right: 32px;
+            height: 2px;
+            background: var(--accent-gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s ease;
+        }
+
+        .hero-metric:hover::after {
+            transform: scaleX(1);
+        }
+
+        .metric-value {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3rem;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .metric-value .unit {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-left: 4px;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+
+        .metric-context {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 1s ease 1s forwards;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 48px;
+            background: linear-gradient(to bottom, var(--accent-gold), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+            50% { opacity: 1; transform: scaleY(1); }
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .section-header {
+            margin-bottom: 64px;
+        }
+
+        .section-eyebrow {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+
+        .section-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+
+        /* Business Impact Section */
+        .impact-section {
+            background: var(--bg-secondary);
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .impact-highlight {
+            padding: 48px;
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+            border-radius: 16px;
+            border: 1px solid var(--border-subtle);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .impact-highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-blue));
+        }
+
+        .impact-number {
+            font-family: 'DM Serif Display', serif;
+            font-size: 4.5rem;
+            color: var(--accent-gold);
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .impact-label {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+        }
+
+        .impact-explanation {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .impact-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .impact-card {
+            display: flex;
+            gap: 20px;
+            padding: 24px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.3s ease;
+        }
+
+        .impact-card:hover {
+            border-color: var(--border-accent);
+            transform: translateX(8px);
+        }
+
+        .impact-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-gold-dim);
+            border-radius: 8px;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .impact-card-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .impact-card-content p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
             line-height: 1.6;
         }
 
-        .dashboard {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 30px;
+        /* Methodology Pipeline */
+        .pipeline-section {
+            background: var(--bg-primary);
         }
 
-        /* Hero Section - Soft Neumorphic Card */
-        .hero-section {
-            background: var(--white-soft);
-            border-radius: 32px;
-            padding: 50px 45px;
-            margin-bottom: 40px;
-            box-shadow: 
-                12px 12px 30px var(--shadow-medium),
-                -8px -8px 25px rgba(255, 255, 255, 0.9),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-            animation: gentleFadeIn 1.2s ease-out;
+        .pipeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            background: var(--border-subtle);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 48px;
         }
 
-        @keyframes gentleFadeIn {
+        .pipeline-step {
+            background: var(--bg-card);
+            padding: 40px 32px;
+            position: relative;
+            transition: background 0.3s ease;
+        }
+
+        .pipeline-step:hover {
+            background: var(--bg-elevated);
+        }
+
+        .pipeline-step::after {
+            content: '→';
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.25rem;
+            color: var(--accent-gold);
+            z-index: 1;
+        }
+
+        .pipeline-step:last-child::after {
+            display: none;
+        }
+
+        .step-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            margin-bottom: 16px;
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .step-detail {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .step-tech {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Results Comparison */
+        .results-section {
+            background: var(--bg-secondary);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .result-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid var(--border-subtle);
+            position: relative;
+        }
+
+        .result-card.treatment {
+            border-color: var(--accent-gold);
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(212, 168, 83, 0.05) 100%);
+        }
+
+        .result-card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .result-badge {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .result-badge.control {
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+        }
+
+        .result-badge.treatment {
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+        }
+
+        .result-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .result-card-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .allocation-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .allocation-label {
+            width: 100px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .allocation-bar-container {
+            flex: 1;
+            height: 32px;
+            background: var(--bg-primary);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .allocation-bar {
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--bg-primary);
+            transition: width 1.5s ease;
+        }
+
+        .allocation-bar.etf { background: linear-gradient(90deg, #34d399, #10b981); }
+        .allocation-bar.gold { background: linear-gradient(90deg, #fbbf24, #d97706); }
+        .allocation-bar.stocks { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+        .allocation-bar.crypto { background: linear-gradient(90deg, #f87171, #dc2626); }
+        .allocation-bar.savings { background: linear-gradient(90deg, #60a5fa, #3b82f6); }
+
+        /* Segments Section */
+        .segments-section {
+            background: var(--bg-primary);
+        }
+
+        .segments-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .segment-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .segment-card:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-4px);
+        }
+
+        .segment-card.highlight {
+            border-color: var(--accent-gold);
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(212, 168, 83, 0.08) 100%);
+        }
+
+        .segment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .segment-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .segment-effect {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            color: var(--accent-gold);
+        }
+
+        .segment-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .segment-meta {
+            display: flex;
+            gap: 32px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .segment-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .segment-stat-value {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .segment-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Targeting Simulator */
+        .simulator-section {
+            background: var(--bg-secondary);
+        }
+
+        .simulator-container {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+            margin-top: 48px;
+        }
+
+        .simulator-header {
+            padding: 32px 40px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .simulator-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .simulator-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .simulator-body {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+        }
+
+        .simulator-table {
+            padding: 0;
+        }
+
+        .sim-row {
+            display: grid;
+            grid-template-columns: 48px 1fr 100px 100px;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-subtle);
+            transition: background 0.2s ease;
+            cursor: pointer;
+        }
+
+        .sim-row:hover {
+            background: var(--bg-elevated);
+        }
+
+        .sim-row.selected {
+            background: rgba(212, 168, 83, 0.08);
+        }
+
+        .sim-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .sim-checkbox.checked {
+            background: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+
+        .sim-checkbox.checked::after {
+            content: '✓';
+            color: var(--bg-primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .sim-segment-info {
+            padding-right: 20px;
+        }
+
+        .sim-segment-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .sim-segment-criteria {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .sim-share, .sim-effect {
+            text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .sim-effect {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .simulator-results {
+            background: var(--bg-elevated);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .sim-result-block {
+            margin-bottom: 32px;
+        }
+
+        .sim-result-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .sim-result-value {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+        }
+
+        .sim-result-value.highlight {
+            color: var(--accent-gold);
+        }
+
+        .sim-result-context {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .sim-efficiency {
+            padding: 24px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .sim-efficiency-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .sim-efficiency-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Technical Details (Collapsible) */
+        .technical-section {
+            background: var(--bg-primary);
+        }
+
+        .technical-toggle {
+            width: 100%;
+            padding: 24px 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            margin-top: 48px;
+        }
+
+        .technical-toggle:hover {
+            border-color: var(--border-accent);
+        }
+
+        .technical-toggle-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .technical-toggle.open .technical-toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .technical-content {
+            display: none;
+            margin-top: 24px;
+            padding: 40px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .technical-content.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .tech-block h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--accent-gold);
+        }
+
+        .tech-block ul {
+            list-style: none;
+        }
+
+        .tech-block li {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .tech-block li:last-child {
+            border-bottom: none;
+        }
+
+        .tech-value {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 64px 0;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .footer-link {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -75,1275 +942,582 @@
             }
         }
 
-        .title {
-            font-size: 2.2em;
-            font-weight: 800;
-            color: var(--sage-deep);
-            text-align: center;
-            margin-bottom: 12px;
-            letter-spacing: -0.02em;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 1.1em;
-            font-weight: 500;
-            margin-bottom: 20px;
-        }
-
-        .context-badge {
-            text-align: center;
-            margin-bottom: 45px;
-        }
-
-        .context-badge span {
-            display: inline-block;
-            background: var(--sage-light);
-            border: none;
-            color: var(--sage-dark);
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 0.9em;
-            font-weight: 600;
-            box-shadow: 
-                inset 2px 2px 5px rgba(255, 255, 255, 0.8),
-                inset -2px -2px 5px rgba(107, 142, 107, 0.1);
-        }
-
-        /* Metrics Grid - Soft Cards */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 28px;
-            margin-bottom: 0;
-        }
-
-        .metric-card {
-            background: linear-gradient(145deg, var(--sage-light) 0%, var(--sage-medium) 100%);
-            border-radius: 24px;
-            padding: 30px;
-            color: var(--sage-deep);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            animation: gentleScaleIn 1s ease-out backwards;
-            box-shadow: 
-                8px 8px 20px var(--shadow-medium),
-                -4px -4px 15px rgba(255, 255, 255, 0.7);
-        }
-
-        .metric-card:nth-child(1) { animation-delay: 0.3s; }
-        .metric-card:nth-child(2) { animation-delay: 0.5s; }
-        .metric-card:nth-child(3) { animation-delay: 0.7s; }
-
-        @keyframes gentleScaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .metric-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 
-                12px 12px 30px var(--shadow-medium),
-                -6px -6px 20px rgba(255, 255, 255, 0.8);
-        }
-
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: -100%;
-            right: -100%;
-            width: 300%;
-            height: 300%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
-            animation: gentlePulse 6s ease-in-out infinite;
-        }
-
-        @keyframes gentlePulse {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.3;
-            }
-            50% {
-                transform: scale(1.05);
-                opacity: 0.5;
-            }
-        }
-
-        .metric-value {
-            font-size: 2.8em;
-            font-weight: 800;
-            margin-bottom: 6px;
-            color: var(--sage-deep);
-            position: relative;
-            z-index: 1;
-        }
-
-        .metric-label {
-            font-size: 0.85em;
-            color: var(--sage-dark);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-        }
-
-        .metric-detail {
-            font-size: 0.9em;
-            color: var(--sage-deep);
-            opacity: 0.85;
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px solid rgba(74, 107, 74, 0.2);
-            position: relative;
-            z-index: 1;
-            line-height: 1.5;
-        }
-
-        .method-tag {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.4);
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.72em;
-            margin-top: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            font-weight: 700;
-            color: var(--sage-deep);
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Journey Section */
-        .journey-section {
-            background: var(--white-soft);
-            border-radius: 32px;
-            padding: 50px 45px;
-            margin-bottom: 40px;
-            box-shadow: 
-                12px 12px 30px var(--shadow-medium),
-                -8px -8px 25px rgba(255, 255, 255, 0.9);
-        }
-
-        .journey-title {
-            font-size: 1.6em;
-            margin-bottom: 40px;
-            color: var(--sage-deep);
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .journey-steps {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 50px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .journey-step {
-            flex: 1;
-            text-align: center;
-            padding: 25px 15px;
-            position: relative;
-            min-width: 180px;
-            opacity: 0;
-            animation: gentleFadeUp 1s ease-out forwards;
-        }
-
-        .journey-step:nth-child(1) { animation-delay: 0.4s; }
-        .journey-step:nth-child(2) { animation-delay: 0.6s; }
-        .journey-step:nth-child(3) { animation-delay: 0.8s; }
-        .journey-step:nth-child(4) { animation-delay: 1s; }
-
-        @keyframes gentleFadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .journey-step:not(:last-child)::after {
-            content: '→';
-            position: absolute;
-            right: -5px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.5em;
-            color: var(--sage-medium);
-            opacity: 0.6;
-        }
-
-        .step-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            background: var(--sage-light);
-            color: var(--sage-deep);
-            border-radius: 50%;
-            font-weight: 800;
-            margin-bottom: 14px;
-            font-size: 1.1em;
-            box-shadow: 
-                4px 4px 10px var(--shadow-soft),
-                -3px -3px 8px rgba(255, 255, 255, 0.9),
-                inset 1px 1px 2px rgba(255, 255, 255, 0.5);
-        }
-
-        .step-title {
-            font-weight: 700;
-            color: var(--sage-deep);
-            margin-bottom: 8px;
-            font-size: 1em;
-        }
-
-        .step-detail {
-            color: var(--text-secondary);
-            font-size: 0.9em;
-            line-height: 1.5;
-        }
-
-        /* Comparison Section */
-        .comparison-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 0;
-        }
-
-        .comparison-card {
-            background: var(--white-soft);
-            border-radius: 24px;
-            padding: 35px;
-            box-shadow: 
-                8px 8px 20px var(--shadow-soft),
-                -4px -4px 15px rgba(255, 255, 255, 0.8);
-            position: relative;
-            overflow: hidden;
-            border-left: 5px solid transparent;
-        }
-
-        .comparison-card.before {
-            border-left-color: var(--text-muted);
-        }
-
-        .comparison-card.after {
-            border-left-color: var(--sage-dark);
-        }
-
-        .comparison-title {
-            font-size: 1.15em;
-            font-weight: 700;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--text-primary);
-        }
-
-        .before-icon, .after-icon {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            color: var(--white-soft);
-            font-size: 0.9em;
-        }
-
-        .before-icon {
-            background: var(--text-muted);
-        }
-
-        .after-icon {
-            background: var(--sage-dark);
-        }
-
-        .allocation-bar {
-            margin-bottom: 18px;
-        }
-
-        .allocation-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .allocation-progress {
-            height: 28px;
-            background: var(--bg-warm);
-            border-radius: 14px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: inset 2px 2px 5px var(--shadow-soft);
-        }
-
-        .allocation-fill {
-            height: 100%;
-            transition: width 2s ease-out;
-            display: flex;
-            align-items: center;
-            padding-left: 12px;
-            color: var(--white-soft);
-            font-size: 0.82em;
-            font-weight: 700;
-            border-radius: 14px;
-        }
-
-        .etf-fill {
-            background: linear-gradient(90deg, var(--sage-medium), var(--sage-dark));
-        }
-
-        .savings-fill {
-            background: linear-gradient(90deg, var(--sky-medium), #7BB8D0);
-        }
-
-        .gold-fill {
-            background: linear-gradient(90deg, var(--gold-accent), #D4B87A);
-        }
-
-        .stocks-fill {
-            background: linear-gradient(90deg, #B8A8D0, #9688B8);
-        }
-
-        .crypto-fill {
-            background: linear-gradient(90deg, var(--peach-accent), #D08870);
-        }
-
-        .pulse-dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            background: var(--sage-dark);
-            border-radius: 50%;
-            animation: gentlePulseDot 3s infinite ease-in-out;
-            margin-left: 10px;
-        }
-
-        @keyframes gentlePulseDot {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.3);
-                opacity: 0.6;
-            }
-        }
-
-        /* Segment Explorer */
-        .segment-explorer {
-            background: var(--white-soft);
-            border-radius: 32px;
-            padding: 50px 45px;
-            box-shadow: 
-                12px 12px 30px var(--shadow-medium),
-                -8px -8px 25px rgba(255, 255, 255, 0.9);
-            margin-bottom: 40px;
-        }
-
-        .segment-title {
-            font-size: 1.6em;
-            margin-bottom: 12px;
-            color: var(--sage-deep);
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .segment-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.6;
-        }
-
-        .segment-subtitle strong {
-            color: var(--sage-dark);
-        }
-
-        .segments-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-        }
-
-        .segment-card {
-            padding: 28px;
-            border-radius: 20px;
-            border: 2px solid var(--bg-warm);
-            transition: all 0.5s ease;
-            cursor: pointer;
-            position: relative;
-            background: var(--white-soft);
-            box-shadow: 
-                4px 4px 12px var(--shadow-soft),
-                -2px -2px 8px rgba(255, 255, 255, 0.8);
-        }
-
-        .segment-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 
-                8px 8px 25px var(--shadow-medium),
-                -4px -4px 15px rgba(255, 255, 255, 0.9);
-            border-color: var(--sage-medium);
-        }
-
-        .segment-name {
-            font-size: 1.1em;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--text-primary);
-        }
-
-        .segment-response {
-            font-size: 1.9em;
-            font-weight: 800;
-            color: var(--sage-dark);
-            margin-bottom: 12px;
-        }
-
-        .segment-characteristics {
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            margin-bottom: 18px;
-            line-height: 1.6;
-        }
-
-        .segment-characteristics em {
-            color: var(--sage-dark);
-            font-style: italic;
-        }
-
-        .segment-metrics {
-            display: flex;
-            justify-content: space-between;
-            padding-top: 18px;
-            border-top: 1px solid var(--bg-warm);
-        }
-
-        .segment-metric {
-            text-align: center;
-        }
-
-        .segment-metric-value {
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .segment-metric-label {
-            font-size: 0.78em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* ROI Calculator / Policy Tree Section */
-        .roi-calculator {
-            background: var(--sage-light);
-            border-radius: 32px;
-            padding: 50px 45px;
-            text-align: center;
-            box-shadow: 
-                inset 4px 4px 12px rgba(255, 255, 255, 0.6),
-                inset -4px -4px 12px var(--shadow-soft);
-        }
-
-        .calculator-title {
-            font-size: 1.6em;
-            margin-bottom: 12px;
-            color: var(--sage-deep);
-            font-weight: 700;
-        }
-
-        .calculator-context {
-            color: var(--text-secondary);
-            font-size: 1em;
-            margin-bottom: 35px;
-            max-width: 750px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.7;
-        }
-
-        .calculator-context strong {
-            color: var(--sage-dark);
-        }
-
-        .policy-tree-summary {
-            background: var(--white-soft);
-            border-radius: 24px;
-            padding: 35px;
-            margin: 30px 0;
-            box-shadow: 
-                6px 6px 18px var(--shadow-soft),
-                -4px -4px 12px rgba(255, 255, 255, 0.9);
-        }
-
-        .policy-tree-summary h3 {
-            font-size: 1.05em;
-            color: var(--text-primary);
-            margin-bottom: 25px;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .policy-tree-summary h3 span {
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .segment-table {
-            overflow-x: auto;
-        }
-
-        .segment-table table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95em;
-        }
-
-        .segment-table thead tr {
-            border-bottom: 2px solid var(--bg-warm);
-        }
-
-        .segment-table th {
-            text-align: left;
-            padding: 14px 10px;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.8em;
-            letter-spacing: 0.5px;
-        }
-
-        .segment-table th:nth-child(3),
-        .segment-table th:nth-child(4) {
-            text-align: center;
-        }
-
-        .segment-row {
-            transition: background 0.3s ease;
-        }
-
-        .segment-row:hover {
-            background: var(--sage-light) !important;
-        }
-
-        .segment-row td {
-            padding: 18px 10px;
-            vertical-align: middle;
-        }
-
-        .segment-row td:nth-child(3),
-        .segment-row td:nth-child(4) {
-            text-align: center;
-        }
-
-        .segment-checkbox {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            accent-color: var(--sage-dark);
-        }
-
-        /* Tooltip Styles */
-        .tooltip-container {
-            position: relative;
-            cursor: help;
-        }
-
-        .tooltip-container .tooltip-text {
-            visibility: hidden;
-            opacity: 0;
-            position: absolute;
-            z-index: 100;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--sage-deep);
-            color: var(--white-soft);
-            padding: 14px 18px;
-            border-radius: 16px;
-            font-size: 0.8em;
-            font-weight: 500;
-            white-space: nowrap;
-            box-shadow: 0 8px 25px rgba(74, 107, 74, 0.25);
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-            margin-bottom: 10px;
-        }
-
-        .tooltip-container .tooltip-text::after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 8px;
-            border-style: solid;
-            border-color: var(--sage-deep) transparent transparent transparent;
-        }
-
-        .tooltip-container:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .tooltip-label {
-            color: var(--sage-light);
-            font-size: 0.75em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-        }
-
-        .tooltip-value {
-            color: var(--white-soft);
-            font-weight: 600;
-        }
-
-        .segment-row[style*="background: #f0fdf4"] {
-            background: var(--sage-light) !important;
-        }
-
-        /* ROI Result */
-        .roi-result {
-            margin-top: 35px;
-            padding: 35px;
-            background: var(--white-soft);
-            border-radius: 24px;
-            display: none;
-            box-shadow: 
-                6px 6px 18px var(--shadow-soft),
-                -4px -4px 12px rgba(255, 255, 255, 0.9);
-        }
-
-        .roi-result.show {
-            display: block;
-            animation: gentleScaleIn 0.6s ease-out;
-        }
-
-        .roi-result > div:first-child {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .result-box {
-            padding: 25px;
-            border-radius: 18px;
-        }
-
-        .result-box.baseline {
-            background: var(--bg-warm);
-        }
-
-        .result-box.targeted {
-            background: linear-gradient(145deg, var(--sage-light), #D8ECD8);
-            border: 2px solid var(--sage-medium);
-        }
-
-        .result-label {
-            font-size: 0.82em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .result-label.targeted {
-            color: var(--sage-dark);
-        }
-
-        .result-value {
-            font-size: 2.2em;
-            font-weight: 800;
-        }
-
-        .result-value.baseline {
-            color: var(--text-muted);
-        }
-
-        .result-value.targeted {
-            color: var(--sage-dark);
-        }
-
-        .result-subtext {
-            font-size: 0.85em;
-            color: var(--text-muted);
-            margin-top: 6px;
-        }
-
-        .result-subtext.targeted {
-            color: var(--sage-dark);
-        }
-
-        .efficiency-box {
-            background: var(--bg-warm);
-            padding: 25px;
-            border-radius: 18px;
-            text-align: center;
-        }
-
-        .efficiency-label {
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-        }
-
-        .efficiency-value {
-            font-size: 1.7em;
-            font-weight: 800;
-            color: var(--sage-dark);
-        }
-
-        .efficiency-detail {
-            font-size: 0.85em;
-            color: var(--text-muted);
-            margin-top: 8px;
-        }
-
-        .roi-caveat {
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 1px solid var(--bg-warm);
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            font-style: italic;
-            line-height: 1.6;
-            text-align: left;
-        }
-
-        .roi-caveat strong {
-            color: var(--sage-dark);
-            font-style: normal;
-        }
-
-        .segment-instruction {
-            font-size: 0.88em;
-            color: var(--text-muted);
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .segment-instruction span {
-            color: var(--sage-dark);
-            font-weight: 600;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .impact-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .simulator-body {
+                grid-template-columns: 1fr;
+            }
+
+            .simulator-results {
+                padding: 32px;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
-            .dashboard {
-                padding: 25px 18px;
-            }
-
-            .title {
-                font-size: 1.6em;
-            }
-
-            .hero-section,
-            .journey-section,
-            .segment-explorer,
-            .roi-calculator {
-                padding: 35px 25px;
-                border-radius: 24px;
-            }
-
-            .metrics-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .comparison-section {
-                grid-template-columns: 1fr;
-            }
-
-            .journey-step:not(:last-child)::after {
+            .nav-links {
                 display: none;
             }
 
-            .journey-steps {
-                flex-direction: column;
-                gap: 10px;
+            .hero-metrics {
+                grid-template-columns: 1fr;
             }
 
-            .roi-result > div:first-child {
+            .pipeline {
                 grid-template-columns: 1fr;
+            }
+
+            .pipeline-step::after {
+                display: none;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .segments-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sim-row {
+                grid-template-columns: 40px 1fr;
+                gap: 8px;
+            }
+
+            .sim-share, .sim-effect {
+                display: none;
+            }
+
+            .section {
+                padding: 80px 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <!-- Hero Section with Key Metrics -->
-        <div class="hero-section">
-            <h1 class="title">Causal ML for Investment Behavior</h1>
-            <p class="subtitle">Randomized Experiment + Heterogeneous Treatment Effect Analysis</p>
-            <div class="context-badge">
-                <span>📊 Academic Research · Methodology Applicable to Industry A/B Testing & Personalization</span>
-            </div>
-            <div class="metrics-grid">
-                <div class="metric-card" onclick="animateMetric(this)">
-                    <div class="metric-value" data-target="2568" data-format="number">0</div>
-                    <div class="metric-label">Participants</div>
-                    <div class="metric-detail">Randomized controlled trial with lottery-based incentives</div>
-                    <span class="method-tag">Experimental Design</span>
-                </div>
-                <div class="metric-card" onclick="animateMetric(this)">
-                    <div class="metric-value" data-target="18" data-format="pp">0 pp</div>
-                    <div class="metric-label">Treatment Effect</div>
-                    <div class="metric-detail">Increase in ETF allocation vs. control group</div>
-                    <span class="method-tag">A/B Test Result</span>
-                </div>
-                <div class="metric-card" onclick="animateMetric(this)">
-                    <div class="metric-value" data-target="14" data-format="range">8-0 pp</div>
-                    <div class="metric-label">Effect Heterogeneity</div>
-                    <div class="metric-detail">Range of individual treatment effects identified by Causal Forest</div>
-                    <span class="method-tag">Causal ML</span>
-                </div>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container nav-inner">
+            <div class="nav-brand">PORTFOLIO</div>
+            <div class="nav-links">
+                <a href="#impact" class="nav-link">Impact</a>
+                <a href="#methodology" class="nav-link">Method</a>
+                <a href="#results" class="nav-link">Results</a>
+                <a href="#segments" class="nav-link">Segments</a>
             </div>
         </div>
+    </nav>
 
-        <!-- Journey Visualization -->
-        <div class="journey-section">
-            <h2 class="journey-title">Research Pipeline</h2>
-            <div class="journey-steps">
-                <div class="journey-step">
-                    <div class="step-number">1</div>
-                    <div class="step-title">Research Question</div>
-                    <div class="step-detail">Can information interventions shift investment behavior?</div>
-                </div>
-                <div class="journey-step">
-                    <div class="step-number">2</div>
-                    <div class="step-title">Experimental Design</div>
-                    <div class="step-detail">RCT with 50/50 randomization, stratified assignment</div>
-                </div>
-                <div class="journey-step">
-                    <div class="step-number">3</div>
-                    <div class="step-title">Causal Forest</div>
-                    <div class="step-detail">4,000 trees, cross-validated hyperparameter tuning</div>
-                </div>
-                <div class="journey-step">
-                    <div class="step-number">4</div>
-                    <div class="step-title">Segment Discovery</div>
-                    <div class="step-detail">Identified high/medium/low responder profiles</div>
-                </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-eyebrow">
+                <span class="hero-tag">Causal Inference</span>
+                <span class="hero-date">Oxford - Institute of New Economic Thinking</span>
             </div>
-            <div class="comparison-section">
-                <div class="comparison-card before">
-                    <div class="comparison-title">
-                        <span class="before-icon">C</span>
-                        Control Group (N=1,284)
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>ETFs</span>
-                            <span>28%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill etf-fill" style="width: 28%;">28%</div>
-                        </div>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Gold</span>
-                            <span>27%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill gold-fill" style="width: 27%;">27%</div>
-                        </div>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Individual Stocks</span>
-                            <span>20%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill stocks-fill" style="width: 20%;">20%</div>
-                        </div>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Cryptocurrency</span>
-                            <span>11%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill crypto-fill" style="width: 11%;">11%</div>
-                        </div>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Savings</span>
-                            <span>14%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill savings-fill" style="width: 14%;">14%</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="comparison-card after">
-                    <div class="comparison-title">
-                        <span class="after-icon">T</span>
-                        Treatment Group (N=1,284)
-                        <span class="pulse-dot"></span>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>ETFs</span>
-                            <span>46%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill etf-fill" id="etf-after" style="width: 46%;">46%</div>
-                        </div>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Gold</span>
-                            <span>10%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill gold-fill" id="gold-after" style="width: 10%;">10%</div>
-                        </div>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Individual Stocks</span>
-                            <span>14%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill stocks-fill" id="stocks-after" style="width: 14%;">14%</div>
-                        </div>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Cryptocurrency</span>
-                            <span>14%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill crypto-fill" id="crypto-after" style="width: 14%;">14%</div>
-                        </div>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Savings</span>
-                            <span>16%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill savings-fill" id="savings-after" style="width: 16%;">16%</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ML Segment Explorer -->
-        <div class="segment-explorer">
-            <h2 class="segment-title">Who Responds Most?</h2>
-            <p class="segment-subtitle">The Causal Forest identified substantial heterogeneity in treatment effects based on two key factors: <strong>subjective financial knowledge</strong> and <strong>parental education background</strong>.</p>
-            <div class="segments-container">
-                <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">🎯 Knowledge Seekers</div>
-                    <div class="segment-response">+22 pp</div>
-                    <div class="segment-characteristics">
-                        Low subjective financial knowledge + lower parental education<br>
-                        <em>Recognize their gaps—most receptive to education</em>
-                    </div>
-                    <div class="segment-metrics">
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">31%</div>
-                            <div class="segment-metric-label">of sample</div>
-                        </div>
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">Highest</div>
-                            <div class="segment-metric-label">response</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">⚖️ Persuadables</div>
-                    <div class="segment-response">+18 pp</div>
-                    <div class="segment-characteristics">
-                        Moderate subjective financial knowledge<br>
-                        <em>Largest group—respond well to clear information</em>
-                    </div>
-                    <div class="segment-metrics">
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">39%</div>
-                            <div class="segment-metric-label">of sample</div>
-                        </div>
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">Average</div>
-                            <div class="segment-metric-label">response</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">💼 Confident (Privileged Background)</div>
-                    <div class="segment-response">+16 pp</div>
-                    <div class="segment-characteristics">
-                        High subjective financial knowledge + higher parental education<br>
-                        <em>Moderate response to intervention</em>
-                    </div>
-                    <div class="segment-metrics">
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">12%</div>
-                            <div class="segment-metric-label">of sample</div>
-                        </div>
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">Moderate</div>
-                            <div class="segment-metric-label">response</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">📚 Confident (Modest Background)</div>
-                    <div class="segment-response">+12 pp</div>
-                    <div class="segment-characteristics">
-                        High subjective financial knowledge + lower parental education<br>
-                        <em>Lowest response to intervention</em>
-                    </div>
-                    <div class="segment-metrics">
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">18%</div>
-                            <div class="segment-metric-label">of sample</div>
-                        </div>
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">Lowest</div>
-                            <div class="segment-metric-label">response</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Policy Tree: From Black Box to Actionable Rules -->
-        <div class="roi-calculator">
-            <h2 class="calculator-title">From Black Box to Actionable Rules</h2>
-            <p class="calculator-context">
-                The Causal Forest (4,000 trees) accurately estimates individual treatment effects—but it's a black box.
-                To make it actionable, I trained a <strong>Policy Tree</strong> that distills the forest's predictions into
-                simple if-then rules a business could actually implement.
+            <h1 class="hero-title">
+                Shifting Investment Behavior<br>
+                with <span>Causal ML</span>
+            </h1>
+            <p class="hero-subtitle">
+                A randomized controlled trial with 2,500+ participants, analyzed using Causal Forests to uncover heterogeneous treatment effects and enable precision targeting.
             </p>
 
-            <div class="policy-tree-summary">
-                <h3>
-                    Policy Tree Segments <span>(ranked by treatment effect)</span>
-                </h3>
-
-                <div class="segment-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Target</th>
-                                <th>Segment</th>
-                                <th>Share</th>
-                                <th>Effect</th>
-                            </tr>
-                        </thead>
-                        <tbody id="segmentTableBody">
-                            <tr class="segment-row" data-share="30.8" data-effect="22.0" style="background: var(--sage-light);">
-                                <td><input type="checkbox" class="segment-checkbox" checked></td>
-                                <td>
-                                    <div class="tooltip-container">
-                                        <strong style="color: var(--text-primary); font-size: 1.05em;">🎯 Knowledge Seekers</strong>
-                                        <span class="tooltip-text">
-                                            <div class="tooltip-label">Policy Tree Criteria</div>
-                                            <div class="tooltip-value">Subjective Financial Knowledge ≤ 4.5<br>+ Lower Parental Education</div>
-                                        </span>
-                                    </div>
-                                    <div style="font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;">Low subjective financial knowledge + lower parental education—most receptive to guidance</div>
-                                </td>
-                                <td style="font-size: 1.05em;">30.8%</td>
-                                <td style="font-weight: 700; font-size: 1.1em; color: var(--sage-dark);">+22.0 pp</td>
-                            </tr>
-                            <tr class="segment-row" data-share="39.3" data-effect="18.0">
-                                <td><input type="checkbox" class="segment-checkbox"></td>
-                                <td>
-                                    <div class="tooltip-container">
-                                        <strong style="color: var(--text-primary); font-size: 1.05em;">⚖️ Persuadables</strong>
-                                        <span class="tooltip-text">
-                                            <div class="tooltip-label">Policy Tree Criteria</div>
-                                            <div class="tooltip-value">Subjective Financial Knowledge 4.5–6.5<br>(Moderate knowledge level)</div>
-                                        </span>
-                                    </div>
-                                    <div style="font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;">Moderate subjective financial knowledge—respond well to clear information</div>
-                                </td>
-                                <td style="font-size: 1.05em;">39.3%</td>
-                                <td style="font-weight: 700; font-size: 1.1em; color: #5A8A5A;">+18.0 pp</td>
-                            </tr>
-                            <tr class="segment-row" data-share="11.8" data-effect="15.9">
-                                <td><input type="checkbox" class="segment-checkbox"></td>
-                                <td>
-                                    <div class="tooltip-container">
-                                        <strong style="color: var(--text-primary); font-size: 1.05em;">💼 Confident (Privileged Background)</strong>
-                                        <span class="tooltip-text">
-                                            <div class="tooltip-label">Policy Tree Criteria</div>
-                                            <div class="tooltip-value">Subjective Financial Knowledge > 6.5<br>+ Higher Parental Education</div>
-                                        </span>
-                                    </div>
-                                    <div style="font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;">High subjective financial knowledge + higher parental education—moderate response to intervention</div>
-                                </td>
-                                <td style="font-size: 1.05em;">11.8%</td>
-                                <td style="font-weight: 700; font-size: 1.1em; color: var(--text-muted);">+15.9 pp</td>
-                            </tr>
-                            <tr class="segment-row" data-share="18.1" data-effect="11.9">
-                                <td><input type="checkbox" class="segment-checkbox"></td>
-                                <td>
-                                    <div class="tooltip-container">
-                                        <strong style="color: var(--text-primary); font-size: 1.05em;">📚 Confident (Modest Background)</strong>
-                                        <span class="tooltip-text">
-                                            <div class="tooltip-label">Policy Tree Criteria</div>
-                                            <div class="tooltip-value">Subjective Financial Knowledge > 6.5<br>+ Lower Parental Education</div>
-                                        </span>
-                                    </div>
-                                    <div style="font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;">High subjective financial knowledge + lower parental education—lowest response to intervention</div>
-                                </td>
-                                <td style="font-size: 1.05em;">18.1%</td>
-                                <td style="font-weight: 700; font-size: 1.1em; color: #A8B8A8;">+11.9 pp</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="hero-metrics">
+                <div class="hero-metric">
+                    <div class="metric-value">2,568</div>
+                    <div class="metric-label">Participants</div>
+                    <div class="metric-context">Randomized controlled trial with lottery-based incentives for completion</div>
                 </div>
-
-                <p class="segment-instruction">
-                    Select segments to simulate a targeting strategy. <span>Hover over segment names</span> to see the underlying Policy Tree criteria.
-                </p>
-            </div>
-
-            <div class="roi-result show" id="roiResult">
-                <div>
-                    <div class="result-box baseline">
-                        <div class="result-label">Treat Everyone</div>
-                        <div class="result-value baseline">+17.9 pp</div>
-                        <div class="result-subtext">100% of sample</div>
-                    </div>
-                    <div class="result-box targeted">
-                        <div class="result-label targeted">Your Targeting Strategy</div>
-                        <div class="result-value targeted" id="selectedEffect">+22.0 pp</div>
-                        <div class="result-subtext targeted" id="selectedReach">30.8% of sample</div>
-                    </div>
+                <div class="hero-metric">
+                    <div class="metric-value">+18<span class="unit">pp</span></div>
+                    <div class="metric-label">Average Treatment Effect</div>
+                    <div class="metric-context">Increase in diversified ETF allocation vs. control group</div>
                 </div>
-
-                <div class="efficiency-box">
-                    <div class="efficiency-label">Efficiency Gain from Targeting</div>
-                    <div class="efficiency-value" id="efficiencyGain">+23% effect per person</div>
-                    <div class="efficiency-detail" id="efficiencyDetail">while reaching only 31% of the population</div>
-                </div>
-
-                <div class="roi-caveat">
-                    💡 <strong>The insight:</strong> People who recognize their knowledge gaps respond most strongly.
-                    Among those with high subjective financial knowledge, parental education background explains remaining variation in treatment response.
-                    Targeting lets you focus resources where they create the most impact.
+                <div class="hero-metric">
+                    <div class="metric-value">8–22<span class="unit">pp</span></div>
+                    <div class="metric-label">Effect Range</div>
+                    <div class="metric-context">Individual treatment effects identified via Causal Forest analysis</div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Business Impact Section -->
+    <section id="impact" class="section impact-section">
+        <div class="container">
+            <div class="impact-grid">
+                <div class="impact-highlight">
+                    <div class="impact-number">22%</div>
+                    <div class="impact-label">More efficient intervention through precision targeting</div>
+                    <p class="impact-explanation">
+                        By identifying high-responder segments, resources can be concentrated where they create the most impact achieving higher effect sizes while reaching fewer people.
+                    </p>
+                </div>
+
+                <div class="impact-cards">
+                    <div class="impact-card">
+                        <div class="impact-icon">🎯</div>
+                        <div class="impact-card-content">
+                            <h4>Actionable Segmentation</h4>
+                            <p>Policy Tree distills complex Causal Forest predictions into simple if-then rules that can be implemented in production systems.</p>
+                        </div>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-icon">📊</div>
+                        <div class="impact-card-content">
+                            <h4>Heterogeneity Discovery</h4>
+                            <p>Identified that treatment response varies 2x based on subjective financial knowledge and parental education background.</p>
+                        </div>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-icon">⚡</div>
+                        <div class="impact-card-content">
+                            <h4>Industry Application</h4>
+                            <p>Same methodology applies to A/B test analysis, personalization engines, and any setting where "one size fits all" leaves value on the table.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Section -->
+    <section id="methodology" class="section pipeline-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-eyebrow">// Methodology</div>
+                <h2 class="section-title">Research Pipeline</h2>
+                <p class="section-desc">From experimental design through causal machine learning to actionable business rules.</p>
+            </div>
+
+            <div class="pipeline">
+                <div class="pipeline-step">
+                    <div class="step-number">01</div>
+                    <div class="step-title">Experimental Design</div>
+                    <div class="step-detail">RCT with 50/50 randomization, stratified assignment, lottery incentives for completion</div>
+                    <div class="step-tech">N = 2,568 · Power analysis · Pre-registration</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">02</div>
+                    <div class="step-title">Causal Forest</div>
+                    <div class="step-detail">4,000 trees with cross-validated hyperparameter tuning for individual treatment effect estimation</div>
+                    <div class="step-tech">grf package · R · Honest estimation</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">03</div>
+                    <div class="step-title">Policy Tree</div>
+                    <div class="step-detail">Distill black-box predictions into interpretable decision rules for implementation</div>
+                    <div class="step-tech">Depth = 2 · Cross-validated</div>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">04</div>
+                    <div class="step-title">Validation</div>
+                    <div class="step-detail">Targeting gains estimated via doubly-robust AIPW, with sensitivity analysis</div>
+                    <div class="step-tech">AIPW · Bootstrap CIs</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="section results-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-eyebrow">// Results</div>
+                <h2 class="section-title">Treatment vs. Control</h2>
+                <p class="section-desc">Portfolio allocation shifts following the information intervention.</p>
+            </div>
+
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div class="result-badge control">C</div>
+                        <div>
+                            <div class="result-card-title">Control Group</div>
+                            <div class="result-card-subtitle">N = 1,284</div>
+                        </div>
+                    </div>
+
+                    <div class="allocation-row">
+                        <div class="allocation-label">ETFs</div>
+                        <div class="allocation-bar-container">
+                            <div class="allocation-bar etf" data-width="28">28%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-row">
+                        <div class="allocation-label">Gold</div>
+                        <div class="allocation-bar-container">
+                            <div class="allocation-bar gold" data-width="27">27%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-row">
+                        <div class="allocation-label">Stocks</div>
+                        <div class="allocation-bar-container">
+                            <div class="allocation-bar stocks" data-width="20">20%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-row">
+                        <div class="allocation-label">Crypto</div>
+                        <div class="allocation-bar-container">
+                            <div class="allocation-bar crypto" data-width="11">11%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-row">
+                        <div class="allocation-label">Savings</div>
+                        <div class="allocation-bar-container">
+                            <div class="allocation-bar savings" data-width="14">14%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card treatment">
+                    <div class="result-card-header">
+                        <div class="result-badge treatment">T</div>
+                        <div>
+                            <div class="result-card-title">Treatment Group</div>
+                            <div class="result-card-subtitle">N = 1,284</div>
+                        </div>
+                    </div>
+
+                    <div class="allocation-row">
+                        <div class="allocation-label">ETFs</div>
+                        <div class="allocation-bar-container">
+                            <div class="allocation-bar etf" data-width="46">46%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-row">
+                        <div class="allocation-label">Gold</div>
+                        <div class="allocation-bar-container">
+                            <div class="allocation-bar gold" data-width="10">10%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-row">
+                        <div class="allocation-label">Stocks</div>
+                        <div class="allocation-bar-container">
+                            <div class="allocation-bar stocks" data-width="14">14%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-row">
+                        <div class="allocation-label">Crypto</div>
+                        <div class="allocation-bar-container">
+                            <div class="allocation-bar crypto" data-width="14">14%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-row">
+                        <div class="allocation-label">Savings</div>
+                        <div class="allocation-bar-container">
+                            <div class="allocation-bar savings" data-width="16">16%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Segments Section -->
+    <section id="segments" class="section segments-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-eyebrow">// Heterogeneous Effects</div>
+                <h2 class="section-title">Who Responds Most?</h2>
+                <p class="section-desc">Causal Forest identified substantial variation in treatment effects based on two key factors: subjective financial knowledge and parental education background.</p>
+            </div>
+
+            <div class="segments-grid">
+                <div class="segment-card highlight" data-segment="seekers">
+                    <div class="segment-header">
+                        <div class="segment-name">🎯 Knowledge Seekers</div>
+                        <div class="segment-effect">+22 pp</div>
+                    </div>
+                    <p class="segment-desc">Low subjective financial knowledge combined with lower parental education. These individuals recognize their knowledge gaps and are most receptive to educational interventions.</p>
+                    <div class="segment-meta">
+                        <div class="segment-stat">
+                            <span class="segment-stat-value">31%</span>
+                            <span class="segment-stat-label">of sample</span>
+                        </div>
+                        <div class="segment-stat">
+                            <span class="segment-stat-value">Highest</span>
+                            <span class="segment-stat-label">response rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="segment-card" data-segment="persuadables">
+                    <div class="segment-header">
+                        <div class="segment-name">⚖️ Persuadables</div>
+                        <div class="segment-effect">+18 pp</div>
+                    </div>
+                    <p class="segment-desc">Moderate subjective financial knowledge. The largest segment—they respond well to clear, well-presented information without needing extensive hand-holding.</p>
+                    <div class="segment-meta">
+                        <div class="segment-stat">
+                            <span class="segment-stat-value">39%</span>
+                            <span class="segment-stat-label">of sample</span>
+                        </div>
+                        <div class="segment-stat">
+                            <span class="segment-stat-value">Average</span>
+                            <span class="segment-stat-label">response rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="segment-card" data-segment="confident-priv">
+                    <div class="segment-header">
+                        <div class="segment-name">💼 Confident (Privileged)</div>
+                        <div class="segment-effect">+16 pp</div>
+                    </div>
+                    <p class="segment-desc">High subjective financial knowledge with higher parental education. Already have strong financial foundations, still respond, but with less room for improvement.</p>
+                    <div class="segment-meta">
+                        <div class="segment-stat">
+                            <span class="segment-stat-value">12%</span>
+                            <span class="segment-stat-label">of sample</span>
+                        </div>
+                        <div class="segment-stat">
+                            <span class="segment-stat-value">Moderate</span>
+                            <span class="segment-stat-label">response rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="segment-card" data-segment="confident-modest">
+                    <div class="segment-header">
+                        <div class="segment-name">📚 Confident (Modest)</div>
+                        <div class="segment-effect">+12 pp</div>
+                    </div>
+                    <p class="segment-desc">High subjective financial knowledge but lower parental education. Self-taught and confident, and are more resistant to changing established views.</p>
+                    <div class="segment-meta">
+                        <div class="segment-stat">
+                            <span class="segment-stat-value">18%</span>
+                            <span class="segment-stat-label">of sample</span>
+                        </div>
+                        <div class="segment-stat">
+                            <span class="segment-stat-value">Lowest</span>
+                            <span class="segment-stat-label">response rate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Targeting Simulator -->
+    <section class="section simulator-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-eyebrow">// Interactive</div>
+                <h2 class="section-title">Targeting Simulator</h2>
+                <p class="section-desc">Select segments to simulate a targeting strategy and compare efficiency against treating everyone uniformly.</p>
+            </div>
+
+            <div class="simulator-container">
+                <div class="simulator-header">
+                    <div>
+                        <div class="simulator-title">Policy Tree Segments</div>
+                        <div class="simulator-subtitle">Ranked by treatment effect (highest to lowest)</div>
+                    </div>
+                </div>
+
+                <div class="simulator-body">
+                    <div class="simulator-table">
+                        <div class="sim-row selected" data-share="30.8" data-effect="22.0">
+                            <div class="sim-checkbox checked"></div>
+                            <div class="sim-segment-info">
+                                <div class="sim-segment-name">🎯 Knowledge Seekers</div>
+                                <div class="sim-segment-criteria">Subjective Knowledge ≤ 4.5 + Lower Parental Education</div>
+                            </div>
+                            <div class="sim-share">30.8%</div>
+                            <div class="sim-effect">+22.0 pp</div>
+                        </div>
+                        <div class="sim-row" data-share="39.3" data-effect="18.0">
+                            <div class="sim-checkbox"></div>
+                            <div class="sim-segment-info">
+                                <div class="sim-segment-name">⚖️ Persuadables</div>
+                                <div class="sim-segment-criteria">Subjective Knowledge 4.5–6.5</div>
+                            </div>
+                            <div class="sim-share">39.3%</div>
+                            <div class="sim-effect">+18.0 pp</div>
+                        </div>
+                        <div class="sim-row" data-share="11.8" data-effect="15.9">
+                            <div class="sim-checkbox"></div>
+                            <div class="sim-segment-info">
+                                <div class="sim-segment-name">💼 Confident (Privileged)</div>
+                                <div class="sim-segment-criteria">Subjective Knowledge > 6.5 + Higher Parental Education</div>
+                            </div>
+                            <div class="sim-share">11.8%</div>
+                            <div class="sim-effect">+15.9 pp</div>
+                        </div>
+                        <div class="sim-row" data-share="18.1" data-effect="11.9">
+                            <div class="sim-checkbox"></div>
+                            <div class="sim-segment-info">
+                                <div class="sim-segment-name">📚 Confident (Modest)</div>
+                                <div class="sim-segment-criteria">Subjective Knowledge > 6.5 + Lower Parental Education</div>
+                            </div>
+                            <div class="sim-share">18.1%</div>
+                            <div class="sim-effect">+11.9 pp</div>
+                        </div>
+                    </div>
+
+                    <div class="simulator-results">
+                        <div class="sim-result-block">
+                            <div class="sim-result-label">Baseline (Treat Everyone)</div>
+                            <div class="sim-result-value">+17.9 pp</div>
+                            <div class="sim-result-context">100% of population</div>
+                        </div>
+                        <div class="sim-result-block">
+                            <div class="sim-result-label">Your Strategy</div>
+                            <div class="sim-result-value highlight" id="simEffect">+22.0 pp</div>
+                            <div class="sim-result-context" id="simReach">30.8% of population</div>
+                        </div>
+                        <div class="sim-efficiency">
+                            <div class="sim-efficiency-value" id="simGain">+23% efficiency</div>
+                            <div class="sim-efficiency-label">vs. uniform treatment</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Details -->
+    <section class="section technical-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-eyebrow">// Appendix</div>
+                <h2 class="section-title">Technical Details</h2>
+            </div>
+
+            <button class="technical-toggle" id="techToggle">
+                <span>View full methodology specifications</span>
+                <span class="technical-toggle-icon">↓</span>
+            </button>
+
+            <div class="technical-content" id="techContent">
+                <div class="tech-grid">
+                    <div class="tech-block">
+                        <h4>Experimental Design</h4>
+                        <ul>
+                            <li><span>Sample Size</span><span class="tech-value">N = 2,568</span></li>
+                            <li><span>Randomization</span><span class="tech-value">50/50 split</span></li>
+                            <li><span>Assignment</span><span class="tech-value">Stratified</span></li>
+                            <li><span>Incentive</span><span class="tech-value">Lottery-based</span></li>
+                            <li><span>Outcome</span><span class="tech-value">ETF allocation %</span></li>
+                        </ul>
+                    </div>
+                    <div class="tech-block">
+                        <h4>Causal Forest</h4>
+                        <ul>
+                            <li><span>Trees</span><span class="tech-value">4,000</span></li>
+                            <li><span>Package</span><span class="tech-value">grf (R)</span></li>
+                            <li><span>Estimation</span><span class="tech-value">Honest</span></li>
+                            <li><span>Tuning</span><span class="tech-value">Cross-validated</span></li>
+                            <li><span>Features</span><span class="tech-value">15 covariates</span></li>
+                        </ul>
+                    </div>
+                    <div class="tech-block">
+                        <h4>Inference</h4>
+                        <ul>
+                            <li><span>CI Method</span><span class="tech-value">Bootstrap</span></li>
+                            <li><span>Estimator</span><span class="tech-value">AIPW (DR)</span></li>
+                            <li><span>Policy Tree</span><span class="tech-value">Depth = 2</span></li>
+                            <li><span>Validation</span><span class="tech-value">Out-of-bag</span></li>
+                            <li><span>Sensitivity</span><span class="tech-value">Completed</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">Causal ML Portfolio Demo · Built for data science interviews</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">← Back to CV</a>
+                <a href="#" class="footer-link">GitHub</a>
+                <a href="#" class="footer-link">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        // Animate metrics on page load
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                animateAllMetrics();
-                animateAfterBars();
-            }, 600);
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    
+                    // Animate allocation bars when results section is visible
+                    if (entry.target.classList.contains('results-section')) {
+                        animateAllocationBars();
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe sections
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(section);
         });
 
-        function animateAllMetrics() {
-            const metrics = document.querySelectorAll('.metric-value');
-            metrics.forEach(metric => {
-                const target = parseFloat(metric.getAttribute('data-target'));
-                const format = metric.getAttribute('data-format');
-                const duration = 2500;
-                const steps = 80;
-                const increment = target / steps;
-                let current = 0;
-
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-
-                    if (format === 'number') {
-                        metric.textContent = Math.round(current).toLocaleString();
-                    } else if (format === 'pp') {
-                        metric.textContent = `${Math.round(current)} pp`;
-                    } else if (format === 'range') {
-                        metric.textContent = `8–${Math.round(current + 8)} pp`;
-                    } else {
-                        metric.textContent = Math.round(current);
-                    }
-                }, duration / steps);
+        // Animate allocation bars
+        function animateAllocationBars() {
+            document.querySelectorAll('.allocation-bar').forEach(bar => {
+                const width = bar.dataset.width;
+                setTimeout(() => {
+                    bar.style.width = width + '%';
+                }, 200);
             });
         }
 
-        function animateMetric(card) {
-            const metric = card.querySelector('.metric-value');
-            card.style.transform = 'scale(1.05)';
-            setTimeout(() => {
-                card.style.transform = '';
-            }, 400);
-        }
+        // Initialize bars at 0
+        document.querySelectorAll('.allocation-bar').forEach(bar => {
+            bar.style.width = '0%';
+        });
 
-        function animateAfterBars() {
-            setTimeout(() => {
-                document.getElementById('etf-after').style.width = '46%';
-                document.getElementById('savings-after').style.width = '16%';
-                document.getElementById('gold-after').style.width = '10%';
-                document.getElementById('stocks-after').style.width = '14%';
-                document.getElementById('crypto-after').style.width = '14%';
-            }, 1200);
-        }
-
-        function highlightSegment(card) {
-            // Remove previous highlights
-            document.querySelectorAll('.segment-card').forEach(c => {
-                c.style.transform = '';
-                c.style.boxShadow = '';
-                c.style.borderColor = '';
+        // Simulator interaction
+        document.querySelectorAll('.sim-row').forEach(row => {
+            row.addEventListener('click', function() {
+                const checkbox = this.querySelector('.sim-checkbox');
+                checkbox.classList.toggle('checked');
+                this.classList.toggle('selected');
+                updateSimulator();
             });
+        });
 
-            // Highlight selected card
-            card.style.transform = 'translateY(-8px) scale(1.03)';
-            card.style.boxShadow = '12px 12px 30px rgba(107, 142, 107, 0.2), -6px -6px 20px rgba(255, 255, 255, 0.9)';
-            card.style.borderColor = 'var(--sage-medium)';
-        }
-
-        function updateTargetingResults() {
-            const rows = document.querySelectorAll('.segment-row');
+        function updateSimulator() {
             let totalShare = 0;
             let weightedEffect = 0;
 
-            rows.forEach(row => {
-                const checkbox = row.querySelector('.segment-checkbox');
-                if (checkbox.checked) {
+            document.querySelectorAll('.sim-row').forEach(row => {
+                if (row.querySelector('.sim-checkbox').classList.contains('checked')) {
                     const share = parseFloat(row.dataset.share);
                     const effect = parseFloat(row.dataset.effect);
                     totalShare += share;
@@ -1351,49 +1525,40 @@
                 }
             });
 
-            // Calculate weighted average effect
             const avgEffect = totalShare > 0 ? weightedEffect / totalShare : 0;
-            const baselineEffect = 17.9;
-            const efficiencyGain = ((avgEffect / baselineEffect) - 1) * 100;
+            const baseline = 17.9;
+            const efficiency = totalShare > 0 ? ((avgEffect / baseline) - 1) * 100 : 0;
 
-            // Update display
-            document.getElementById('selectedEffect').textContent =
+            document.getElementById('simEffect').textContent = 
                 totalShare > 0 ? `+${avgEffect.toFixed(1)} pp` : '— pp';
-            document.getElementById('selectedReach').textContent =
-                `${totalShare.toFixed(1)}% of sample reached`;
-            document.getElementById('efficiencyGain').textContent =
-                totalShare > 0 ? `+${efficiencyGain.toFixed(0)}% effect` : 'Select segments';
-            document.getElementById('efficiencyDetail').textContent =
-                totalShare > 0
-                    ? `while reaching only ${totalShare.toFixed(0)}% of the population`
-                    : 'Check boxes above to build a targeting strategy';
+            document.getElementById('simReach').textContent = 
+                totalShare > 0 ? `${totalShare.toFixed(1)}% of population` : 'Select segments above';
+            document.getElementById('simGain').textContent = 
+                totalShare > 0 ? `+${efficiency.toFixed(0)}% efficiency` : 'No selection';
         }
 
-        // Add event listeners to all checkboxes
-        document.querySelectorAll('.segment-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', updateTargetingResults);
+        // Technical toggle
+        document.getElementById('techToggle').addEventListener('click', function() {
+            this.classList.toggle('open');
+            document.getElementById('techContent').classList.toggle('show');
         });
 
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(updateTargetingResults, 100);
-        });
-
-        // Add interactive hover effects for journey steps
-        document.querySelectorAll('.journey-step').forEach(step => {
-            step.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-8px)';
-                this.style.transition = 'transform 0.5s ease';
-            });
-            step.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
+        // Segment card interaction
+        document.querySelectorAll('.segment-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.segment-card').forEach(c => c.classList.remove('highlight'));
+                this.classList.add('highlight');
             });
         });
 
-        // Auto-update targeting results on load
-        setTimeout(() => {
-            updateTargetingResults();
-        }, 500);
+        // Smooth scroll for nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
     </script>
 </body>
 </html>
