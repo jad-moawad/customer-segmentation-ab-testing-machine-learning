@@ -8,7 +8,9 @@ First we analyze the propensity score, it is important because in a perfectly ra
 These results confirm that the experiment's randomization worked properly. This is crucial because it means any differences we observe in portfolio allocation between the treatment and control groups can be confidently attributed to the financial information given to respondents, not to pre-existing differences between the groups.
 
 
-![Propensity Score Analysis](https://raw.githubusercontent.com/jad-moawad/financial-literacy-experiment/main/Figures/fig-1.png)
+![Propensity Score Analysis](https://raw.githubusercontent.com/jad-moawad/financial-literacy-experiment/main/Figures/ML_fig_1.png)
+
+
 
 ### cross-validation and tuning
 
