@@ -1,114 +1,127 @@
 
+# Financial Decision-Making: An Experimental Study with Causal ML
 
-# 🎯 Business Problem
-Financial services companies struggle with low adoption rates of profitable investment products. This project demonstrates how data science can drive 18% increases in a product adoption.
+## Overview
 
-# 💡 Solution Approach
-A two-phase data science project combining:
-1. **A/B Testing**: Randomized controlled experiment (N=2,568) testing targeted information interventions
-2. **Machine Learning**: Causal Forest analysis to identify customer segments for personalized targeting
+This project combines experimental methods (RCT) with causal machine learning to understand how information interventions affect investment decisions, and crucially, *for whom* they work best.
 
-# 📈 Key Results
-- **18% increase** in ETF adoption through optimized information delivery
-- **Machine Learning model identified** 3 key customer segments with differential responses (8-27% effect range)
-- **$2.67 million potential revenue impact** for a medium-sized brokerage 
+**Why this matters for industry:** 
+
+The methodology presented here translates directly to personalization, targeting optimization, and intervention design in any field where behavior change is the goal. It achieves this by focusing on three core pillars:
+
+* **Running clean experiments** to establish clear causal links.
+* **Estimating heterogeneous treatment effects** to understand how impacts vary across different groups.
+* **Identifying high-response segments** to ensure resources are directed where they will have the greatest influence.
+
+By moving away from "one-size-fits-all" approaches, organizations can use these techniques to create more precise, data-driven strategies that maximize impact and efficiency.
+
+---
+
+## What I Did
+
+### Phase 1: Randomized Experiment
+
+Designed and fielded a randomized controlled trial (N=2,568) testing whether a financial literacy intervention affects ETF investment decisions.
+
+| Design Element | Details |
+|----------------|---------|
+| Sample Size | 2,568 participants (powered for 5% MDE) |
+| Randomization | 50/50 split with stratification |
+| Treatment | Targeted financial information intervention |
+| Control | Standard information interface |
+| Incentive Structure | Lottery-based with real financial stakes |
+| Primary Metric | % allocation to ETF products |
+
+**Result:** 18 percentage point increase in ETF allocation among treated group.
+
+---
+
+### Phase 2: Heterogeneity Analysis with Causal Forests
+
+Rather than stopping at the average effect, I used EconML's CausalForestDML to estimate individual-level treatment effects and identify who responds most.
+
+#### Model Development
+
+- **Algorithm:** EconML's CausalForestDML
+- **Validation:** 5-fold cross-validation with stratification
+- **Tuning:** Hyperparameter grid search (9 configurations)
+- **Scoring:** Custom function balancing heterogeneity detection (40%) and precision (60%)
+
+#### Optimal Model Configuration
+
+| Parameter | Value |
+|-----------|-------|
+| Trees | 4,000 |
+| Min samples per leaf | 20 |
+| Sampling rate | 45% |
+| Feature selection | sqrt |
+
+#### Features Used
+
+20+ customer features across three categories:
+
+- **Behavioral:** risk tolerance, financial knowledge, investment experience
+- **Demographic:** age, education, income
+- **Psychographic:** trust indices, political orientation
+
+---
+
+## Key Findings
+
+Treatment effects varied substantially (8–27% range), with clear segment patterns:
+
+### High Responders (20–27% effect)
+- Lower financial confidence
+- Age 60+
+- Lower socioeconomic background
+- Risk-averse profiles
+
+### Medium Responders (15–20% effect)
+- Moderate financial knowledge
+- Middle-aged (40–60)
+
+### Low Responders (8–15% effect)
+- Already financially confident
+- High risk tolerance
+
+**Implication:** If you're deploying an intervention with a cost, these segments tell you where to focus resources for maximum impact.
 
 
-## **Part 1: A/B Testing: Information Design for Product Adoption**
+---
 
-### Business Context
-- **Industry Challenge**: Only 28% of retail investors use ETFs despite superior risk-adjusted returns
-- **Revenue Opportunity**: Each 1% increase in ETF adoption = $150,000 in annual fee revenue
-- **Target KPI**: Increase ETF allocation in customer portfolios
-
-### Experimental Design
-- **Sample Size**: 2,568 users (powered for 5% minimum detectable effect)
-- **Randomization**: 50/50 split with stratification
-- **Treatment**: Targeted product comparison interface
-- **Control**: Standard product selection interface
-- **Primary Metric**: % allocation to ETF products
-- **Secondary Metrics**: Allocation shifts from low-yield products
-
-## **Part 2: Machine Learning Using Causal Forest for Personalized Marketing**
-
-### Business Objective
-Identify which customers respond best to financial education interventions 
-to optimize marketing spend and personalization strategies.
-
-### Technical Implementation
-
-#### 1. Causal Forest Model Development
-
-##### Technologies used:
-- EconML's CausalForestDML
-- 5-fold cross-validation with stratification
-- Hyperparameter grid search (9 configurations)
-- Custom scoring function balancing heterogeneity detection (40%) and precision (60%)
-
-##### Optimal Model Configuration:
-- Trees: 4,000
-- Min samples per leaf: 20
-- Sampling rate: 45%
-- Feature selection: sqrt
-- Feature selection: sqrt
-
-
-#### 2. Feature Engineering & Selection
-
-* 20+ customer features including:
-    * **Behavioral:** risk tolerance, financial knowledge
-    * **Demographic:** age, education, income
-    * **Psychographic:** trust indices, political orientation
-* Automated feature importance extraction
-* Dimensionality reduction for interpretability
-
-#### 3. Customer Segmentation Results
-
-##### **High-Response Segments** (20-27% effect):
-
-* Low financial confidence and Age 60+
-* Lower socioeconomic background and Risk-averse
-* **Business Insight:** Target these segments first 
-
-##### **Medium-Response Segments** (15-20% effect):
-
-* Moderate financial knowledge
-* Middle-aged (40-60)
-
-##### **Low-Response Segments** (8-15% effect):
-
-* High financial confidence
-* High risk tolerance
-* **Business Insight:** Require different intervention strategies
-
-
-## 🛠️ Technical Stack
+## Technical Stack
 
 ### Statistical Methods
 - Randomized Controlled Trials (RCT)
-- Causal Inference (Average Treatment Effects, CATE)
+- Causal Inference (ATE, CATE)
 - Regression Analysis (OLS, Interaction Effects)
 - Propensity Score Methods
 
 ### Machine Learning
-- Causal Forests 
+- Causal Forests (EconML)
 - Hyperparameter Tuning
 - Cross-Validation Strategies
 - Feature Importance Analysis
-- Policy Learning/Decision Trees
+- Policy Learning / Decision Trees
 
 ### Programming & Tools
-- **Languages**: Python 
-- **Libraries**: econml, scikit-learn, pandas, numpy, matplotlib, seaborn
-- **Visualization**: plotly
-- **Version Control**: Git/GitHub
-- **Documentation**: Jupyter Notebooks, Markdown
+- **Languages:** Python
+- **Libraries:** econml, scikit-learn, pandas, numpy, matplotlib, seaborn, plotly
+- **Version Control:** Git/GitHub
+- **Documentation:** Jupyter Notebooks, Markdown
 
-### Business Analytics
-- A/B Test Design & Power Analysis
-- Customer Segmentation
-- Personalization Strategies
-- ROI Calculation
-- KPI Development
+---
+
+## Limitations & Context
+
+- This was an academic study with lottery-based incentives, not a deployed business intervention
+- External validity to real brokerage settings would require field testing
+- The methodology, however, is directly applicable to industry A/B testing and personalization
+
+---
+## Contact
+
+Feel free to reach out on moawad.jad@gmail.com if you have questions about the methodology or want to discuss applications.
+
 
 
