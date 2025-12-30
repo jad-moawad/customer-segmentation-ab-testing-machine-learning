@@ -3,1355 +3,598 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Causal ML for Investment Behavior: RCT + Heterogeneous Treatment Effects</title>
+    <title>Investment Behavior Insights | Wellness View</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-deep: #0a0f1a;
-            --bg-mid: #111827;
-            --surface: rgba(30, 41, 59, 0.7);
-            --surface-light: rgba(51, 65, 85, 0.5);
-            --accent-primary: #10b981;
-            --accent-secondary: #06b6d4;
-            --accent-warm: #f59e0b;
-            --accent-coral: #f472b6;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --border: rgba(148, 163, 184, 0.1);
-            --glow: rgba(16, 185, 129, 0.15);
+            /* Palette: Nurturing Pastels */
+            --bg-cream: #FDFCF8;
+            --glass-white: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            
+            --text-dark: #4A5568;
+            --text-soft: #718096;
+            
+            --sage-primary: #8BA896; /* Calming Green */
+            --sage-dark: #5F7A68;
+            --peach-accent: #F4D1AE; /* Warmth */
+            --sky-blue: #B8D8E6;     /* Clarity */
+            --lavender: #DCD6F7;     /* Insight */
+            
+            --shadow-soft: 0 10px 40px -10px rgba(139, 168, 150, 0.2);
+            --shadow-float: 0 20px 60px -15px rgba(100, 110, 120, 0.15);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-deep);
-            min-height: 100vh;
-            color: var(--text-primary);
-            overflow-x: hidden;
-            position: relative;
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-cream);
+            /* Creating a soft, organic background mesh */
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(184, 216, 230, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(244, 209, 174, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(220, 214, 247, 0.3) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
-        
-        /* Animated mesh gradient background */
-        .bg-mesh {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: 
-                radial-gradient(ellipse 80% 50% at 20% 40%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 40% at 80% 20%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
-                radial-gradient(ellipse 50% 60% at 60% 80%, rgba(244, 114, 182, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse 40% 50% at 10% 90%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
-                linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 100%);
-            animation: meshMove 20s ease-in-out infinite;
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-dark);
+            font-weight: 700;
         }
-        
-        @keyframes meshMove {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.02) rotate(0.5deg); }
-            50% { transform: scale(1) rotate(0deg); }
-            75% { transform: scale(1.01) rotate(-0.5deg); }
-        }
-        
-        /* Noise texture overlay */
-        .noise-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.35;
-            pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-        
+
         .dashboard {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 30px 20px;
-            position: relative;
+            padding: 60px 20px;
         }
-        
-        /* Glassmorphism card base */
+
+        /* Card System (Glassmorphism) */
         .glass-card {
-            background: var(--surface);
+            background: var(--glass-white);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            box-shadow: 
-                0 4px 24px rgba(0, 0, 0, 0.3),
-                0 1px 2px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 50px;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 40px;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
         }
-        
+
+        .glass-card:hover {
+            box-shadow: var(--shadow-float);
+        }
+
+        /* Hero Section */
         .hero-section {
-            padding: 50px 40px;
-            margin-bottom: 30px;
-            animation: slideDown 0.8s ease-out;
-            position: relative;
-            overflow: hidden;
+            text-align: center;
+            padding: 60px 40px;
         }
-        
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.5), rgba(6, 182, 212, 0.5), transparent);
-        }
-        
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
+
         .title {
-            font-family: 'Fraunces', Georgia, serif;
-            font-size: 2.8em;
-            font-weight: 600;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 50%, var(--accent-secondary) 100%);
+            font-size: 3em;
+            letter-spacing: -0.5px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--sage-dark), #4A5568);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-align: center;
-            margin-bottom: 12px;
-            letter-spacing: -0.02em;
         }
-        
+
         .subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 1.15em;
-            margin-bottom: 20px;
-            font-weight: 400;
+            font-size: 1.25em;
+            color: var(--text-soft);
+            max-width: 600px;
+            margin: 0 auto 30px auto;
         }
-        
-        .context-badge {
-            text-align: center;
-            margin-bottom: 45px;
-        }
-        
-        .context-badge span {
+
+        .tag-pill {
             display: inline-block;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: var(--accent-primary);
-            padding: 10px 24px;
-            border-radius: 30px;
+            background: #E8F3EB;
+            color: var(--sage-dark);
+            padding: 8px 24px;
+            border-radius: 50px;
             font-size: 0.9em;
-            font-weight: 500;
-            letter-spacing: 0.02em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
-        
+
+        /* Metrics */
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
         }
-        
+
         .metric-card {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            border-radius: 20px;
-            padding: 28px;
+            background: white;
+            border-radius: 28px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.02);
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: fadeInScale 1s ease-out backwards;
+            cursor: default;
         }
-        
-        .metric-card:nth-child(1) { animation-delay: 0.2s; }
-        .metric-card:nth-child(2) { 
-            animation-delay: 0.4s;
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(244, 114, 182, 0.1) 100%);
-            border-color: rgba(6, 182, 212, 0.2);
-        }
-        .metric-card:nth-child(3) { 
-            animation-delay: 0.6s;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(244, 114, 182, 0.1) 100%);
-            border-color: rgba(245, 158, 11, 0.2);
-        }
-        
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.9) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-        
+
         .metric-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 
-                0 20px 50px rgba(16, 185, 129, 0.2),
-                0 0 40px rgba(16, 185, 129, 0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
         }
-        
-        .metric-card:nth-child(2):hover {
-            box-shadow: 
-                0 20px 50px rgba(6, 182, 212, 0.2),
-                0 0 40px rgba(6, 182, 212, 0.1);
-        }
-        
-        .metric-card:nth-child(3):hover {
-            box-shadow: 
-                0 20px 50px rgba(245, 158, 11, 0.2),
-                0 0 40px rgba(245, 158, 11, 0.1);
-        }
-        
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
-            animation: pulse 4s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.3;
-            }
-            50% {
-                transform: scale(1.1);
-                opacity: 0.6;
-            }
-        }
-        
+
         .metric-value {
-            font-family: 'Fraunces', Georgia, serif;
-            font-size: 3.2em;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 3.5em;
             font-weight: 700;
-            margin-bottom: 6px;
-            color: var(--text-primary);
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            color: var(--sage-primary);
+            line-height: 1.1;
+            margin-bottom: 10px;
         }
-        
+
         .metric-label {
             font-size: 0.95em;
-            color: var(--text-secondary);
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            font-weight: 500;
+            color: #A0AEC0;
+            margin-bottom: 8px;
         }
-        
+
         .metric-detail {
-            font-size: 0.88em;
-            color: var(--text-muted);
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border);
-            line-height: 1.5;
+            font-size: 0.9em;
+            color: var(--text-soft);
         }
-        
-        .method-tag {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.72em;
-            margin-top: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-secondary);
-        }
-        
-        .journey-section {
-            padding: 45px 40px;
-            margin-bottom: 30px;
-        }
-        
+
+        /* Journey/Process Flow */
         .journey-title {
-            font-family: 'Fraunces', Georgia, serif;
-            font-size: 1.9em;
-            margin-bottom: 35px;
-            color: var(--text-primary);
             text-align: center;
-            font-weight: 600;
+            font-size: 2em;
+            margin-bottom: 50px;
         }
-        
+
         .journey-steps {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 45px;
+            gap: 20px;
             flex-wrap: wrap;
         }
-        
+
         .journey-step {
             flex: 1;
+            background: rgba(255,255,255,0.5);
+            padding: 30px 20px;
+            border-radius: 24px;
             text-align: center;
-            padding: 20px;
-            position: relative;
             min-width: 200px;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out forwards;
+            position: relative;
         }
-        
-        .journey-step:nth-child(1) { animation-delay: 0.3s; }
-        .journey-step:nth-child(2) { animation-delay: 0.5s; }
-        .journey-step:nth-child(3) { animation-delay: 0.7s; }
-        .journey-step:nth-child(4) { animation-delay: 0.9s; }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(25px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .journey-step:not(:last-child)::after {
-            content: '→';
-            position: absolute;
-            right: -10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.8em;
-            color: var(--accent-primary);
-            opacity: 0.4;
-        }
-        
-        .step-number {
-            display: inline-flex;
+
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--lavender);
+            color: #6B5CA5;
+            border-radius: 50%;
+            display: flex;
             align-items: center;
             justify-content: center;
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: var(--bg-deep);
-            border-radius: 50%;
-            font-weight: 700;
-            margin-bottom: 14px;
-            font-size: 1.1em;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            margin: 0 auto 20px auto;
+            font-weight: bold;
+            font-family: 'Quicksand';
+            font-size: 1.2em;
         }
-        
-        .step-title {
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 6px;
-            font-size: 1.05em;
-        }
-        
-        .step-detail {
-            color: var(--text-muted);
-            font-size: 0.9em;
-            line-height: 1.4;
-        }
-        
+
+        /* Comparison Bars (Softened) */
         .comparison-section {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
         }
-        
-        .comparison-card {
-            background: var(--surface);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .comparison-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        .comparison-card.before {
-            border-left: 4px solid var(--text-muted);
-        }
-        
-        .comparison-card.after {
-            border-left: 4px solid var(--accent-primary);
-        }
-        
-        .comparison-card.after::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        
-        .comparison-title {
-            font-size: 1.2em;
-            font-weight: 600;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--text-primary);
-        }
-        
-        .before-icon,
-        .after-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+
+        .comparison-group h3 {
+            text-align: center;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 0.9em;
+            gap: 10px;
+            font-size: 1.4em;
         }
-        
-        .before-icon {
-            background: var(--text-muted);
-            color: var(--bg-deep);
-        }
-        
-        .after-icon {
-            background: var(--accent-primary);
-            color: var(--bg-deep);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-        }
-        
+
+        .badge-control { background: #CBD5E0; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em; }
+        .badge-treatment { background: var(--sage-primary); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em; }
+
         .allocation-bar {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
-        
-        .allocation-label {
+
+        .bar-labels {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 6px;
             font-size: 0.9em;
-            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-soft);
         }
-        
-        .allocation-progress {
-            height: 28px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 14px;
+
+        .bar-track {
+            height: 20px;
+            background: #EDF2F7;
+            border-radius: 20px;
             overflow: hidden;
-            position: relative;
-            border: 1px solid var(--border);
         }
-        
-        .allocation-fill {
+
+        .bar-fill {
             height: 100%;
-            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            padding-left: 12px;
-            color: var(--bg-deep);
-            font-size: 0.82em;
-            font-weight: 600;
-            border-radius: 14px;
+            border-radius: 20px;
+            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        
-        .etf-fill { background: linear-gradient(90deg, #10b981, #34d399); }
-        .savings-fill { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
-        .gold-fill { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
-        .stocks-fill { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
-        .crypto-fill { background: linear-gradient(90deg, #ef4444, #f87171); }
-        
-        .segment-explorer {
-            padding: 45px 40px;
-            margin-bottom: 30px;
-        }
-        
-        .segment-title {
-            font-family: 'Fraunces', Georgia, serif;
-            font-size: 1.9em;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-            text-align: center;
-            font-weight: 600;
-        }
-        
-        .segment-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 35px;
-            line-height: 1.6;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .segment-subtitle strong {
-            color: var(--accent-primary);
-        }
-        
+
+        /* Soft Colors for Data */
+        .fill-etf { background: linear-gradient(90deg, #8BA896, #A6C4B0); } /* Sage */
+        .fill-gold { background: linear-gradient(90deg, #F4D1AE, #FAE1C8); } /* Peach */
+        .fill-stock { background: linear-gradient(90deg, #B8D8E6, #D4EBF5); } /* Sky */
+        .fill-crypto { background: linear-gradient(90deg, #F2C1C1, #FADCDC); } /* Soft Red */
+        .fill-save { background: linear-gradient(90deg, #DCD6F7, #E9E5FA); } /* Lavender */
+
+        /* Segments Explorer */
         .segments-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
         }
-        
+
         .segment-card {
-            padding: 26px;
-            border-radius: 18px;
-            border: 1px solid var(--border);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            position: relative;
-            background: var(--surface);
-            backdrop-filter: blur(10px);
-        }
-        
-        .segment-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 
-                0 20px 45px rgba(0, 0, 0, 0.3),
-                0 0 30px rgba(16, 185, 129, 0.1);
-            border-color: var(--accent-primary);
-        }
-        
-        .segment-name {
-            font-size: 1.15em;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--text-primary);
-        }
-        
-        .segment-response {
-            font-family: 'Fraunces', Georgia, serif;
-            font-size: 2.2em;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-        }
-        
-        .segment-characteristics {
-            font-size: 0.9em;
-            color: var(--text-muted);
-            margin-bottom: 18px;
-            line-height: 1.5;
-        }
-        
-        .segment-characteristics em {
-            color: var(--text-secondary);
-            display: block;
-            margin-top: 6px;
-        }
-        
-        .segment-metrics {
-            display: flex;
-            justify-content: space-between;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-        }
-        
-        .segment-metric {
-            text-align: center;
-        }
-        
-        .segment-metric-value {
-            font-weight: 600;
-            color: var(--text-primary);
-            font-size: 1.05em;
-        }
-        
-        .segment-metric-label {
-            font-size: 0.78em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .roi-calculator {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.6));
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
+            background: white;
+            border: 2px solid transparent;
             border-radius: 24px;
-            padding: 45px 40px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .segment-card:hover {
+            border-color: var(--sage-primary);
+            background: #FAFDFA;
+            transform: translateY(-5px);
+        }
+
+        .seg-emoji { font-size: 2em; margin-bottom: 10px; display: block; }
+        .seg-name { font-weight: 700; font-size: 1.1em; margin-bottom: 5px; }
+        .seg-stat { font-family: 'Quicksand'; font-size: 2em; font-weight: 700; color: var(--sage-primary); }
+        .seg-desc { font-size: 0.85em; color: var(--text-soft); margin-top: 10px; line-height: 1.5; }
+
+        /* Calculator / Policy Tree */
+        .roi-section {
+            background: linear-gradient(135deg, #FDFBF7, #FFFFFF);
             text-align: center;
         }
-        
-        .calculator-title {
-            font-family: 'Fraunces', Georgia, serif;
-            font-size: 1.9em;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-        
-        .calculator-context {
-            color: var(--text-secondary);
-            font-size: 1em;
-            margin-bottom: 30px;
-            max-width: 720px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.6;
-        }
-        
-        .calculator-context strong {
-            color: var(--accent-primary);
-        }
-        
-        .policy-tree-summary {
-            background: var(--surface);
-            border-radius: 18px;
-            padding: 30px;
+
+        .policy-table-wrapper {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
             margin: 30px 0;
-            border: 1px solid var(--border);
-        }
-        
-        .policy-tree-summary h3 {
-            font-size: 1.15em;
-            color: var(--text-primary);
-            margin-bottom: 24px;
-            font-weight: 600;
-        }
-        
-        .policy-tree-summary h3 span {
-            font-weight: 400;
-            color: var(--text-muted);
-        }
-        
-        .segment-table {
             overflow-x: auto;
         }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; color: #A0AEC0; font-weight: 600; padding: 15px; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; }
+        td { padding: 20px 15px; border-top: 1px solid #EDF2F7; vertical-align: middle; }
         
-        .segment-table table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95em;
-        }
-        
-        .segment-table thead tr {
-            border-bottom: 2px solid var(--border);
-        }
-        
-        .segment-table th {
-            text-align: left;
-            padding: 14px 10px;
-            color: var(--text-muted);
-            font-weight: 500;
-            text-transform: uppercase;
-            font-size: 0.8em;
-            letter-spacing: 0.5px;
-        }
-        
-        .segment-table th:nth-child(3),
-        .segment-table th:nth-child(4) {
-            text-align: center;
-        }
-        
-        .segment-row {
-            transition: background 0.2s ease;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .segment-row:hover {
-            background: rgba(16, 185, 129, 0.05);
-        }
-        
-        .segment-row[style*="background: #f0fdf4"] {
-            background: rgba(16, 185, 129, 0.1) !important;
-        }
-        
-        .segment-row td {
-            padding: 18px 10px;
-            color: var(--text-primary);
-        }
-        
-        .segment-row td:nth-child(3),
-        .segment-row td:nth-child(4) {
-            text-align: center;
-        }
-        
-        .segment-row td strong {
-            color: var(--text-primary);
-            font-size: 1.02em;
-        }
-        
-        .segment-row td div[style*="font-size: 0.85em"] {
-            color: var(--text-muted) !important;
-        }
-        
-        .segment-checkbox {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--accent-primary);
+        /* Custom Checkbox */
+        .custom-check {
+            width: 24px; 
+            height: 24px; 
+            border: 2px solid #CBD5E0; 
+            border-radius: 8px; 
+            appearance: none; 
             cursor: pointer;
-        }
-        
-        .roi-result {
-            margin-top: 30px;
-            padding: 30px;
-            background: var(--surface);
-            border-radius: 18px;
-            border: 1px solid var(--border);
-            display: none;
-        }
-        
-        .roi-result.show {
-            display: block;
-            animation: fadeInScale 0.5s ease-out;
-        }
-        
-        .roi-result > div:first-child {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 25px;
-        }
-        
-        .roi-result > div:first-child > div {
-            padding: 24px;
-            border-radius: 14px;
-        }
-        
-        .roi-result > div:first-child > div:first-child {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-        }
-        
-        .roi-result > div:first-child > div:first-child > div:first-child {
-            color: var(--text-muted) !important;
-        }
-        
-        .roi-result > div:first-child > div:first-child > div:nth-child(2) {
-            color: var(--text-secondary) !important;
-        }
-        
-        .roi-result > div:first-child > div:first-child > div:last-child {
-            color: var(--text-muted) !important;
-        }
-        
-        .roi-result > div:first-child > div:last-child {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.1)) !important;
-            border: 2px solid var(--accent-primary) !important;
-        }
-        
-        .roi-result > div:first-child > div:last-child > div:first-child {
-            color: var(--accent-primary) !important;
-        }
-        
-        .roi-result > div:first-child > div:last-child > div:nth-child(2) {
-            color: var(--accent-primary) !important;
-        }
-        
-        .roi-result > div:first-child > div:last-child > div:last-child {
-            color: var(--accent-secondary) !important;
-        }
-        
-        .roi-result > div:nth-child(2) {
-            background: rgba(255, 255, 255, 0.03) !important;
-            border: 1px solid var(--border);
-            padding: 24px;
-            border-radius: 14px;
-        }
-        
-        .roi-result > div:nth-child(2) > div:first-child {
-            color: var(--text-secondary) !important;
-        }
-        
-        .roi-result > div:nth-child(2) > div:nth-child(2) {
-            color: var(--accent-secondary) !important;
-        }
-        
-        .roi-result > div:nth-child(2) > div:last-child {
-            color: var(--text-muted) !important;
-        }
-        
-        .roi-caveat {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            font-size: 0.9em;
-            color: var(--text-muted);
-            font-style: normal;
-            line-height: 1.6;
-            text-align: left;
-        }
-        
-        .roi-caveat strong {
-            color: var(--accent-primary);
-        }
-        
-        /* Tooltip styles */
-        .tooltip-container {
+            transition: all 0.2s;
             position: relative;
-            cursor: help;
         }
-        
-        .tooltip-container .tooltip-text {
-            visibility: hidden;
-            opacity: 0;
+        .custom-check:checked {
+            background-color: var(--sage-primary);
+            border-color: var(--sage-primary);
+        }
+        .custom-check:checked::after {
+            content: '✓';
+            color: white;
             position: absolute;
-            z-index: 100;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--bg-deep);
-            color: var(--text-primary);
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 0.82em;
-            font-weight: 400;
-            white-space: nowrap;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border);
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-            margin-bottom: 10px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
         }
-        
-        .tooltip-container .tooltip-text::after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 6px;
-            border-style: solid;
-            border-color: var(--bg-deep) transparent transparent transparent;
+
+        /* Results Box */
+        .results-box {
+            background: #F0F7F4;
+            border: 2px solid #E1EFE8;
+            border-radius: 24px;
+            padding: 40px;
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            animation: fadeIn 0.8s ease-out;
         }
-        
-        .tooltip-container:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
+
+        .res-item { text-align: center; }
+        .res-val { font-family: 'Quicksand'; font-size: 2.5em; font-weight: 700; color: var(--sage-dark); }
+        .res-lbl { font-size: 0.9em; color: var(--text-soft); font-weight: 600; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        .tooltip-label {
-            color: var(--text-muted);
-            font-size: 0.75em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
+
+        /* Tooltip Logic */
+        .tooltip-wrap { position: relative; display: inline-block; cursor: help; border-bottom: 1px dotted var(--text-soft); }
+        .tooltip-box {
+            visibility: hidden; opacity: 0;
+            position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%);
+            background: #4A5568; color: white;
+            padding: 10px 15px; border-radius: 12px;
+            font-size: 0.8em; width: 200px; text-align: center;
+            transition: all 0.3s ease; pointer-events: none; z-index: 10;
         }
-        
-        .tooltip-value {
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-        
-        .pulse-dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-            animation: pulse-dot 2s infinite;
-            margin-left: 10px;
-            box-shadow: 0 0 10px var(--accent-primary);
-        }
-        
-        @keyframes pulse-dot {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.5);
-                opacity: 0.5;
-            }
-        }
-        
-        /* Policy summary note */
-        .policy-tree-summary > p {
-            color: var(--text-muted) !important;
-        }
-        
-        .policy-tree-summary > p span {
-            color: var(--accent-secondary) !important;
-        }
-        
+        .tooltip-wrap:hover .tooltip-box { visibility: visible; opacity: 1; bottom: 130%; }
+
         @media (max-width: 768px) {
-            .title {
-                font-size: 2em;
-            }
-            .metrics-grid {
-                grid-template-columns: 1fr;
-            }
-            .comparison-section {
-                grid-template-columns: 1fr;
-            }
-            .journey-step:not(:last-child)::after {
-                display: none;
-            }
-            .hero-section,
-            .journey-section,
-            .segment-explorer,
-            .roi-calculator {
-                padding: 30px 20px;
-            }
-            .roi-result > div:first-child {
-                grid-template-columns: 1fr;
-            }
+            .title { font-size: 2em; }
+            .journey-steps { flex-direction: column; }
+            .journey-step { margin-bottom: 10px; }
         }
     </style>
 </head>
 <body>
-    <div class="bg-mesh"></div>
-    <div class="noise-overlay"></div>
-    
+
     <div class="dashboard">
-        <!-- Hero Section with Key Metrics -->
-        <div class="hero-section glass-card">
-            <h1 class="title">Causal ML for Investment Behavior</h1>
-            <p class="subtitle">Randomized Experiment + Heterogeneous Treatment Effect Analysis</p>
-            <div class="context-badge">
-                <span>📊 Academic Research · Methodology Applicable to Industry A/B Testing & Personalization</span>
-            </div>
+        
+        <div class="glass-card hero-section">
+            <h1 class="title">Investment Behavior Insights</h1>
+            <p class="subtitle">Exploring how information shapes financial decisions through randomized controlled trials and machine learning.</p>
+            <div class="tag-pill">🌱 Behavioral Science &middot; Personalization</div>
+
             <div class="metrics-grid">
-                <div class="metric-card" onclick="animateMetric(this)">
+                <div class="metric-card">
                     <div class="metric-value" data-target="2568" data-format="number">0</div>
                     <div class="metric-label">Participants</div>
-                    <div class="metric-detail">Randomized controlled trial with lottery-based incentives</div>
-                    <span class="method-tag">Experimental Design</span>
+                    <div class="metric-detail">Active community members involved in the study</div>
                 </div>
-                <div class="metric-card" onclick="animateMetric(this)">
+                <div class="metric-card">
                     <div class="metric-value" data-target="18" data-format="pp">0 pp</div>
-                    <div class="metric-label">Treatment Effect</div>
-                    <div class="metric-detail">Increase in ETF allocation vs. control group</div>
-                    <span class="method-tag">A/B Test Result</span>
+                    <div class="metric-label">Impact</div>
+                    <div class="metric-detail">Increase in diversified ETF allocation vs. control</div>
                 </div>
-                <div class="metric-card" onclick="animateMetric(this)">
+                <div class="metric-card">
                     <div class="metric-value" data-target="14" data-format="range">8-0 pp</div>
-                    <div class="metric-label">Effect Heterogeneity</div>
-                    <div class="metric-detail">Range of individual treatment effects identified by Causal Forest</div>
-                    <span class="method-tag">Causal ML</span>
+                    <div class="metric-label">Range</div>
+                    <div class="metric-detail">Variance in individual responsiveness to guidance</div>
                 </div>
             </div>
         </div>
-        
-        <!-- Journey Visualization -->
-        <div class="journey-section glass-card">
-            <h2 class="journey-title">Research Pipeline</h2>
+
+        <div class="journey-section" style="margin-bottom: 60px;">
+            <h2 class="journey-title">The Research Journey</h2>
             <div class="journey-steps">
                 <div class="journey-step">
-                    <div class="step-number">1</div>
-                    <div class="step-title">Research Question</div>
-                    <div class="step-detail">Can information interventions shift investment behavior?</div>
+                    <div class="step-icon">1</div>
+                    <h3>Question</h3>
+                    <p style="font-size: 0.9em; color: var(--text-soft);">Can we nudge better habits?</p>
                 </div>
                 <div class="journey-step">
-                    <div class="step-number">2</div>
-                    <div class="step-title">Experimental Design</div>
-                    <div class="step-detail">RCT with 50/50 randomization, stratified assignment</div>
+                    <div class="step-icon">2</div>
+                    <h3>Experiment</h3>
+                    <p style="font-size: 0.9em; color: var(--text-soft);">Randomized Trial (RCT)</p>
                 </div>
                 <div class="journey-step">
-                    <div class="step-number">3</div>
-                    <div class="step-title">Causal Forest</div>
-                    <div class="step-detail">4,000 trees, cross-validated hyperparameter tuning</div>
+                    <div class="step-icon">3</div>
+                    <h3>Analysis</h3>
+                    <p style="font-size: 0.9em; color: var(--text-soft);">Causal Forests (ML)</p>
                 </div>
                 <div class="journey-step">
-                    <div class="step-number">4</div>
-                    <div class="step-title">Segment Discovery</div>
-                    <div class="step-detail">Identified high/medium/low responder profiles</div>
+                    <div class="step-icon">4</div>
+                    <h3>Discovery</h3>
+                    <p style="font-size: 0.9em; color: var(--text-soft);">Tailored Segments</p>
                 </div>
             </div>
+        </div>
+
+        <div class="glass-card">
+            <h2 class="journey-title" style="margin-bottom: 10px;">Behavior Change</h2>
+            <p class="subtitle">How the intervention shifted portfolio composition.</p>
+
             <div class="comparison-section">
-                <div class="comparison-card before">
-                    <div class="comparison-title">
-                        <span class="before-icon">C</span>
-                        Control Group (N=1,284)
+                <div class="comparison-group">
+                    <h3><span class="badge-control">C</span> Control Group</h3>
+                    
+                    <div class="allocation-bar">
+                        <div class="bar-labels"><span>ETFs</span><span>28%</span></div>
+                        <div class="bar-track"><div class="bar-fill fill-etf" style="width: 28%"></div></div>
                     </div>
                     <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>ETFs</span>
-                            <span>28%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill etf-fill" style="width: 28%;">28%</div>
-                        </div>
+                        <div class="bar-labels"><span>Gold</span><span>27%</span></div>
+                        <div class="bar-track"><div class="bar-fill fill-gold" style="width: 27%"></div></div>
                     </div>
                     <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Gold</span>
-                            <span>27%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill gold-fill" style="width: 27%;">27%</div>
-                        </div>
+                        <div class="bar-labels"><span>Stocks</span><span>20%</span></div>
+                        <div class="bar-track"><div class="bar-fill fill-stock" style="width: 20%"></div></div>
                     </div>
                     <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Individual Stocks</span>
-                            <span>20%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill stocks-fill" style="width: 20%;">20%</div>
-                        </div>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Cryptocurrency</span>
-                            <span>11%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill crypto-fill" style="width: 11%;">11%</div>
-                        </div>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Savings</span>
-                            <span>14%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill savings-fill" style="width: 14%;">14%</div>
-                        </div>
+                        <div class="bar-labels"><span>Crypto</span><span>11%</span></div>
+                        <div class="bar-track"><div class="bar-fill fill-crypto" style="width: 11%"></div></div>
                     </div>
                 </div>
-                <div class="comparison-card after">
-                    <div class="comparison-title">
-                        <span class="after-icon">T</span>
-                        Treatment Group (N=1,284)
-                        <span class="pulse-dot"></span>
+
+                <div class="comparison-group">
+                    <h3><span class="badge-treatment">T</span> Treatment Group</h3>
+                    
+                    <div class="allocation-bar">
+                        <div class="bar-labels"><span>ETFs</span><span>46%</span></div>
+                        <div class="bar-track"><div class="bar-fill fill-etf" id="etf-after" style="width: 0%"></div></div>
                     </div>
                     <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>ETFs</span>
-                            <span>46%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill etf-fill" id="etf-after" style="width: 46%;">46%</div>
-                        </div>
+                        <div class="bar-labels"><span>Gold</span><span>10%</span></div>
+                        <div class="bar-track"><div class="bar-fill fill-gold" id="gold-after" style="width: 0%"></div></div>
                     </div>
                     <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Gold</span>
-                            <span>10%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill gold-fill" id="gold-after" style="width: 10%;">10%</div>
-                        </div>
+                        <div class="bar-labels"><span>Stocks</span><span>14%</span></div>
+                        <div class="bar-track"><div class="bar-fill fill-stock" id="stock-after" style="width: 0%"></div></div>
                     </div>
                     <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Individual Stocks</span>
-                            <span>14%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill stocks-fill" id="stocks-after" style="width: 14%;">14%</div>
-                        </div>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Cryptocurrency</span>
-                            <span>14%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill crypto-fill" id="crypto-after" style="width: 14%;">14%</div>
-                        </div>
-                    </div>
-                    <div class="allocation-bar">
-                        <div class="allocation-label">
-                            <span>Savings</span>
-                            <span>16%</span>
-                        </div>
-                        <div class="allocation-progress">
-                            <div class="allocation-fill savings-fill" id="savings-after" style="width: 16%;">16%</div>
-                        </div>
+                        <div class="bar-labels"><span>Crypto</span><span>14%</span></div>
+                        <div class="bar-track"><div class="bar-fill fill-crypto" id="crypto-after" style="width: 0%"></div></div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- ML Segment Explorer -->
-        <div class="segment-explorer glass-card">
-            <h2 class="segment-title">Who Responds Most?</h2>
-            <p class="segment-subtitle">The Causal Forest identified substantial heterogeneity in treatment effects based on two key factors: <strong>subjective financial knowledge</strong> and <strong>parental education background</strong>.</p>
-            <div class="segments-container">
-                <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">🎯 Knowledge Seekers</div>
-                    <div class="segment-response">+22 pp</div>
-                    <div class="segment-characteristics">
-                        Low subjective financial knowledge + lower parental education<br>
-                        <em>Recognize their gaps—most receptive to education</em>
-                    </div>
-                    <div class="segment-metrics">
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">31%</div>
-                            <div class="segment-metric-label">of sample</div>
-                        </div>
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">Highest</div>
-                            <div class="segment-metric-label">response</div>
-                        </div>
-                    </div>
+
+        <div class="glass-card roi-section">
+            <h2 class="journey-title" style="margin-bottom: 10px;">Who Responds Best?</h2>
+            <p class="subtitle">Machine learning identified unique personas based on financial confidence and background.</p>
+
+            <div class="policy-table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Persona Segment</th>
+                            <th>Population</th>
+                            <th>Responsiveness</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="segment-row" data-share="30.8" data-effect="22.0">
+                            <td><input type="checkbox" class="custom-check segment-checkbox" checked></td>
+                            <td>
+                                <span class="seg-emoji">🎯</span>
+                                <div class="tooltip-wrap">
+                                    <span class="seg-name">Knowledge Seekers</span>
+                                    <div class="tooltip-box">Low subjective knowledge + modest background. They are eager to learn.</div>
+                                </div>
+                            </td>
+                            <td>30.8%</td>
+                            <td style="color: var(--sage-dark); font-weight: 700;">+22.0 pp</td>
+                        </tr>
+                        <tr class="segment-row" data-share="39.3" data-effect="18.0">
+                            <td><input type="checkbox" class="custom-check segment-checkbox"></td>
+                            <td>
+                                <span class="seg-emoji">⚖️</span>
+                                <div class="tooltip-wrap">
+                                    <span class="seg-name">The Persuadables</span>
+                                    <div class="tooltip-box">Average subjective knowledge. They respond well to clear logic.</div>
+                                </div>
+                            </td>
+                            <td>39.3%</td>
+                            <td style="color: var(--sage-dark); font-weight: 600;">+18.0 pp</td>
+                        </tr>
+                        <tr class="segment-row" data-share="11.8" data-effect="15.9">
+                            <td><input type="checkbox" class="custom-check segment-checkbox"></td>
+                            <td>
+                                <span class="seg-emoji">💼</span>
+                                <div class="tooltip-wrap">
+                                    <span class="seg-name">Confident Elite</span>
+                                    <div class="tooltip-box">High knowledge + privileged background. Harder to sway.</div>
+                                </div>
+                            </td>
+                            <td>11.8%</td>
+                            <td style="color: #A0AEC0;">+15.9 pp</td>
+                        </tr>
+                        <tr class="segment-row" data-share="18.1" data-effect="11.9">
+                            <td><input type="checkbox" class="custom-check segment-checkbox"></td>
+                            <td>
+                                <span class="seg-emoji">📚</span>
+                                <div class="tooltip-wrap">
+                                    <span class="seg-name">Confident Self-Made</span>
+                                    <div class="tooltip-box">High knowledge + modest background. Most resistant to change.</div>
+                                </div>
+                            </td>
+                            <td>18.1%</td>
+                            <td style="color: #A0AEC0;">+11.9 pp</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="results-box">
+                <div class="res-item">
+                    <div class="res-lbl">Predicted Reach</div>
+                    <div class="res-val" id="selectedReach" style="color: var(--text-soft);">31%</div>
                 </div>
-                <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">⚖️ Persuadables</div>
-                    <div class="segment-response">+18 pp</div>
-                    <div class="segment-characteristics">
-                        Moderate subjective financial knowledge<br>
-                        <em>Largest group—respond well to clear information</em>
-                    </div>
-                    <div class="segment-metrics">
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">39%</div>
-                            <div class="segment-metric-label">of sample</div>
-                        </div>
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">Average</div>
-                            <div class="segment-metric-label">response</div>
-                        </div>
-                    </div>
+                <div class="res-item">
+                    <div class="res-lbl">Average Effect</div>
+                    <div class="res-val" id="selectedEffect">+22.0 pp</div>
                 </div>
-                <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">💼 Confident (Privileged Background)</div>
-                    <div class="segment-response">+16 pp</div>
-                    <div class="segment-characteristics">
-                        High subjective financial knowledge + higher parental education<br>
-                        <em>Moderate response to intervention</em>
-                    </div>
-                    <div class="segment-metrics">
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">12%</div>
-                            <div class="segment-metric-label">of sample</div>
-                        </div>
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">Moderate</div>
-                            <div class="segment-metric-label">response</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">📚 Confident (Modest Background)</div>
-                    <div class="segment-response">+12 pp</div>
-                    <div class="segment-characteristics">
-                        High subjective financial knowledge + lower parental education<br>
-                        <em>Lowest response to intervention</em>
-                    </div>
-                    <div class="segment-metrics">
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">18%</div>
-                            <div class="segment-metric-label">of sample</div>
-                        </div>
-                        <div class="segment-metric">
-                            <div class="segment-metric-value">Lowest</div>
-                            <div class="segment-metric-label">response</div>
-                        </div>
-                    </div>
+                <div class="res-item">
+                    <div class="res-lbl">Efficiency Gain</div>
+                    <div class="res-val" id="efficiencyGain" style="color: var(--sage-dark);">+23%</div>
                 </div>
             </div>
+            <p style="margin-top:20px; font-size: 0.85em; color: var(--text-soft);">💡 Tip: Targeting specific groups maximizes impact while preserving resources.</p>
         </div>
-        
-        <!-- Policy Tree Section -->
-        <div class="roi-calculator">
-            <h2 class="calculator-title">From Black Box to Actionable Rules</h2>
-            <p class="calculator-context">
-                The Causal Forest (4,000 trees) accurately estimates individual treatment effects—but it's a black box. 
-                To make it actionable, I trained a <strong>Policy Tree</strong> that distills the forest's predictions into 
-                simple if-then rules a business could actually implement.
-            </p>
-            
-            <div class="policy-tree-summary">
-                <h3>
-                    Policy Tree Segments <span>(ranked by treatment effect)</span>
-                </h3>
-                
-                <div class="segment-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Target</th>
-                                <th>Segment</th>
-                                <th>Share</th>
-                                <th>Effect</th>
-                            </tr>
-                        </thead>
-                        <tbody id="segmentTableBody">
-                            <tr class="segment-row" data-share="30.8" data-effect="22.0" style="background: rgba(16, 185, 129, 0.1);">
-                                <td><input type="checkbox" class="segment-checkbox" checked></td>
-                                <td>
-                                    <div class="tooltip-container">
-                                        <strong>🎯 Knowledge Seekers</strong>
-                                        <span class="tooltip-text">
-                                            <div class="tooltip-label">Policy Tree Criteria</div>
-                                            <div class="tooltip-value">Subjective Financial Knowledge ≤ 4.5<br>+ Lower Parental Education</div>
-                                        </span>
-                                    </div>
-                                    <div style="font-size: 0.85em; color: var(--text-muted); margin-top: 4px;">Low subjective financial knowledge + lower parental education—most receptive to guidance</div>
-                                </td>
-                                <td>30.8%</td>
-                                <td style="font-weight: 700; color: #10b981;">+22.0 pp</td>
-                            </tr>
-                            <tr class="segment-row" data-share="39.3" data-effect="18.0">
-                                <td><input type="checkbox" class="segment-checkbox"></td>
-                                <td>
-                                    <div class="tooltip-container">
-                                        <strong>⚖️ Persuadables</strong>
-                                        <span class="tooltip-text">
-                                            <div class="tooltip-label">Policy Tree Criteria</div>
-                                            <div class="tooltip-value">Subjective Financial Knowledge 4.5–6.5<br>(Moderate knowledge level)</div>
-                                        </span>
-                                    </div>
-                                    <div style="font-size: 0.85em; color: var(--text-muted); margin-top: 4px;">Moderate subjective financial knowledge—respond well to clear information</div>
-                                </td>
-                                <td>39.3%</td>
-                                <td style="font-weight: 700; color: #059669;">+18.0 pp</td>
-                            </tr>
-                            <tr class="segment-row" data-share="11.8" data-effect="15.9">
-                                <td><input type="checkbox" class="segment-checkbox"></td>
-                                <td>
-                                    <div class="tooltip-container">
-                                        <strong>💼 Confident (Privileged Background)</strong>
-                                        <span class="tooltip-text">
-                                            <div class="tooltip-label">Policy Tree Criteria</div>
-                                            <div class="tooltip-value">Subjective Financial Knowledge > 6.5<br>+ Higher Parental Education</div>
-                                        </span>
-                                    </div>
-                                    <div style="font-size: 0.85em; color: var(--text-muted); margin-top: 4px;">High subjective financial knowledge + higher parental education—moderate response to intervention</div>
-                                </td>
-                                <td>11.8%</td>
-                                <td style="font-weight: 700; color: #6b7280;">+15.9 pp</td>
-                            </tr>
-                            <tr class="segment-row" data-share="18.1" data-effect="11.9">
-                                <td><input type="checkbox" class="segment-checkbox"></td>
-                                <td>
-                                    <div class="tooltip-container">
-                                        <strong>📚 Confident (Modest Background)</strong>
-                                        <span class="tooltip-text">
-                                            <div class="tooltip-label">Policy Tree Criteria</div>
-                                            <div class="tooltip-value">Subjective Financial Knowledge > 6.5<br>+ Lower Parental Education</div>
-                                        </span>
-                                    </div>
-                                    <div style="font-size: 0.85em; color: var(--text-muted); margin-top: 4px;">High subjective financial knowledge + lower parental education—lowest response to intervention</div>
-                                </td>
-                                <td>18.1%</td>
-                                <td style="font-weight: 700; color: #9ca3af;">+11.9 pp</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <p style="font-size: 0.85em; color: var(--text-muted); margin-top: 18px; text-align: center;">
-                    Select segments to simulate a targeting strategy. <span style="color: var(--accent-secondary);">Hover over segment names</span> to see the underlying Policy Tree criteria.
-                </p>
-            </div>
-            
-            <div class="roi-result show" id="roiResult">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; text-align: center; margin-bottom: 25px;">
-                    <div style="padding: 20px; background: rgba(255, 255, 255, 0.03); border-radius: 14px; border: 1px solid var(--border);">
-                        <div style="font-size: 0.85em; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Treat Everyone</div>
-                        <div style="font-size: 2.2em; font-weight: 700; color: var(--text-secondary);">+17.9 pp</div>
-                        <div style="font-size: 0.85em; color: var(--text-muted); margin-top: 5px;">100% of sample</div>
-                    </div>
-                    <div style="padding: 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.1)); border-radius: 14px; border: 2px solid var(--accent-primary);">
-                        <div style="font-size: 0.85em; color: var(--accent-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Your Targeting Strategy</div>
-                        <div style="font-size: 2.2em; font-weight: 700; color: var(--accent-primary);" id="selectedEffect">+22.0 pp</div>
-                        <div style="font-size: 0.85em; color: var(--accent-secondary); margin-top: 5px;" id="selectedReach">30.8% of sample</div>
-                    </div>
-                </div>
-                
-                <div style="background: rgba(255, 255, 255, 0.03); padding: 24px; border-radius: 14px; text-align: center; border: 1px solid var(--border);">
-                    <div style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 8px;">Efficiency Gain from Targeting</div>
-                    <div style="font-size: 1.8em; font-weight: 700; color: var(--accent-secondary);" id="efficiencyGain">+23% effect per person</div>
-                    <div style="font-size: 0.85em; color: var(--text-muted); margin-top: 5px;" id="efficiencyDetail">while reaching only 31% of the population</div>
-                </div>
-                
-                <div class="roi-caveat">
-                    💡 <strong>The insight:</strong> People who recognize their knowledge gaps respond most strongly. 
-                    Among those with high subjective financial knowledge, parental education background explains remaining variation in treatment response.
-                    Targeting lets you focus resources where they create the most impact.
-                </div>
-            </div>
-        </div>
+
     </div>
-    
+
     <script>
-        // Animate metrics on page load
+        // Animation Logic
         window.addEventListener('load', () => {
             setTimeout(() => {
-                animateAllMetrics();
-                animateAfterBars();
+                animateMetrics();
+                animateBars();
+                updateTargetingResults(); // Run once on load
             }, 500);
         });
-        
-        function animateAllMetrics() {
+
+        function animateMetrics() {
             const metrics = document.querySelectorAll('.metric-value');
             metrics.forEach(metric => {
                 const target = parseFloat(metric.getAttribute('data-target'));
                 const format = metric.getAttribute('data-format');
-                const duration = 2000;
-                const steps = 60;
-                const increment = target / steps;
                 let current = 0;
+                const increment = target / 50;
+                
                 const timer = setInterval(() => {
                     current += increment;
                     if (current >= target) {
                         current = target;
                         clearInterval(timer);
                     }
-                    if (format === 'number') {
-                        metric.textContent = Math.round(current).toLocaleString();
-                    } else if (format === 'pp') {
-                        metric.textContent = `${Math.round(current)} pp`;
-                    } else if (format === 'range') {
-                        metric.textContent = `8–${Math.round(current + 8)} pp`;
-                    } else {
-                        metric.textContent = Math.round(current);
-                    }
-                }, duration / steps);
+                    
+                    if (format === 'number') metric.textContent = Math.round(current).toLocaleString();
+                    else if (format === 'pp') metric.textContent = Math.round(current) + ' pp';
+                    else if (format === 'range') metric.textContent = '8–' + Math.round(current + 8) + ' pp';
+                }, 40);
             });
         }
-        
-        function animateMetric(card) {
-            card.style.transform = 'scale(1.1)';
-            setTimeout(() => {
-                card.style.transform = '';
-            }, 300);
+
+        function animateBars() {
+            // Slight delay for visual flow
+            document.getElementById('etf-after').style.width = '46%';
+            document.getElementById('gold-after').style.width = '10%';
+            document.getElementById('stock-after').style.width = '14%';
+            document.getElementById('crypto-after').style.width = '14%';
         }
-        
-        function animateAfterBars() {
-            setTimeout(() => {
-                document.getElementById('etf-after').style.width = '46%';
-                document.getElementById('savings-after').style.width = '16%';
-                document.getElementById('gold-after').style.width = '10%';
-                document.getElementById('stocks-after').style.width = '14%';
-                document.getElementById('crypto-after').style.width = '14%';
-            }, 1000);
-        }
-        
-        function highlightSegment(card) {
-            document.querySelectorAll('.segment-card').forEach(c => {
-                c.style.transform = '';
-                c.style.boxShadow = '';
-                c.style.borderColor = '';
-            });
-            card.style.transform = 'translateY(-10px) scale(1.03)';
-            card.style.boxShadow = '0 25px 50px rgba(16, 185, 129, 0.25), 0 0 40px rgba(16, 185, 129, 0.15)';
-            card.style.borderColor = 'var(--accent-primary)';
-        }
-        
+
+        // Calculator Logic
         function updateTargetingResults() {
             const rows = document.querySelectorAll('.segment-row');
             let totalShare = 0;
@@ -1371,38 +614,14 @@
             const baselineEffect = 17.9;
             const efficiencyGain = ((avgEffect / baselineEffect) - 1) * 100;
             
-            document.getElementById('selectedEffect').textContent = 
-                totalShare > 0 ? `+${avgEffect.toFixed(1)} pp` : '— pp';
-            document.getElementById('selectedReach').textContent = 
-                `${totalShare.toFixed(1)}% of sample reached`;
-            document.getElementById('efficiencyGain').textContent = 
-                totalShare > 0 ? `+${efficiencyGain.toFixed(0)}% effect` : 'Select segments';
-            document.getElementById('efficiencyDetail').textContent = 
-                totalShare > 0 
-                    ? `while reaching only ${totalShare.toFixed(0)}% of the population`
-                    : 'Check boxes above to build a targeting strategy';
+            document.getElementById('selectedEffect').textContent = totalShare > 0 ? '+' + avgEffect.toFixed(1) + ' pp' : '—';
+            document.getElementById('selectedReach').textContent = totalShare.toFixed(1) + '%';
+            document.getElementById('efficiencyGain').textContent = totalShare > 0 ? '+' + efficiencyGain.toFixed(0) + '%' : '—';
         }
-        
-        document.querySelectorAll('.segment-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', updateTargetingResults);
+
+        document.querySelectorAll('.segment-checkbox').forEach(box => {
+            box.addEventListener('change', updateTargetingResults);
         });
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(updateTargetingResults, 100);
-        });
-        
-        document.querySelectorAll('.journey-step').forEach(step => {
-            step.addEventListener('mouseenter', function () {
-                this.style.transform = 'translateY(-10px)';
-            });
-            step.addEventListener('mouseleave', function () {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-        
-        setTimeout(() => {
-            updateTargetingResults();
-        }, 500);
     </script>
 </body>
 </html>
