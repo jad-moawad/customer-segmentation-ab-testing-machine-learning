@@ -3,29 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investment Behavior Insights | Wellness View</title>
+    <title>Causal ML for Investment Behavior: RCT + Heterogeneous Treatment Effects</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Palette: Nurturing Pastels */
-            --bg-cream: #FDFCF8;
-            --glass-white: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.9);
-            
-            --text-dark: #4A5568;
-            --text-soft: #718096;
-            
-            --sage-primary: #8BA896; /* Calming Green */
-            --sage-dark: #5F7A68;
-            --peach-accent: #F4D1AE; /* Warmth */
-            --sky-blue: #B8D8E6;     /* Clarity */
-            --lavender: #DCD6F7;     /* Insight */
-            
-            --shadow-soft: 0 10px 40px -10px rgba(139, 168, 150, 0.2);
-            --shadow-float: 0 20px 60px -15px rgba(100, 110, 120, 0.15);
+            --bg-cream: #FAF8F5;
+            --bg-warm: #F5F2ED;
+            --sage-light: #E8F0E8;
+            --sage-medium: #A8C5A8;
+            --sage-dark: #6B8E6B;
+            --sage-deep: #4A6B4A;
+            --peach-light: #FDF5F0;
+            --peach-medium: #F5D5C8;
+            --peach-accent: #E8A889;
+            --gold-soft: #E8DCC8;
+            --gold-accent: #C9A86C;
+            --sky-light: #E8F4F8;
+            --sky-medium: #A8D0E0;
+            --text-primary: #3D4A3D;
+            --text-secondary: #6B7B6B;
+            --text-muted: #8A9A8A;
+            --white-soft: #FFFEFB;
+            --shadow-soft: rgba(107, 142, 107, 0.08);
+            --shadow-medium: rgba(107, 142, 107, 0.12);
         }
 
         * {
@@ -36,570 +38,1309 @@
 
         body {
             font-family: 'Nunito', sans-serif;
-            background-color: var(--bg-cream);
-            /* Creating a soft, organic background mesh */
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(184, 216, 230, 0.4) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(244, 209, 174, 0.4) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(220, 214, 247, 0.3) 0px, transparent 50%);
-            background-attachment: fixed;
-            color: var(--text-dark);
+            background: var(--bg-cream);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Typography */
-        h1, h2, h3 {
-            font-family: 'Quicksand', sans-serif;
-            color: var(--text-dark);
-            font-weight: 700;
         }
 
         .dashboard {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 60px 20px;
+            padding: 40px 30px;
         }
 
-        /* Card System (Glassmorphism) */
-        .glass-card {
-            background: var(--glass-white);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            padding: 50px;
-            box-shadow: var(--shadow-soft);
-            margin-bottom: 40px;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
-        }
-
-        .glass-card:hover {
-            box-shadow: var(--shadow-float);
-        }
-
-        /* Hero Section */
+        /* Hero Section - Soft Neumorphic Card */
         .hero-section {
-            text-align: center;
-            padding: 60px 40px;
+            background: var(--white-soft);
+            border-radius: 32px;
+            padding: 50px 45px;
+            margin-bottom: 40px;
+            box-shadow: 
+                12px 12px 30px var(--shadow-medium),
+                -8px -8px 25px rgba(255, 255, 255, 0.9),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+            animation: gentleFadeIn 1.2s ease-out;
+        }
+
+        @keyframes gentleFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .title {
-            font-size: 3em;
-            letter-spacing: -0.5px;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--sage-dark), #4A5568);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 2.2em;
+            font-weight: 800;
+            color: var(--sage-deep);
+            text-align: center;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
         }
 
         .subtitle {
-            font-size: 1.25em;
-            color: var(--text-soft);
-            max-width: 600px;
-            margin: 0 auto 30px auto;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 20px;
         }
 
-        .tag-pill {
+        .context-badge {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .context-badge span {
             display: inline-block;
-            background: #E8F3EB;
+            background: var(--sage-light);
+            border: none;
             color: var(--sage-dark);
-            padding: 8px 24px;
+            padding: 12px 24px;
             border-radius: 50px;
             font-size: 0.9em;
             font-weight: 600;
-            letter-spacing: 0.5px;
+            box-shadow: 
+                inset 2px 2px 5px rgba(255, 255, 255, 0.8),
+                inset -2px -2px 5px rgba(107, 142, 107, 0.1);
         }
 
-        /* Metrics */
+        /* Metrics Grid - Soft Cards */
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            margin-bottom: 0;
         }
 
         .metric-card {
-            background: white;
-            border-radius: 28px;
+            background: linear-gradient(145deg, var(--sage-light) 0%, var(--sage-medium) 100%);
+            border-radius: 24px;
             padding: 30px;
-            text-align: center;
-            border: 1px solid rgba(0,0,0,0.02);
-            transition: all 0.4s ease;
+            color: var(--sage-deep);
             position: relative;
             overflow: hidden;
-            cursor: default;
+            cursor: pointer;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            animation: gentleScaleIn 1s ease-out backwards;
+            box-shadow: 
+                8px 8px 20px var(--shadow-medium),
+                -4px -4px 15px rgba(255, 255, 255, 0.7);
+        }
+
+        .metric-card:nth-child(1) { animation-delay: 0.3s; }
+        .metric-card:nth-child(2) { animation-delay: 0.5s; }
+        .metric-card:nth-child(3) { animation-delay: 0.7s; }
+
+        @keyframes gentleScaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .metric-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            transform: translateY(-4px);
+            box-shadow: 
+                12px 12px 30px var(--shadow-medium),
+                -6px -6px 20px rgba(255, 255, 255, 0.8);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            right: -100%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+            animation: gentlePulse 6s ease-in-out infinite;
+        }
+
+        @keyframes gentlePulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.5;
+            }
         }
 
         .metric-value {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 3.5em;
-            font-weight: 700;
-            color: var(--sage-primary);
-            line-height: 1.1;
-            margin-bottom: 10px;
+            font-size: 2.8em;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: var(--sage-deep);
+            position: relative;
+            z-index: 1;
         }
 
         .metric-label {
-            font-size: 0.95em;
-            font-weight: 700;
+            font-size: 0.85em;
+            color: var(--sage-dark);
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: #A0AEC0;
-            margin-bottom: 8px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
         }
 
         .metric-detail {
             font-size: 0.9em;
-            color: var(--text-soft);
+            color: var(--sage-deep);
+            opacity: 0.85;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(74, 107, 74, 0.2);
+            position: relative;
+            z-index: 1;
+            line-height: 1.5;
         }
 
-        /* Journey/Process Flow */
+        .method-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.72em;
+            margin-top: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+            color: var(--sage-deep);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Journey Section */
+        .journey-section {
+            background: var(--white-soft);
+            border-radius: 32px;
+            padding: 50px 45px;
+            margin-bottom: 40px;
+            box-shadow: 
+                12px 12px 30px var(--shadow-medium),
+                -8px -8px 25px rgba(255, 255, 255, 0.9);
+        }
+
         .journey-title {
+            font-size: 1.6em;
+            margin-bottom: 40px;
+            color: var(--sage-deep);
             text-align: center;
-            font-size: 2em;
-            margin-bottom: 50px;
+            font-weight: 700;
         }
 
         .journey-steps {
             display: flex;
             justify-content: space-between;
-            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 50px;
             flex-wrap: wrap;
+            gap: 15px;
         }
 
         .journey-step {
             flex: 1;
-            background: rgba(255,255,255,0.5);
-            padding: 30px 20px;
-            border-radius: 24px;
             text-align: center;
-            min-width: 200px;
+            padding: 25px 15px;
             position: relative;
+            min-width: 180px;
+            opacity: 0;
+            animation: gentleFadeUp 1s ease-out forwards;
         }
 
-        .step-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--lavender);
-            color: #6B5CA5;
+        .journey-step:nth-child(1) { animation-delay: 0.4s; }
+        .journey-step:nth-child(2) { animation-delay: 0.6s; }
+        .journey-step:nth-child(3) { animation-delay: 0.8s; }
+        .journey-step:nth-child(4) { animation-delay: 1s; }
+
+        @keyframes gentleFadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .journey-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            color: var(--sage-medium);
+            opacity: 0.6;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: var(--sage-light);
+            color: var(--sage-deep);
+            border-radius: 50%;
+            font-weight: 800;
+            margin-bottom: 14px;
+            font-size: 1.1em;
+            box-shadow: 
+                4px 4px 10px var(--shadow-soft),
+                -3px -3px 8px rgba(255, 255, 255, 0.9),
+                inset 1px 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .step-title {
+            font-weight: 700;
+            color: var(--sage-deep);
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .step-detail {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* Comparison Section */
+        .comparison-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 0;
+        }
+
+        .comparison-card {
+            background: var(--white-soft);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 
+                8px 8px 20px var(--shadow-soft),
+                -4px -4px 15px rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid transparent;
+        }
+
+        .comparison-card.before {
+            border-left-color: var(--text-muted);
+        }
+
+        .comparison-card.after {
+            border-left-color: var(--sage-dark);
+        }
+
+        .comparison-title {
+            font-size: 1.15em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-primary);
+        }
+
+        .before-icon, .after-icon {
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px auto;
-            font-weight: bold;
-            font-family: 'Quicksand';
-            font-size: 1.2em;
+            font-weight: 800;
+            color: var(--white-soft);
+            font-size: 0.9em;
         }
 
-        /* Comparison Bars (Softened) */
-        .comparison-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 40px;
-            margin-top: 50px;
+        .before-icon {
+            background: var(--text-muted);
         }
 
-        .comparison-group h3 {
-            text-align: center;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 1.4em;
+        .after-icon {
+            background: var(--sage-dark);
         }
-
-        .badge-control { background: #CBD5E0; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em; }
-        .badge-treatment { background: var(--sage-primary); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em; }
 
         .allocation-bar {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
-        .bar-labels {
+        .allocation-label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9em;
             margin-bottom: 8px;
+            font-size: 0.9em;
             font-weight: 600;
-            color: var(--text-soft);
+            color: var(--text-secondary);
         }
 
-        .bar-track {
-            height: 20px;
-            background: #EDF2F7;
-            border-radius: 20px;
+        .allocation-progress {
+            height: 28px;
+            background: var(--bg-warm);
+            border-radius: 14px;
             overflow: hidden;
+            position: relative;
+            box-shadow: inset 2px 2px 5px var(--shadow-soft);
         }
 
-        .bar-fill {
+        .allocation-fill {
             height: 100%;
-            border-radius: 20px;
-            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: width 2s ease-out;
+            display: flex;
+            align-items: center;
+            padding-left: 12px;
+            color: var(--white-soft);
+            font-size: 0.82em;
+            font-weight: 700;
+            border-radius: 14px;
         }
 
-        /* Soft Colors for Data */
-        .fill-etf { background: linear-gradient(90deg, #8BA896, #A6C4B0); } /* Sage */
-        .fill-gold { background: linear-gradient(90deg, #F4D1AE, #FAE1C8); } /* Peach */
-        .fill-stock { background: linear-gradient(90deg, #B8D8E6, #D4EBF5); } /* Sky */
-        .fill-crypto { background: linear-gradient(90deg, #F2C1C1, #FADCDC); } /* Soft Red */
-        .fill-save { background: linear-gradient(90deg, #DCD6F7, #E9E5FA); } /* Lavender */
+        .etf-fill {
+            background: linear-gradient(90deg, var(--sage-medium), var(--sage-dark));
+        }
 
-        /* Segments Explorer */
+        .savings-fill {
+            background: linear-gradient(90deg, var(--sky-medium), #7BB8D0);
+        }
+
+        .gold-fill {
+            background: linear-gradient(90deg, var(--gold-accent), #D4B87A);
+        }
+
+        .stocks-fill {
+            background: linear-gradient(90deg, #B8A8D0, #9688B8);
+        }
+
+        .crypto-fill {
+            background: linear-gradient(90deg, var(--peach-accent), #D08870);
+        }
+
+        .pulse-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: var(--sage-dark);
+            border-radius: 50%;
+            animation: gentlePulseDot 3s infinite ease-in-out;
+            margin-left: 10px;
+        }
+
+        @keyframes gentlePulseDot {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.6;
+            }
+        }
+
+        /* Segment Explorer */
+        .segment-explorer {
+            background: var(--white-soft);
+            border-radius: 32px;
+            padding: 50px 45px;
+            box-shadow: 
+                12px 12px 30px var(--shadow-medium),
+                -8px -8px 25px rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+        }
+
+        .segment-title {
+            font-size: 1.6em;
+            margin-bottom: 12px;
+            color: var(--sage-deep);
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .segment-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .segment-subtitle strong {
+            color: var(--sage-dark);
+        }
+
         .segments-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 25px;
         }
 
         .segment-card {
-            background: white;
-            border: 2px solid transparent;
-            border-radius: 24px;
-            padding: 30px;
+            padding: 28px;
+            border-radius: 20px;
+            border: 2px solid var(--bg-warm);
+            transition: all 0.5s ease;
             cursor: pointer;
-            transition: all 0.3s ease;
+            position: relative;
+            background: var(--white-soft);
+            box-shadow: 
+                4px 4px 12px var(--shadow-soft),
+                -2px -2px 8px rgba(255, 255, 255, 0.8);
         }
 
         .segment-card:hover {
-            border-color: var(--sage-primary);
-            background: #FAFDFA;
-            transform: translateY(-5px);
+            transform: translateY(-6px);
+            box-shadow: 
+                8px 8px 25px var(--shadow-medium),
+                -4px -4px 15px rgba(255, 255, 255, 0.9);
+            border-color: var(--sage-medium);
         }
 
-        .seg-emoji { font-size: 2em; margin-bottom: 10px; display: block; }
-        .seg-name { font-weight: 700; font-size: 1.1em; margin-bottom: 5px; }
-        .seg-stat { font-family: 'Quicksand'; font-size: 2em; font-weight: 700; color: var(--sage-primary); }
-        .seg-desc { font-size: 0.85em; color: var(--text-soft); margin-top: 10px; line-height: 1.5; }
+        .segment-name {
+            font-size: 1.1em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
 
-        /* Calculator / Policy Tree */
-        .roi-section {
-            background: linear-gradient(135deg, #FDFBF7, #FFFFFF);
+        .segment-response {
+            font-size: 1.9em;
+            font-weight: 800;
+            color: var(--sage-dark);
+            margin-bottom: 12px;
+        }
+
+        .segment-characteristics {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+
+        .segment-characteristics em {
+            color: var(--sage-dark);
+            font-style: italic;
+        }
+
+        .segment-metrics {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 18px;
+            border-top: 1px solid var(--bg-warm);
+        }
+
+        .segment-metric {
             text-align: center;
         }
 
-        .policy-table-wrapper {
-            background: white;
+        .segment-metric-value {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .segment-metric-label {
+            font-size: 0.78em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ROI Calculator / Policy Tree Section */
+        .roi-calculator {
+            background: var(--sage-light);
+            border-radius: 32px;
+            padding: 50px 45px;
+            text-align: center;
+            box-shadow: 
+                inset 4px 4px 12px rgba(255, 255, 255, 0.6),
+                inset -4px -4px 12px var(--shadow-soft);
+        }
+
+        .calculator-title {
+            font-size: 1.6em;
+            margin-bottom: 12px;
+            color: var(--sage-deep);
+            font-weight: 700;
+        }
+
+        .calculator-context {
+            color: var(--text-secondary);
+            font-size: 1em;
+            margin-bottom: 35px;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .calculator-context strong {
+            color: var(--sage-dark);
+        }
+
+        .policy-tree-summary {
+            background: var(--white-soft);
             border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            padding: 35px;
             margin: 30px 0;
+            box-shadow: 
+                6px 6px 18px var(--shadow-soft),
+                -4px -4px 12px rgba(255, 255, 255, 0.9);
+        }
+
+        .policy-tree-summary h3 {
+            font-size: 1.05em;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .policy-tree-summary h3 span {
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .segment-table {
             overflow-x: auto;
         }
 
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; color: #A0AEC0; font-weight: 600; padding: 15px; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; }
-        td { padding: 20px 15px; border-top: 1px solid #EDF2F7; vertical-align: middle; }
-        
-        /* Custom Checkbox */
-        .custom-check {
-            width: 24px; 
-            height: 24px; 
-            border: 2px solid #CBD5E0; 
-            border-radius: 8px; 
-            appearance: none; 
+        .segment-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+
+        .segment-table thead tr {
+            border-bottom: 2px solid var(--bg-warm);
+        }
+
+        .segment-table th {
+            text-align: left;
+            padding: 14px 10px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 0.5px;
+        }
+
+        .segment-table th:nth-child(3),
+        .segment-table th:nth-child(4) {
+            text-align: center;
+        }
+
+        .segment-row {
+            transition: background 0.3s ease;
+        }
+
+        .segment-row:hover {
+            background: var(--sage-light) !important;
+        }
+
+        .segment-row td {
+            padding: 18px 10px;
+            vertical-align: middle;
+        }
+
+        .segment-row td:nth-child(3),
+        .segment-row td:nth-child(4) {
+            text-align: center;
+        }
+
+        .segment-checkbox {
+            width: 20px;
+            height: 20px;
             cursor: pointer;
-            transition: all 0.2s;
+            accent-color: var(--sage-dark);
+        }
+
+        /* Tooltip Styles */
+        .tooltip-container {
             position: relative;
+            cursor: help;
         }
-        .custom-check:checked {
-            background-color: var(--sage-primary);
-            border-color: var(--sage-primary);
-        }
-        .custom-check:checked::after {
-            content: '✓';
-            color: white;
+
+        .tooltip-container .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 14px;
+            z-index: 100;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--sage-deep);
+            color: var(--white-soft);
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-size: 0.8em;
+            font-weight: 500;
+            white-space: nowrap;
+            box-shadow: 0 8px 25px rgba(74, 107, 74, 0.25);
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            margin-bottom: 10px;
         }
 
-        /* Results Box */
-        .results-box {
-            background: #F0F7F4;
-            border: 2px solid #E1EFE8;
+        .tooltip-container .tooltip-text::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 8px;
+            border-style: solid;
+            border-color: var(--sage-deep) transparent transparent transparent;
+        }
+
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip-label {
+            color: var(--sage-light);
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .tooltip-value {
+            color: var(--white-soft);
+            font-weight: 600;
+        }
+
+        .segment-row[style*="background: #f0fdf4"] {
+            background: var(--sage-light) !important;
+        }
+
+        /* ROI Result */
+        .roi-result {
+            margin-top: 35px;
+            padding: 35px;
+            background: var(--white-soft);
             border-radius: 24px;
-            padding: 40px;
-            margin-top: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 20px;
-            animation: fadeIn 0.8s ease-out;
+            display: none;
+            box-shadow: 
+                6px 6px 18px var(--shadow-soft),
+                -4px -4px 12px rgba(255, 255, 255, 0.9);
         }
 
-        .res-item { text-align: center; }
-        .res-val { font-family: 'Quicksand'; font-size: 2.5em; font-weight: 700; color: var(--sage-dark); }
-        .res-lbl { font-size: 0.9em; color: var(--text-soft); font-weight: 600; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .roi-result.show {
+            display: block;
+            animation: gentleScaleIn 0.6s ease-out;
         }
 
-        /* Tooltip Logic */
-        .tooltip-wrap { position: relative; display: inline-block; cursor: help; border-bottom: 1px dotted var(--text-soft); }
-        .tooltip-box {
-            visibility: hidden; opacity: 0;
-            position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%);
-            background: #4A5568; color: white;
-            padding: 10px 15px; border-radius: 12px;
-            font-size: 0.8em; width: 200px; text-align: center;
-            transition: all 0.3s ease; pointer-events: none; z-index: 10;
+        .roi-result > div:first-child {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            text-align: center;
+            margin-bottom: 30px;
         }
-        .tooltip-wrap:hover .tooltip-box { visibility: visible; opacity: 1; bottom: 130%; }
 
+        .result-box {
+            padding: 25px;
+            border-radius: 18px;
+        }
+
+        .result-box.baseline {
+            background: var(--bg-warm);
+        }
+
+        .result-box.targeted {
+            background: linear-gradient(145deg, var(--sage-light), #D8ECD8);
+            border: 2px solid var(--sage-medium);
+        }
+
+        .result-label {
+            font-size: 0.82em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .result-label.targeted {
+            color: var(--sage-dark);
+        }
+
+        .result-value {
+            font-size: 2.2em;
+            font-weight: 800;
+        }
+
+        .result-value.baseline {
+            color: var(--text-muted);
+        }
+
+        .result-value.targeted {
+            color: var(--sage-dark);
+        }
+
+        .result-subtext {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .result-subtext.targeted {
+            color: var(--sage-dark);
+        }
+
+        .efficiency-box {
+            background: var(--bg-warm);
+            padding: 25px;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .efficiency-label {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .efficiency-value {
+            font-size: 1.7em;
+            font-weight: 800;
+            color: var(--sage-dark);
+        }
+
+        .efficiency-detail {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .roi-caveat {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid var(--bg-warm);
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            font-style: italic;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .roi-caveat strong {
+            color: var(--sage-dark);
+            font-style: normal;
+        }
+
+        .segment-instruction {
+            font-size: 0.88em;
+            color: var(--text-muted);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .segment-instruction span {
+            color: var(--sage-dark);
+            font-weight: 600;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .title { font-size: 2em; }
-            .journey-steps { flex-direction: column; }
-            .journey-step { margin-bottom: 10px; }
+            .dashboard {
+                padding: 25px 18px;
+            }
+
+            .title {
+                font-size: 1.6em;
+            }
+
+            .hero-section,
+            .journey-section,
+            .segment-explorer,
+            .roi-calculator {
+                padding: 35px 25px;
+                border-radius: 24px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-section {
+                grid-template-columns: 1fr;
+            }
+
+            .journey-step:not(:last-child)::after {
+                display: none;
+            }
+
+            .journey-steps {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .roi-result > div:first-child {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-
     <div class="dashboard">
-        
-        <div class="glass-card hero-section">
-            <h1 class="title">Investment Behavior Insights</h1>
-            <p class="subtitle">Exploring how information shapes financial decisions through randomized controlled trials and machine learning.</p>
-            <div class="tag-pill">🌱 Behavioral Science &middot; Personalization</div>
-
+        <!-- Hero Section with Key Metrics -->
+        <div class="hero-section">
+            <h1 class="title">Causal ML for Investment Behavior</h1>
+            <p class="subtitle">Randomized Experiment + Heterogeneous Treatment Effect Analysis</p>
+            <div class="context-badge">
+                <span>📊 Academic Research · Methodology Applicable to Industry A/B Testing & Personalization</span>
+            </div>
             <div class="metrics-grid">
-                <div class="metric-card">
+                <div class="metric-card" onclick="animateMetric(this)">
                     <div class="metric-value" data-target="2568" data-format="number">0</div>
                     <div class="metric-label">Participants</div>
-                    <div class="metric-detail">Active community members involved in the study</div>
+                    <div class="metric-detail">Randomized controlled trial with lottery-based incentives</div>
+                    <span class="method-tag">Experimental Design</span>
                 </div>
-                <div class="metric-card">
+                <div class="metric-card" onclick="animateMetric(this)">
                     <div class="metric-value" data-target="18" data-format="pp">0 pp</div>
-                    <div class="metric-label">Impact</div>
-                    <div class="metric-detail">Increase in diversified ETF allocation vs. control</div>
+                    <div class="metric-label">Treatment Effect</div>
+                    <div class="metric-detail">Increase in ETF allocation vs. control group</div>
+                    <span class="method-tag">A/B Test Result</span>
                 </div>
-                <div class="metric-card">
+                <div class="metric-card" onclick="animateMetric(this)">
                     <div class="metric-value" data-target="14" data-format="range">8-0 pp</div>
-                    <div class="metric-label">Range</div>
-                    <div class="metric-detail">Variance in individual responsiveness to guidance</div>
+                    <div class="metric-label">Effect Heterogeneity</div>
+                    <div class="metric-detail">Range of individual treatment effects identified by Causal Forest</div>
+                    <span class="method-tag">Causal ML</span>
                 </div>
             </div>
         </div>
 
-        <div class="journey-section" style="margin-bottom: 60px;">
-            <h2 class="journey-title">The Research Journey</h2>
+        <!-- Journey Visualization -->
+        <div class="journey-section">
+            <h2 class="journey-title">Research Pipeline</h2>
             <div class="journey-steps">
                 <div class="journey-step">
-                    <div class="step-icon">1</div>
-                    <h3>Question</h3>
-                    <p style="font-size: 0.9em; color: var(--text-soft);">Can we nudge better habits?</p>
+                    <div class="step-number">1</div>
+                    <div class="step-title">Research Question</div>
+                    <div class="step-detail">Can information interventions shift investment behavior?</div>
                 </div>
                 <div class="journey-step">
-                    <div class="step-icon">2</div>
-                    <h3>Experiment</h3>
-                    <p style="font-size: 0.9em; color: var(--text-soft);">Randomized Trial (RCT)</p>
+                    <div class="step-number">2</div>
+                    <div class="step-title">Experimental Design</div>
+                    <div class="step-detail">RCT with 50/50 randomization, stratified assignment</div>
                 </div>
                 <div class="journey-step">
-                    <div class="step-icon">3</div>
-                    <h3>Analysis</h3>
-                    <p style="font-size: 0.9em; color: var(--text-soft);">Causal Forests (ML)</p>
+                    <div class="step-number">3</div>
+                    <div class="step-title">Causal Forest</div>
+                    <div class="step-detail">4,000 trees, cross-validated hyperparameter tuning</div>
                 </div>
                 <div class="journey-step">
-                    <div class="step-icon">4</div>
-                    <h3>Discovery</h3>
-                    <p style="font-size: 0.9em; color: var(--text-soft);">Tailored Segments</p>
+                    <div class="step-number">4</div>
+                    <div class="step-title">Segment Discovery</div>
+                    <div class="step-detail">Identified high/medium/low responder profiles</div>
                 </div>
             </div>
-        </div>
-
-        <div class="glass-card">
-            <h2 class="journey-title" style="margin-bottom: 10px;">Behavior Change</h2>
-            <p class="subtitle">How the intervention shifted portfolio composition.</p>
-
             <div class="comparison-section">
-                <div class="comparison-group">
-                    <h3><span class="badge-control">C</span> Control Group</h3>
-                    
-                    <div class="allocation-bar">
-                        <div class="bar-labels"><span>ETFs</span><span>28%</span></div>
-                        <div class="bar-track"><div class="bar-fill fill-etf" style="width: 28%"></div></div>
+                <div class="comparison-card before">
+                    <div class="comparison-title">
+                        <span class="before-icon">C</span>
+                        Control Group (N=1,284)
                     </div>
                     <div class="allocation-bar">
-                        <div class="bar-labels"><span>Gold</span><span>27%</span></div>
-                        <div class="bar-track"><div class="bar-fill fill-gold" style="width: 27%"></div></div>
+                        <div class="allocation-label">
+                            <span>ETFs</span>
+                            <span>28%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill etf-fill" style="width: 28%;">28%</div>
+                        </div>
                     </div>
                     <div class="allocation-bar">
-                        <div class="bar-labels"><span>Stocks</span><span>20%</span></div>
-                        <div class="bar-track"><div class="bar-fill fill-stock" style="width: 20%"></div></div>
+                        <div class="allocation-label">
+                            <span>Gold</span>
+                            <span>27%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill gold-fill" style="width: 27%;">27%</div>
+                        </div>
                     </div>
                     <div class="allocation-bar">
-                        <div class="bar-labels"><span>Crypto</span><span>11%</span></div>
-                        <div class="bar-track"><div class="bar-fill fill-crypto" style="width: 11%"></div></div>
+                        <div class="allocation-label">
+                            <span>Individual Stocks</span>
+                            <span>20%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill stocks-fill" style="width: 20%;">20%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>Cryptocurrency</span>
+                            <span>11%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill crypto-fill" style="width: 11%;">11%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>Savings</span>
+                            <span>14%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill savings-fill" style="width: 14%;">14%</div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="comparison-group">
-                    <h3><span class="badge-treatment">T</span> Treatment Group</h3>
-                    
-                    <div class="allocation-bar">
-                        <div class="bar-labels"><span>ETFs</span><span>46%</span></div>
-                        <div class="bar-track"><div class="bar-fill fill-etf" id="etf-after" style="width: 0%"></div></div>
+                <div class="comparison-card after">
+                    <div class="comparison-title">
+                        <span class="after-icon">T</span>
+                        Treatment Group (N=1,284)
+                        <span class="pulse-dot"></span>
                     </div>
                     <div class="allocation-bar">
-                        <div class="bar-labels"><span>Gold</span><span>10%</span></div>
-                        <div class="bar-track"><div class="bar-fill fill-gold" id="gold-after" style="width: 0%"></div></div>
+                        <div class="allocation-label">
+                            <span>ETFs</span>
+                            <span>46%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill etf-fill" id="etf-after" style="width: 46%;">46%</div>
+                        </div>
                     </div>
                     <div class="allocation-bar">
-                        <div class="bar-labels"><span>Stocks</span><span>14%</span></div>
-                        <div class="bar-track"><div class="bar-fill fill-stock" id="stock-after" style="width: 0%"></div></div>
+                        <div class="allocation-label">
+                            <span>Gold</span>
+                            <span>10%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill gold-fill" id="gold-after" style="width: 10%;">10%</div>
+                        </div>
                     </div>
                     <div class="allocation-bar">
-                        <div class="bar-labels"><span>Crypto</span><span>14%</span></div>
-                        <div class="bar-track"><div class="bar-fill fill-crypto" id="crypto-after" style="width: 0%"></div></div>
+                        <div class="allocation-label">
+                            <span>Individual Stocks</span>
+                            <span>14%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill stocks-fill" id="stocks-after" style="width: 14%;">14%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>Cryptocurrency</span>
+                            <span>14%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill crypto-fill" id="crypto-after" style="width: 14%;">14%</div>
+                        </div>
+                    </div>
+                    <div class="allocation-bar">
+                        <div class="allocation-label">
+                            <span>Savings</span>
+                            <span>16%</span>
+                        </div>
+                        <div class="allocation-progress">
+                            <div class="allocation-fill savings-fill" id="savings-after" style="width: 16%;">16%</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="glass-card roi-section">
-            <h2 class="journey-title" style="margin-bottom: 10px;">Who Responds Best?</h2>
-            <p class="subtitle">Machine learning identified unique personas based on financial confidence and background.</p>
-
-            <div class="policy-table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Select</th>
-                            <th>Persona Segment</th>
-                            <th>Population</th>
-                            <th>Responsiveness</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="segment-row" data-share="30.8" data-effect="22.0">
-                            <td><input type="checkbox" class="custom-check segment-checkbox" checked></td>
-                            <td>
-                                <span class="seg-emoji">🎯</span>
-                                <div class="tooltip-wrap">
-                                    <span class="seg-name">Knowledge Seekers</span>
-                                    <div class="tooltip-box">Low subjective knowledge + modest background. They are eager to learn.</div>
-                                </div>
-                            </td>
-                            <td>30.8%</td>
-                            <td style="color: var(--sage-dark); font-weight: 700;">+22.0 pp</td>
-                        </tr>
-                        <tr class="segment-row" data-share="39.3" data-effect="18.0">
-                            <td><input type="checkbox" class="custom-check segment-checkbox"></td>
-                            <td>
-                                <span class="seg-emoji">⚖️</span>
-                                <div class="tooltip-wrap">
-                                    <span class="seg-name">The Persuadables</span>
-                                    <div class="tooltip-box">Average subjective knowledge. They respond well to clear logic.</div>
-                                </div>
-                            </td>
-                            <td>39.3%</td>
-                            <td style="color: var(--sage-dark); font-weight: 600;">+18.0 pp</td>
-                        </tr>
-                        <tr class="segment-row" data-share="11.8" data-effect="15.9">
-                            <td><input type="checkbox" class="custom-check segment-checkbox"></td>
-                            <td>
-                                <span class="seg-emoji">💼</span>
-                                <div class="tooltip-wrap">
-                                    <span class="seg-name">Confident Elite</span>
-                                    <div class="tooltip-box">High knowledge + privileged background. Harder to sway.</div>
-                                </div>
-                            </td>
-                            <td>11.8%</td>
-                            <td style="color: #A0AEC0;">+15.9 pp</td>
-                        </tr>
-                        <tr class="segment-row" data-share="18.1" data-effect="11.9">
-                            <td><input type="checkbox" class="custom-check segment-checkbox"></td>
-                            <td>
-                                <span class="seg-emoji">📚</span>
-                                <div class="tooltip-wrap">
-                                    <span class="seg-name">Confident Self-Made</span>
-                                    <div class="tooltip-box">High knowledge + modest background. Most resistant to change.</div>
-                                </div>
-                            </td>
-                            <td>18.1%</td>
-                            <td style="color: #A0AEC0;">+11.9 pp</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="results-box">
-                <div class="res-item">
-                    <div class="res-lbl">Predicted Reach</div>
-                    <div class="res-val" id="selectedReach" style="color: var(--text-soft);">31%</div>
+        <!-- ML Segment Explorer -->
+        <div class="segment-explorer">
+            <h2 class="segment-title">Who Responds Most?</h2>
+            <p class="segment-subtitle">The Causal Forest identified substantial heterogeneity in treatment effects based on two key factors: <strong>subjective financial knowledge</strong> and <strong>parental education background</strong>.</p>
+            <div class="segments-container">
+                <div class="segment-card" onclick="highlightSegment(this)">
+                    <div class="segment-name">🎯 Knowledge Seekers</div>
+                    <div class="segment-response">+22 pp</div>
+                    <div class="segment-characteristics">
+                        Low subjective financial knowledge + lower parental education<br>
+                        <em>Recognize their gaps—most receptive to education</em>
+                    </div>
+                    <div class="segment-metrics">
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">31%</div>
+                            <div class="segment-metric-label">of sample</div>
+                        </div>
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">Highest</div>
+                            <div class="segment-metric-label">response</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="res-item">
-                    <div class="res-lbl">Average Effect</div>
-                    <div class="res-val" id="selectedEffect">+22.0 pp</div>
+                <div class="segment-card" onclick="highlightSegment(this)">
+                    <div class="segment-name">⚖️ Persuadables</div>
+                    <div class="segment-response">+18 pp</div>
+                    <div class="segment-characteristics">
+                        Moderate subjective financial knowledge<br>
+                        <em>Largest group—respond well to clear information</em>
+                    </div>
+                    <div class="segment-metrics">
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">39%</div>
+                            <div class="segment-metric-label">of sample</div>
+                        </div>
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">Average</div>
+                            <div class="segment-metric-label">response</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="res-item">
-                    <div class="res-lbl">Efficiency Gain</div>
-                    <div class="res-val" id="efficiencyGain" style="color: var(--sage-dark);">+23%</div>
+                <div class="segment-card" onclick="highlightSegment(this)">
+                    <div class="segment-name">💼 Confident (Privileged Background)</div>
+                    <div class="segment-response">+16 pp</div>
+                    <div class="segment-characteristics">
+                        High subjective financial knowledge + higher parental education<br>
+                        <em>Moderate response to intervention</em>
+                    </div>
+                    <div class="segment-metrics">
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">12%</div>
+                            <div class="segment-metric-label">of sample</div>
+                        </div>
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">Moderate</div>
+                            <div class="segment-metric-label">response</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="segment-card" onclick="highlightSegment(this)">
+                    <div class="segment-name">📚 Confident (Modest Background)</div>
+                    <div class="segment-response">+12 pp</div>
+                    <div class="segment-characteristics">
+                        High subjective financial knowledge + lower parental education<br>
+                        <em>Lowest response to intervention</em>
+                    </div>
+                    <div class="segment-metrics">
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">18%</div>
+                            <div class="segment-metric-label">of sample</div>
+                        </div>
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">Lowest</div>
+                            <div class="segment-metric-label">response</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <p style="margin-top:20px; font-size: 0.85em; color: var(--text-soft);">💡 Tip: Targeting specific groups maximizes impact while preserving resources.</p>
         </div>
 
+        <!-- Policy Tree: From Black Box to Actionable Rules -->
+        <div class="roi-calculator">
+            <h2 class="calculator-title">From Black Box to Actionable Rules</h2>
+            <p class="calculator-context">
+                The Causal Forest (4,000 trees) accurately estimates individual treatment effects—but it's a black box.
+                To make it actionable, I trained a <strong>Policy Tree</strong> that distills the forest's predictions into
+                simple if-then rules a business could actually implement.
+            </p>
+
+            <div class="policy-tree-summary">
+                <h3>
+                    Policy Tree Segments <span>(ranked by treatment effect)</span>
+                </h3>
+
+                <div class="segment-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Target</th>
+                                <th>Segment</th>
+                                <th>Share</th>
+                                <th>Effect</th>
+                            </tr>
+                        </thead>
+                        <tbody id="segmentTableBody">
+                            <tr class="segment-row" data-share="30.8" data-effect="22.0" style="background: var(--sage-light);">
+                                <td><input type="checkbox" class="segment-checkbox" checked></td>
+                                <td>
+                                    <div class="tooltip-container">
+                                        <strong style="color: var(--text-primary); font-size: 1.05em;">🎯 Knowledge Seekers</strong>
+                                        <span class="tooltip-text">
+                                            <div class="tooltip-label">Policy Tree Criteria</div>
+                                            <div class="tooltip-value">Subjective Financial Knowledge ≤ 4.5<br>+ Lower Parental Education</div>
+                                        </span>
+                                    </div>
+                                    <div style="font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;">Low subjective financial knowledge + lower parental education—most receptive to guidance</div>
+                                </td>
+                                <td style="font-size: 1.05em;">30.8%</td>
+                                <td style="font-weight: 700; font-size: 1.1em; color: var(--sage-dark);">+22.0 pp</td>
+                            </tr>
+                            <tr class="segment-row" data-share="39.3" data-effect="18.0">
+                                <td><input type="checkbox" class="segment-checkbox"></td>
+                                <td>
+                                    <div class="tooltip-container">
+                                        <strong style="color: var(--text-primary); font-size: 1.05em;">⚖️ Persuadables</strong>
+                                        <span class="tooltip-text">
+                                            <div class="tooltip-label">Policy Tree Criteria</div>
+                                            <div class="tooltip-value">Subjective Financial Knowledge 4.5–6.5<br>(Moderate knowledge level)</div>
+                                        </span>
+                                    </div>
+                                    <div style="font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;">Moderate subjective financial knowledge—respond well to clear information</div>
+                                </td>
+                                <td style="font-size: 1.05em;">39.3%</td>
+                                <td style="font-weight: 700; font-size: 1.1em; color: #5A8A5A;">+18.0 pp</td>
+                            </tr>
+                            <tr class="segment-row" data-share="11.8" data-effect="15.9">
+                                <td><input type="checkbox" class="segment-checkbox"></td>
+                                <td>
+                                    <div class="tooltip-container">
+                                        <strong style="color: var(--text-primary); font-size: 1.05em;">💼 Confident (Privileged Background)</strong>
+                                        <span class="tooltip-text">
+                                            <div class="tooltip-label">Policy Tree Criteria</div>
+                                            <div class="tooltip-value">Subjective Financial Knowledge > 6.5<br>+ Higher Parental Education</div>
+                                        </span>
+                                    </div>
+                                    <div style="font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;">High subjective financial knowledge + higher parental education—moderate response to intervention</div>
+                                </td>
+                                <td style="font-size: 1.05em;">11.8%</td>
+                                <td style="font-weight: 700; font-size: 1.1em; color: var(--text-muted);">+15.9 pp</td>
+                            </tr>
+                            <tr class="segment-row" data-share="18.1" data-effect="11.9">
+                                <td><input type="checkbox" class="segment-checkbox"></td>
+                                <td>
+                                    <div class="tooltip-container">
+                                        <strong style="color: var(--text-primary); font-size: 1.05em;">📚 Confident (Modest Background)</strong>
+                                        <span class="tooltip-text">
+                                            <div class="tooltip-label">Policy Tree Criteria</div>
+                                            <div class="tooltip-value">Subjective Financial Knowledge > 6.5<br>+ Lower Parental Education</div>
+                                        </span>
+                                    </div>
+                                    <div style="font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;">High subjective financial knowledge + lower parental education—lowest response to intervention</div>
+                                </td>
+                                <td style="font-size: 1.05em;">18.1%</td>
+                                <td style="font-weight: 700; font-size: 1.1em; color: #A8B8A8;">+11.9 pp</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="segment-instruction">
+                    Select segments to simulate a targeting strategy. <span>Hover over segment names</span> to see the underlying Policy Tree criteria.
+                </p>
+            </div>
+
+            <div class="roi-result show" id="roiResult">
+                <div>
+                    <div class="result-box baseline">
+                        <div class="result-label">Treat Everyone</div>
+                        <div class="result-value baseline">+17.9 pp</div>
+                        <div class="result-subtext">100% of sample</div>
+                    </div>
+                    <div class="result-box targeted">
+                        <div class="result-label targeted">Your Targeting Strategy</div>
+                        <div class="result-value targeted" id="selectedEffect">+22.0 pp</div>
+                        <div class="result-subtext targeted" id="selectedReach">30.8% of sample</div>
+                    </div>
+                </div>
+
+                <div class="efficiency-box">
+                    <div class="efficiency-label">Efficiency Gain from Targeting</div>
+                    <div class="efficiency-value" id="efficiencyGain">+23% effect per person</div>
+                    <div class="efficiency-detail" id="efficiencyDetail">while reaching only 31% of the population</div>
+                </div>
+
+                <div class="roi-caveat">
+                    💡 <strong>The insight:</strong> People who recognize their knowledge gaps respond most strongly.
+                    Among those with high subjective financial knowledge, parental education background explains remaining variation in treatment response.
+                    Targeting lets you focus resources where they create the most impact.
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Animation Logic
+        // Animate metrics on page load
         window.addEventListener('load', () => {
             setTimeout(() => {
-                animateMetrics();
-                animateBars();
-                updateTargetingResults(); // Run once on load
-            }, 500);
+                animateAllMetrics();
+                animateAfterBars();
+            }, 600);
         });
 
-        function animateMetrics() {
+        function animateAllMetrics() {
             const metrics = document.querySelectorAll('.metric-value');
             metrics.forEach(metric => {
                 const target = parseFloat(metric.getAttribute('data-target'));
                 const format = metric.getAttribute('data-format');
+                const duration = 2500;
+                const steps = 80;
+                const increment = target / steps;
                 let current = 0;
-                const increment = target / 50;
-                
+
                 const timer = setInterval(() => {
                     current += increment;
                     if (current >= target) {
                         current = target;
                         clearInterval(timer);
                     }
-                    
-                    if (format === 'number') metric.textContent = Math.round(current).toLocaleString();
-                    else if (format === 'pp') metric.textContent = Math.round(current) + ' pp';
-                    else if (format === 'range') metric.textContent = '8–' + Math.round(current + 8) + ' pp';
-                }, 40);
+
+                    if (format === 'number') {
+                        metric.textContent = Math.round(current).toLocaleString();
+                    } else if (format === 'pp') {
+                        metric.textContent = `${Math.round(current)} pp`;
+                    } else if (format === 'range') {
+                        metric.textContent = `8–${Math.round(current + 8)} pp`;
+                    } else {
+                        metric.textContent = Math.round(current);
+                    }
+                }, duration / steps);
             });
         }
 
-        function animateBars() {
-            // Slight delay for visual flow
-            document.getElementById('etf-after').style.width = '46%';
-            document.getElementById('gold-after').style.width = '10%';
-            document.getElementById('stock-after').style.width = '14%';
-            document.getElementById('crypto-after').style.width = '14%';
+        function animateMetric(card) {
+            const metric = card.querySelector('.metric-value');
+            card.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                card.style.transform = '';
+            }, 400);
         }
 
-        // Calculator Logic
+        function animateAfterBars() {
+            setTimeout(() => {
+                document.getElementById('etf-after').style.width = '46%';
+                document.getElementById('savings-after').style.width = '16%';
+                document.getElementById('gold-after').style.width = '10%';
+                document.getElementById('stocks-after').style.width = '14%';
+                document.getElementById('crypto-after').style.width = '14%';
+            }, 1200);
+        }
+
+        function highlightSegment(card) {
+            // Remove previous highlights
+            document.querySelectorAll('.segment-card').forEach(c => {
+                c.style.transform = '';
+                c.style.boxShadow = '';
+                c.style.borderColor = '';
+            });
+
+            // Highlight selected card
+            card.style.transform = 'translateY(-8px) scale(1.03)';
+            card.style.boxShadow = '12px 12px 30px rgba(107, 142, 107, 0.2), -6px -6px 20px rgba(255, 255, 255, 0.9)';
+            card.style.borderColor = 'var(--sage-medium)';
+        }
+
         function updateTargetingResults() {
             const rows = document.querySelectorAll('.segment-row');
             let totalShare = 0;
             let weightedEffect = 0;
-            
+
             rows.forEach(row => {
                 const checkbox = row.querySelector('.segment-checkbox');
                 if (checkbox.checked) {
@@ -609,19 +1350,50 @@
                     weightedEffect += share * effect;
                 }
             });
-            
+
+            // Calculate weighted average effect
             const avgEffect = totalShare > 0 ? weightedEffect / totalShare : 0;
             const baselineEffect = 17.9;
             const efficiencyGain = ((avgEffect / baselineEffect) - 1) * 100;
-            
-            document.getElementById('selectedEffect').textContent = totalShare > 0 ? '+' + avgEffect.toFixed(1) + ' pp' : '—';
-            document.getElementById('selectedReach').textContent = totalShare.toFixed(1) + '%';
-            document.getElementById('efficiencyGain').textContent = totalShare > 0 ? '+' + efficiencyGain.toFixed(0) + '%' : '—';
+
+            // Update display
+            document.getElementById('selectedEffect').textContent =
+                totalShare > 0 ? `+${avgEffect.toFixed(1)} pp` : '— pp';
+            document.getElementById('selectedReach').textContent =
+                `${totalShare.toFixed(1)}% of sample reached`;
+            document.getElementById('efficiencyGain').textContent =
+                totalShare > 0 ? `+${efficiencyGain.toFixed(0)}% effect` : 'Select segments';
+            document.getElementById('efficiencyDetail').textContent =
+                totalShare > 0
+                    ? `while reaching only ${totalShare.toFixed(0)}% of the population`
+                    : 'Check boxes above to build a targeting strategy';
         }
 
-        document.querySelectorAll('.segment-checkbox').forEach(box => {
-            box.addEventListener('change', updateTargetingResults);
+        // Add event listeners to all checkboxes
+        document.querySelectorAll('.segment-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateTargetingResults);
         });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(updateTargetingResults, 100);
+        });
+
+        // Add interactive hover effects for journey steps
+        document.querySelectorAll('.journey-step').forEach(step => {
+            step.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+                this.style.transition = 'transform 0.5s ease';
+            });
+            step.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Auto-update targeting results on load
+        setTimeout(() => {
+            updateTargetingResults();
+        }, 500);
     </script>
 </body>
 </html>
