@@ -702,7 +702,7 @@
                 </div>
 
                 <div class="metric-card" onclick="animateMetric(this)">
-                    <div class="metric-value" data-target="19" data-format="range">8-0 pp</div>
+                    <div class="metric-value" data-target="14" data-format="range">8-0 pp</div>
                     <div class="metric-label">Effect Heterogeneity</div>
                     <div class="metric-detail">Range of individual treatment effects identified by Causal Forest</div>
                     <span class="method-tag">Causal ML</span>
@@ -847,14 +847,14 @@
         <!-- ML Segment Explorer -->
         <div class="segment-explorer">
             <h2 class="segment-title">Who Responds Most?</h2>
-            <p class="segment-subtitle">The Causal Forest identified substantial heterogeneity in treatment effects. The key driver? <strong>Financial knowledge.</strong></p>
+            <p class="segment-subtitle">The Causal Forest identified substantial heterogeneity in treatment effects based on two key factors: <strong>subjective financial knowledge</strong> and <strong>parental education background</strong>.</p>
 
             <div class="segments-container">
                 <div class="segment-card" onclick="highlightSegment(this)">
                     <div class="segment-name">🎯 Knowledge Seekers</div>
                     <div class="segment-response">+22 pp</div>
                     <div class="segment-characteristics">
-                        Low financial knowledge + lower SES background<br>
+                        Low subjective financial knowledge + lower parental education<br>
                         <em>Recognize their gaps—most receptive to education</em>
                     </div>
                     <div class="segment-metrics">
@@ -869,12 +869,11 @@
                     </div>
                 </div>
 
-                
                 <div class="segment-card" onclick="highlightSegment(this)">
                     <div class="segment-name">⚖️ Persuadables</div>
                     <div class="segment-response">+18 pp</div>
                     <div class="segment-characteristics">
-                        Moderate financial knowledge<br>
+                        Moderate subjective financial knowledge<br>
                         <em>Largest group—respond well to clear information</em>
                     </div>
                     <div class="segment-metrics">
@@ -890,11 +889,30 @@
                 </div>
 
                 <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">📚 Self-Taught Skeptics</div>
+                    <div class="segment-name">💼 Confident (Privileged Background)</div>
+                    <div class="segment-response">+16 pp</div>
+                    <div class="segment-characteristics">
+                        High subjective financial knowledge + higher parental education<br>
+                        <em>Moderate response to intervention</em>
+                    </div>
+                    <div class="segment-metrics">
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">12%</div>
+                            <div class="segment-metric-label">of sample</div>
+                        </div>
+                        <div class="segment-metric">
+                            <div class="segment-metric-value">Moderate</div>
+                            <div class="segment-metric-label">response</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="segment-card" onclick="highlightSegment(this)">
+                    <div class="segment-name">📚 Confident (Modest Background)</div>
                     <div class="segment-response">+12 pp</div>
                     <div class="segment-characteristics">
-                        High financial knowledge + lower SES background<br>
-                        <em>Built expertise independently—already optimized</em>
+                        High subjective financial knowledge + lower parental education<br>
+                        <em>Lowest response to intervention</em>
                     </div>
                     <div class="segment-metrics">
                         <div class="segment-metric">
@@ -942,10 +960,10 @@
                                         <strong style="color: #333; font-size: 1.05em;">🎯 Knowledge Seekers</strong>
                                         <span class="tooltip-text">
                                             <div class="tooltip-label">Policy Tree Criteria</div>
-                                            <div class="tooltip-value">Subjective Financial Knowledge ≤ 4.5<br>+ Lower Socioeconomic Background</div>
+                                            <div class="tooltip-value">Subjective Financial Knowledge ≤ 4.5<br>+ Lower Parental Education</div>
                                         </span>
                                     </div>
-                                    <div style="font-size: 0.85em; color: #666; margin-top: 4px;">First-gen investors who recognize their knowledge gaps—most receptive to guidance</div>
+                                    <div style="font-size: 0.85em; color: #666; margin-top: 4px;">Low subjective financial knowledge + lower parental education—most receptive to guidance</div>
                                 </td>
                                 <td style="text-align: center; padding: 15px 8px; font-size: 1.05em;">30.8%</td>
                                 <td style="text-align: center; padding: 15px 8px; font-weight: 700; font-size: 1.1em; color: #10b981;">+22.0 pp</td>
@@ -960,7 +978,7 @@
                                             <div class="tooltip-value">Subjective Financial Knowledge 4.5–6.5<br>(Moderate knowledge level)</div>
                                         </span>
                                     </div>
-                                    <div style="font-size: 0.85em; color: #666; margin-top: 4px;">Largest segment—moderate engagement, respond well to clear information</div>
+                                    <div style="font-size: 0.85em; color: #666; margin-top: 4px;">Moderate subjective financial knowledge—respond well to clear information</div>
                                 </td>
                                 <td style="text-align: center; padding: 15px 8px; font-size: 1.05em;">39.3%</td>
                                 <td style="text-align: center; padding: 15px 8px; font-weight: 700; font-size: 1.1em; color: #059669;">+18.0 pp</td>
@@ -969,13 +987,13 @@
                                 <td style="padding: 15px 8px;"><input type="checkbox" class="segment-checkbox"></td>
                                 <td style="padding: 15px 8px;">
                                     <div class="tooltip-container">
-                                        <strong style="color: #333; font-size: 1.05em;">💼 Informed Affluents</strong>
+                                        <strong style="color: #333; font-size: 1.05em;">💼 Confident (Privileged Background)</strong>
                                         <span class="tooltip-text">
                                             <div class="tooltip-label">Policy Tree Criteria</div>
-                                            <div class="tooltip-value">Subjective Financial Knowledge > 6.5<br>+ Higher Socioeconomic Background</div>
+                                            <div class="tooltip-value">Subjective Financial Knowledge > 6.5<br>+ Higher Parental Education</div>
                                         </span>
                                     </div>
-                                    <div style="font-size: 0.85em; color: #666; margin-top: 4px;">Financially sophisticated with resources to act—moderate response</div>
+                                    <div style="font-size: 0.85em; color: #666; margin-top: 4px;">High subjective financial knowledge + higher parental education—moderate response to intervention</div>
                                 </td>
                                 <td style="text-align: center; padding: 15px 8px; font-size: 1.05em;">11.8%</td>
                                 <td style="text-align: center; padding: 15px 8px; font-weight: 700; font-size: 1.1em; color: #6b7280;">+15.9 pp</td>
@@ -984,13 +1002,13 @@
                                 <td style="padding: 15px 8px;"><input type="checkbox" class="segment-checkbox"></td>
                                 <td style="padding: 15px 8px;">
                                     <div class="tooltip-container">
-                                        <strong style="color: #333; font-size: 1.05em;">📚 Self-Taught Skeptics</strong>
+                                        <strong style="color: #333; font-size: 1.05em;">📚 Confident (Modest Background)</strong>
                                         <span class="tooltip-text">
                                             <div class="tooltip-label">Policy Tree Criteria</div>
-                                            <div class="tooltip-value">Subjective Financial Knowledge > 6.5<br>+ Lower Socioeconomic Background</div>
+                                            <div class="tooltip-value">Subjective Financial Knowledge > 6.5<br>+ Lower Parental Education</div>
                                         </span>
                                     </div>
-                                    <div style="font-size: 0.85em; color: #666; margin-top: 4px;">Built knowledge independently—already optimized, lowest intervention value</div>
+                                    <div style="font-size: 0.85em; color: #666; margin-top: 4px;">High subjective financial knowledge + lower parental education—lowest response to intervention</div>
                                 </td>
                                 <td style="text-align: center; padding: 15px 8px; font-size: 1.05em;">18.1%</td>
                                 <td style="text-align: center; padding: 15px 8px; font-weight: 700; font-size: 1.1em; color: #9ca3af;">+11.9 pp</td>
@@ -1026,7 +1044,7 @@
 
                 <div class="roi-caveat">
                     💡 <strong>The insight:</strong> People who recognize their knowledge gaps respond most strongly. 
-                    Those who've already built expertise (especially independently) gain less from additional information. 
+                    Among those with high subjective financial knowledge, parental education background explains remaining variation in treatment response.
                     Targeting lets you focus resources where they create the most impact.
                 </div>
             </div>
