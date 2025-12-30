@@ -211,4 +211,4 @@ All data and code are available in this repository:
 - **Raw data:** `/data/raw` (anonymized)
 - **Processed data:** `/data/processed_df`
 - **Analysis code:** `/notebooks/` 
-- **Pre-registration:** can be found by clicking on this [link](https://osf.io/c4brf)
+- **Pre-registration:** can be found by clicking on this [link](https://osf.io/3uf9e/files/snxpq)
