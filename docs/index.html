@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ETF Adoption: From Experiment to $2.67M Impact</title>
+    <title>Causal ML for Investment Behavior: RCT + Heterogeneous Treatment Effects</title>
     <style>
         * {
             margin: 0;
@@ -61,7 +61,23 @@
             text-align: center;
             color: #666;
             font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .context-badge {
+            text-align: center;
             margin-bottom: 40px;
+        }
+
+        .context-badge span {
+            display: inline-block;
+            background: linear-gradient(135deg, #f0f4ff, #e8ecff);
+            border: 1px solid #667eea;
+            color: #4c5ebd;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
         }
 
         .metrics-grid {
@@ -271,7 +287,7 @@
         }
 
         .comparison-card.before {
-            border-left: 5px solid #ef4444;
+            border-left: 5px solid #6b7280;
         }
 
         .comparison-card.after {
@@ -300,7 +316,7 @@
         }
 
         .before-icon {
-            background: #ef4444;
+            background: #6b7280;
         }
 
         .after-icon {
@@ -453,8 +469,18 @@
 
         .calculator-title {
             font-size: 1.8em;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             color: #333;
+        }
+
+        .calculator-context {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 25px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
         }
 
         .calculator-inputs {
@@ -523,12 +549,21 @@
         .roi-value {
             font-size: 3em;
             font-weight: 700;
-            color: #10b981;
+            color: #667eea;
             margin-bottom: 10px;
         }
 
         .roi-detail {
             color: #666;
+        }
+
+        .roi-caveat {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.85em;
+            color: #888;
+            font-style: italic;
         }
 
         @media (max-width: 768px) {
@@ -572,6 +607,17 @@
                 opacity: 0.5;
             }
         }
+
+        .method-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 
@@ -579,61 +625,67 @@
     <div class="dashboard">
         <!-- Hero Section with Key Metrics -->
         <div class="hero-section">
-            <h1 class="title">From A/B Test to AI: Driving $2.67M in Revenue</h1>
-            <p class="subtitle">How I Used Causal ML to Increase ETF Adoption by 18%</p>
+            <h1 class="title">Causal ML for Investment Behavior</h1>
+            <p class="subtitle">Randomized Experiment + Heterogeneous Treatment Effect Analysis</p>
+            <div class="context-badge">
+                <span>📊 Academic Research · Methodology Applicable to Industry A/B Testing & Personalization</span>
+            </div>
 
             <div class="metrics-grid">
                 <div class="metric-card" onclick="animateMetric(this)">
-                    <div class="metric-value" data-target="18">0%</div>
-                    <div class="metric-label">Adoption Increase</div>
-                    <div class="metric-detail">Beating industry average by 50% through targeted interventions</div>
+                    <div class="metric-value" data-target="2568" data-format="number">0</div>
+                    <div class="metric-label">Participants</div>
+                    <div class="metric-detail">Randomized controlled trial with lottery-based incentives</div>
+                    <span class="method-tag">Experimental Design</span>
                 </div>
 
                 <div class="metric-card" onclick="animateMetric(this)">
-                    <div class="metric-value" data-target="2.67">$0M</div>
-                    <div class="metric-label">Potential Revenue Impact</div>
-                    <div class="metric-detail">Annual recurring revenue for 50,000 customers</div>
+                    <div class="metric-value" data-target="18" data-format="pp">0 pp</div>
+                    <div class="metric-label">Treatment Effect</div>
+                    <div class="metric-detail">Increase in ETF allocation vs. control group</div>
+                    <span class="method-tag">A/B Test Result</span>
                 </div>
 
                 <div class="metric-card" onclick="animateMetric(this)">
-                    <div class="metric-value" data-target="4">0</div>
-                    <div class="metric-label">Segments Identified</div>
-                    <div class="metric-detail">ML-powered personalization with 8-27% conversion rates</div>
+                    <div class="metric-value" data-target="14" data-format="range">8-0 pp</div>
+                    <div class="metric-label">Effect Heterogeneity</div>
+                    <div class="metric-detail">Range of individual treatment effects identified by Causal Forest</div>
+                    <span class="method-tag">Causal ML</span>
                 </div>
             </div>
         </div>
 
         <!-- Journey Visualization -->
         <div class="journey-section">
-            <h2 class="journey-title">The Data Science Journey</h2>
+            <h2 class="journey-title">Research Pipeline</h2>
             <div class="journey-steps">
                 <div class="journey-step">
                     <div class="step-number">1</div>
-                    <div class="step-title">Problem Discovery</div>
-                    <div class="step-detail">72% of investors missing out on ETF benefits</div>
+                    <div class="step-title">Research Question</div>
+                    <div class="step-detail">Can information interventions shift investment behavior?</div>
                 </div>
                 <div class="journey-step">
                     <div class="step-number">2</div>
-                    <div class="step-title">A/B Testing</div>
-                    <div class="step-detail">2,568 users in controlled experiment</div>
+                    <div class="step-title">Experimental Design</div>
+                    <div class="step-detail">RCT with 50/50 randomization, stratified assignment</div>
                 </div>
                 <div class="journey-step">
                     <div class="step-number">3</div>
-                    <div class="step-title">Machine Learning (ML) Analysis</div>
-                    <div class="step-detail">Causal Forest with 4,000 trees</div>
+                    <div class="step-title">Causal Forest</div>
+                    <div class="step-detail">4,000 trees, cross-validated hyperparameter tuning</div>
                 </div>
                 <div class="journey-step">
                     <div class="step-number">4</div>
-                    <div class="step-title">Impact</div>
-                    <div class="step-detail">12:1 ROI achieved</div>
+                    <div class="step-title">Segment Discovery</div>
+                    <div class="step-detail">Identified high/medium/low responder profiles</div>
                 </div>
             </div>
 
             <div class="comparison-section">
                 <div class="comparison-card before">
                     <div class="comparison-title">
-                        <span class="before-icon">✗</span>
-                        Before: Traditional Approach
+                        <span class="before-icon">C</span>
+                        Control Group (N=1,284)
                     </div>
                     <div class="allocation-bar">
                         <div class="allocation-label">
@@ -673,7 +725,7 @@
                     </div>
                     <div class="allocation-bar">
                         <div class="allocation-label">
-                            <span>Savings (Low Yield)</span>
+                            <span>Savings</span>
                             <span>14%</span>
                         </div>
                         <div class="allocation-progress">
@@ -683,17 +735,17 @@
                 </div>
                 <div class="comparison-card after">
                     <div class="comparison-title">
-                        <span class="after-icon">✓</span>
-                        After: AI-Powered Targeting
+                        <span class="after-icon">T</span>
+                        Treatment Group (N=1,284)
                         <span class="pulse-dot"></span>
                     </div>
                     <div class="allocation-bar">
                         <div class="allocation-label">
                             <span>ETFs</span>
-                            <span>43%</span>
+                            <span>46%</span>
                         </div>
                         <div class="allocation-progress">
-                            <div class="allocation-fill etf-fill" id="etf-after" style="width: 43%;">43%</div>
+                            <div class="allocation-fill etf-fill" id="etf-after" style="width: 46%;">46%</div>
                         </div>
                     </div>
                     <div class="allocation-bar">
@@ -711,7 +763,7 @@
                             <span>14%</span>
                         </div>
                         <div class="allocation-progress">
-                            <div class="allocation-fill stocks-fill" id="stocks-after" style="width: 14% !important;">
+                            <div class="allocation-fill stocks-fill" id="stocks-after" style="width: 14%;">
                                 14%</div>
                         </div>
                     </div>
@@ -721,17 +773,17 @@
                             <span>14%</span>
                         </div>
                         <div class="allocation-progress">
-                            <div class="allocation-fill crypto-fill" id="crypto-after" style="width: 14% !important;">
+                            <div class="allocation-fill crypto-fill" id="crypto-after" style="width: 14%;">
                                 14%</div>
                         </div>
                     </div>
                     <div class="allocation-bar">
                         <div class="allocation-label">
-                            <span>Savings (Low Yield)</span>
-                            <span>18%</span>
+                            <span>Savings</span>
+                            <span>16%</span>
                         </div>
                         <div class="allocation-progress">
-                            <div class="allocation-fill savings-fill" id="savings-after" style="width: 18%;">18%</div>
+                            <div class="allocation-fill savings-fill" id="savings-after" style="width: 16%;">16%</div>
                         </div>
                     </div>
                 </div>
@@ -739,84 +791,167 @@
         </div>
         <!-- ML Segment Explorer -->
         <div class="segment-explorer">
-            <h2 class="segment-title">ML-Identified Customer Segments</h2>
-            <p class="segment-subtitle">Click to explore how different segments respond to interventions</p>
+            <h2 class="segment-title">Causal Forest: Segment Discovery</h2>
+            <p class="segment-subtitle">Treatment effects varied substantially across subgroups—key insight for targeting optimization</p>
 
             <div class="segments-container">
                 <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">🎯 Humble Learners</div>
-                    <div class="segment-response">22%</div>
-                    <div class="segment-characteristics">Low financial confidence, eager to learn, responsive to
-                        education</div>
+                    <div class="segment-name">🎯 High Responders</div>
+                    <div class="segment-response">+22 pp</div>
+                    <div class="segment-characteristics">Lower financial confidence, eager to learn, responsive to educational framing</div>
                     <div class="segment-metrics">
                         <div class="segment-metric">
                             <div class="segment-metric-value">31%</div>
-                            <div class="segment-metric-label">of customers</div>
+                            <div class="segment-metric-label">of sample</div>
                         </div>
                         <div class="segment-metric">
-                            <div class="segment-metric-value">$0.8M</div>
-                            <div class="segment-metric-label">revenue potential</div>
+                            <div class="segment-metric-value">1.2x</div>
+                            <div class="segment-metric-label">vs. average effect</div>
                         </div>
                     </div>
                 </div>
 
                 
                 <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">⚖️ Middle Ground</div>
-                    <div class="segment-response">18%</div>
-                    <div class="segment-characteristics">Moderate knowledge, middle-aged, balanced approach</div>
+                    <div class="segment-name">⚖️ Average Responders</div>
+                    <div class="segment-response">+18 pp</div>
+                    <div class="segment-characteristics">Moderate financial knowledge, middle-aged, balanced risk profile</div>
                     <div class="segment-metrics">
                         <div class="segment-metric">
                             <div class="segment-metric-value">39%</div>
-                            <div class="segment-metric-label">of customers</div>
+                            <div class="segment-metric-label">of sample</div>
                         </div>
                         <div class="segment-metric">
-                            <div class="segment-metric-value">$0.7M</div>
-                            <div class="segment-metric-label">revenue potential</div>
+                            <div class="segment-metric-value">1.0x</div>
+                            <div class="segment-metric-label">vs. average effect</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">💪 Confident Traders</div>
-                    <div class="segment-response">14%</div>
-                    <div class="segment-characteristics">High knowledge, risk-tolerant, prefer active trading</div>
+                    <div class="segment-name">💪 Low Responders</div>
+                    <div class="segment-response">+8 pp</div>
+                    <div class="segment-characteristics">High financial confidence, risk-tolerant, prefer active strategies</div>
                     <div class="segment-metrics">
                         <div class="segment-metric">
                             <div class="segment-metric-value">30%</div>
-                            <div class="segment-metric-label">of customers</div>
+                            <div class="segment-metric-label">of sample</div>
                         </div>
                         <div class="segment-metric">
-                            <div class="segment-metric-value">$0.2M</div>
-                            <div class="segment-metric-label">revenue potential</div>
+                            <div class="segment-metric-value">0.4x</div>
+                            <div class="segment-metric-label">vs. average effect</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ROI Calculator -->
+        <!-- Policy Tree: From Black Box to Actionable Rules -->
         <div class="roi-calculator">
-            <h2 class="calculator-title">Calculate Your Potential Impact</h2>
-            <div class="calculator-inputs">
-                <div class="input-group">
-                    <label class="input-label">Number of Customers</label>
-                    <input type="number" class="input-field" id="customers" value="50000" min="1000">
+            <h2 class="calculator-title">From Black Box to Actionable Rules</h2>
+            <p class="calculator-context">
+                The Causal Forest (4,000 trees) accurately estimates individual treatment effects—but it's a black box. 
+                To make it actionable, I trained a <strong>Policy Tree</strong> that distills the forest's predictions into 
+                simple if-then rules a business could actually implement.
+            </p>
+            
+            <div class="policy-tree-summary" style="background: white; border-radius: 15px; padding: 25px; margin: 25px 0;">
+                <h3 style="font-size: 1.1em; color: #333; margin-bottom: 20px; text-align: center;">
+                    Policy Tree Segments <span style="font-weight: 400; color: #888;">(ranked by treatment effect)</span>
+                </h3>
+                
+                <div class="segment-table" style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #e5e7eb;">
+                                <th style="text-align: left; padding: 12px 8px; color: #666;">Select</th>
+                                <th style="text-align: left; padding: 12px 8px; color: #666;">Segment Characteristics</th>
+                                <th style="text-align: center; padding: 12px 8px; color: #666;">% of Sample</th>
+                                <th style="text-align: center; padding: 12px 8px; color: #666;">Effect</th>
+                            </tr>
+                        </thead>
+                        <tbody id="segmentTableBody">
+                            <tr class="segment-row" data-share="19.0" data-effect="23.0">
+                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox" checked></td>
+                                <td style="padding: 12px 8px;">Very low fin. knowledge + Lower SES background</td>
+                                <td style="text-align: center; padding: 12px 8px;">19.0%</td>
+                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #10b981;">+23.0 pp</td>
+                            </tr>
+                            <tr class="segment-row" data-share="6.8" data-effect="21.3">
+                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox" checked></td>
+                                <td style="padding: 12px 8px;">Moderate-low fin. knowledge + Age 62+</td>
+                                <td style="text-align: center; padding: 12px 8px;">6.8%</td>
+                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #10b981;">+21.3 pp</td>
+                            </tr>
+                            <tr class="segment-row" data-share="11.8" data-effect="20.4">
+                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox"></td>
+                                <td style="padding: 12px 8px;">Very low fin. knowledge + Higher SES background</td>
+                                <td style="text-align: center; padding: 12px 8px;">11.8%</td>
+                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #059669;">+20.4 pp</td>
+                            </tr>
+                            <tr class="segment-row" data-share="3.9" data-effect="17.7">
+                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox"></td>
+                                <td style="padding: 12px 8px;">High fin. knowledge + Lower SES + Risk-averse</td>
+                                <td style="text-align: center; padding: 12px 8px;">3.9%</td>
+                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #059669;">+17.7 pp</td>
+                            </tr>
+                            <tr class="segment-row" data-share="32.5" data-effect="17.4">
+                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox"></td>
+                                <td style="padding: 12px 8px;">Moderate-low fin. knowledge + Age under 62</td>
+                                <td style="text-align: center; padding: 12px 8px;">32.5%</td>
+                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #6b7280;">+17.4 pp</td>
+                            </tr>
+                            <tr class="segment-row" data-share="7.9" data-effect="15.0">
+                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox"></td>
+                                <td style="padding: 12px 8px;">High fin. knowledge + Lower SES + Risk-tolerant</td>
+                                <td style="text-align: center; padding: 12px 8px;">7.9%</td>
+                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #6b7280;">+15.0 pp</td>
+                            </tr>
+                            <tr class="segment-row" data-share="5.9" data-effect="14.0">
+                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox"></td>
+                                <td style="padding: 12px 8px;">High fin. knowledge + Higher SES + Risk-averse</td>
+                                <td style="text-align: center; padding: 12px 8px;">5.9%</td>
+                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #9ca3af;">+14.0 pp</td>
+                            </tr>
+                            <tr class="segment-row" data-share="12.1" data-effect="10.9">
+                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox"></td>
+                                <td style="padding: 12px 8px;">High fin. knowledge + Higher SES + Risk-tolerant</td>
+                                <td style="text-align: center; padding: 12px 8px;">12.1%</td>
+                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #9ca3af;">+10.9 pp</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="input-group">
-                    <label class="input-label">Avg Portfolio Size ($)</label>
-                    <input type="number" class="input-field" id="portfolio" value="30000" min="1000">
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Management Fee (%)</label>
-                    <input type="number" class="input-field" id="fee" value="0.5" step="0.1" min="0.1">
-                </div>
+                
+                <p style="font-size: 0.85em; color: #888; margin-top: 15px; text-align: center;">
+                    Select segments to build a targeting strategy. The table shows the 8 leaf nodes from the Policy Tree.
+                </p>
             </div>
-            <button class="calculate-btn" onclick="calculateROI()">Calculate Revenue Impact</button>
 
-            <div class="roi-result" id="roiResult">
-                <div class="roi-value" id="roiValue">$0</div>
-                <div class="roi-detail" id="roiDetail">Annual recurring revenue from 18% adoption increase</div>
+            <div class="roi-result show" id="roiResult">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; text-align: center; margin-bottom: 25px;">
+                    <div style="padding: 20px; background: #f9fafb; border-radius: 10px;">
+                        <div style="font-size: 0.85em; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Treat Everyone</div>
+                        <div style="font-size: 2.2em; font-weight: 700; color: #6b7280;">+17.9 pp</div>
+                        <div style="font-size: 0.85em; color: #999; margin-top: 5px;">100% of sample reached</div>
+                    </div>
+                    <div style="padding: 20px; background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-radius: 10px; border: 2px solid #10b981;">
+                        <div style="font-size: 0.85em; color: #059669; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Your Targeting Strategy</div>
+                        <div style="font-size: 2.2em; font-weight: 700; color: #10b981;" id="selectedEffect">+22.4 pp</div>
+                        <div style="font-size: 0.85em; color: #059669; margin-top: 5px;" id="selectedReach">25.8% of sample reached</div>
+                    </div>
+                </div>
+                
+                <div style="background: #f9fafb; padding: 20px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 0.9em; color: #666; margin-bottom: 8px;">Efficiency Gain from Policy Tree Targeting</div>
+                    <div style="font-size: 1.8em; font-weight: 700; color: #667eea;" id="efficiencyGain">+25% effect</div>
+                    <div style="font-size: 0.85em; color: #888; margin-top: 5px;" id="efficiencyDetail">while reaching only 26% of the population</div>
+                </div>
+
+                <div class="roi-caveat">
+                    💡 <strong>The business case:</strong> If your intervention has a cost (marketing spend, sales rep time, etc.), 
+                    targeting high-responders first maximizes impact per dollar. The Policy Tree provides the exact rules to implement this.
+                </div>
             </div>
         </div>
     </div>
@@ -834,8 +969,7 @@
             const metrics = document.querySelectorAll('.metric-value');
             metrics.forEach(metric => {
                 const target = parseFloat(metric.getAttribute('data-target'));
-                const isPercent = metric.textContent.includes('%');
-                const isMoney = metric.textContent.includes('$');
+                const format = metric.getAttribute('data-format');
                 const duration = 2000;
                 const steps = 60;
                 const increment = target / steps;
@@ -848,10 +982,12 @@
                         clearInterval(timer);
                     }
 
-                    if (isMoney) {
-                        metric.textContent = `$${current.toFixed(2)}M`;
-                    } else if (isPercent) {
-                        metric.textContent = `${Math.round(current)}%`;
+                    if (format === 'number') {
+                        metric.textContent = Math.round(current).toLocaleString();
+                    } else if (format === 'pp') {
+                        metric.textContent = `${Math.round(current)} pp`;
+                    } else if (format === 'range') {
+                        metric.textContent = `8–${Math.round(current + 8)} pp`;
                     } else {
                         metric.textContent = Math.round(current);
                     }
@@ -861,7 +997,6 @@
 
         function animateMetric(card) {
             const metric = card.querySelector('.metric-value');
-            const target = parseFloat(metric.getAttribute('data-target'));
             card.style.transform = 'scale(1.1)';
             setTimeout(() => {
                 card.style.transform = '';
@@ -870,8 +1005,8 @@
 
         function animateAfterBars() {
             setTimeout(() => {
-                document.getElementById('etf-after').style.width = '43%';
-                document.getElementById('savings-after').style.width = '18%';
+                document.getElementById('etf-after').style.width = '46%';
+                document.getElementById('savings-after').style.width = '16%';
                 document.getElementById('gold-after').style.width = '10%';
                 document.getElementById('stocks-after').style.width = '14%';
                 document.getElementById('crypto-after').style.width = '14%';
@@ -892,37 +1027,48 @@
             card.style.borderColor = '#667eea';
         }
 
-        function calculateROI() {
-            const customers = parseFloat(document.getElementById('customers').value);
-            const portfolio = parseFloat(document.getElementById('portfolio').value);
-            const fee = parseFloat(document.getElementById('fee').value) / 100;
-
-            // Calculate impact: 18% increase in ETF adoption
-            const adoptionIncrease = 0.18;
-            const totalAUM = customers * portfolio;
-            const additionalETFAssets = totalAUM * adoptionIncrease;
-            const annualRevenue = additionalETFAssets * fee;
-
-            const resultDiv = document.getElementById('roiResult');
-            const valueDiv = document.getElementById('roiValue');
-            const detailDiv = document.getElementById('roiDetail');
-
-            resultDiv.classList.add('show');
-
-            if (annualRevenue >= 1000000) {
-                valueDiv.textContent = `$${(annualRevenue / 1000000).toFixed(2)}M`;
-            } else {
-                valueDiv.textContent = `$${(annualRevenue / 1000).toFixed(0)}K`;
-            }
-
-            detailDiv.textContent = `Annual recurring revenue from 18% adoption increase across ${customers.toLocaleString()} customers`;
-
-            // Animate the result
-            valueDiv.style.animation = 'none';
-            setTimeout(() => {
-                valueDiv.style.animation = 'fadeInScale 0.5s ease-out';
-            }, 10);
+        function updateTargetingResults() {
+            const rows = document.querySelectorAll('.segment-row');
+            let totalShare = 0;
+            let weightedEffect = 0;
+            
+            rows.forEach(row => {
+                const checkbox = row.querySelector('.segment-checkbox');
+                if (checkbox.checked) {
+                    const share = parseFloat(row.dataset.share);
+                    const effect = parseFloat(row.dataset.effect);
+                    totalShare += share;
+                    weightedEffect += share * effect;
+                }
+            });
+            
+            // Calculate weighted average effect
+            const avgEffect = totalShare > 0 ? weightedEffect / totalShare : 0;
+            const baselineEffect = 17.9;
+            const efficiencyGain = ((avgEffect / baselineEffect) - 1) * 100;
+            
+            // Update display
+            document.getElementById('selectedEffect').textContent = 
+                totalShare > 0 ? `+${avgEffect.toFixed(1)} pp` : '— pp';
+            document.getElementById('selectedReach').textContent = 
+                `${totalShare.toFixed(1)}% of sample reached`;
+            document.getElementById('efficiencyGain').textContent = 
+                totalShare > 0 ? `+${efficiencyGain.toFixed(0)}% effect` : 'Select segments';
+            document.getElementById('efficiencyDetail').textContent = 
+                totalShare > 0 
+                    ? `while reaching only ${totalShare.toFixed(0)}% of the population`
+                    : 'Check boxes above to build a targeting strategy';
         }
+        
+        // Add event listeners to all checkboxes
+        document.querySelectorAll('.segment-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateTargetingResults);
+        });
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(updateTargetingResults, 100);
+        });
 
         // Add interactive hover effects for journey steps
         document.querySelectorAll('.journey-step').forEach(step => {
@@ -934,10 +1080,10 @@
             });
         });
 
-        // Auto-calculate ROI on load
+        // Auto-update targeting results on load
         setTimeout(() => {
-            calculateROI();
-        }, 3000);
+            updateTargetingResults();
+        }, 500);
     </script>
 </body>
 
