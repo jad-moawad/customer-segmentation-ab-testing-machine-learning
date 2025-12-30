@@ -618,6 +618,61 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+
+        /* Tooltip styles */
+        .tooltip-container {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip-container .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            z-index: 100;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            font-weight: 400;
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            margin-bottom: 8px;
+        }
+
+        .tooltip-container .tooltip-text::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #1f2937 transparent transparent transparent;
+        }
+
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip-label {
+            color: #9ca3af;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .tooltip-value {
+            color: white;
+            font-weight: 500;
+        }
     </style>
 </head>
 
@@ -647,7 +702,7 @@
                 </div>
 
                 <div class="metric-card" onclick="animateMetric(this)">
-                    <div class="metric-value" data-target="14" data-format="range">8-0 pp</div>
+                    <div class="metric-value" data-target="19" data-format="range">8-0 pp</div>
                     <div class="metric-label">Effect Heterogeneity</div>
                     <div class="metric-detail">Range of individual treatment effects identified by Causal Forest</div>
                     <span class="method-tag">Causal ML</span>
@@ -791,55 +846,64 @@
         </div>
         <!-- ML Segment Explorer -->
         <div class="segment-explorer">
-            <h2 class="segment-title">Causal Forest: Segment Discovery</h2>
-            <p class="segment-subtitle">Treatment effects varied substantially across subgroups—key insight for targeting optimization</p>
+            <h2 class="segment-title">Who Responds Most?</h2>
+            <p class="segment-subtitle">The Causal Forest identified substantial heterogeneity in treatment effects. The key driver? <strong>Financial knowledge.</strong></p>
 
             <div class="segments-container">
                 <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">🎯 High Responders</div>
+                    <div class="segment-name">🎯 Knowledge Seekers</div>
                     <div class="segment-response">+22 pp</div>
-                    <div class="segment-characteristics">Lower financial confidence, eager to learn, responsive to educational framing</div>
+                    <div class="segment-characteristics">
+                        Low financial knowledge + lower SES background<br>
+                        <em>Recognize their gaps—most receptive to education</em>
+                    </div>
                     <div class="segment-metrics">
                         <div class="segment-metric">
                             <div class="segment-metric-value">31%</div>
                             <div class="segment-metric-label">of sample</div>
                         </div>
                         <div class="segment-metric">
-                            <div class="segment-metric-value">1.2x</div>
-                            <div class="segment-metric-label">vs. average effect</div>
+                            <div class="segment-metric-value">Highest</div>
+                            <div class="segment-metric-label">response</div>
                         </div>
                     </div>
                 </div>
 
                 
                 <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">⚖️ Average Responders</div>
+                    <div class="segment-name">⚖️ Persuadables</div>
                     <div class="segment-response">+18 pp</div>
-                    <div class="segment-characteristics">Moderate financial knowledge, middle-aged, balanced risk profile</div>
+                    <div class="segment-characteristics">
+                        Moderate financial knowledge<br>
+                        <em>Largest group—respond well to clear information</em>
+                    </div>
                     <div class="segment-metrics">
                         <div class="segment-metric">
                             <div class="segment-metric-value">39%</div>
                             <div class="segment-metric-label">of sample</div>
                         </div>
                         <div class="segment-metric">
-                            <div class="segment-metric-value">1.0x</div>
-                            <div class="segment-metric-label">vs. average effect</div>
+                            <div class="segment-metric-value">Average</div>
+                            <div class="segment-metric-label">response</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="segment-card" onclick="highlightSegment(this)">
-                    <div class="segment-name">💪 Low Responders</div>
-                    <div class="segment-response">+8 pp</div>
-                    <div class="segment-characteristics">High financial confidence, risk-tolerant, prefer active strategies</div>
+                    <div class="segment-name">📚 Self-Taught Skeptics</div>
+                    <div class="segment-response">+12 pp</div>
+                    <div class="segment-characteristics">
+                        High financial knowledge + lower SES background<br>
+                        <em>Built expertise independently—already optimized</em>
+                    </div>
                     <div class="segment-metrics">
                         <div class="segment-metric">
-                            <div class="segment-metric-value">30%</div>
+                            <div class="segment-metric-value">18%</div>
                             <div class="segment-metric-label">of sample</div>
                         </div>
                         <div class="segment-metric">
-                            <div class="segment-metric-value">0.4x</div>
-                            <div class="segment-metric-label">vs. average effect</div>
+                            <div class="segment-metric-value">Lowest</div>
+                            <div class="segment-metric-label">response</div>
                         </div>
                     </div>
                 </div>
@@ -861,70 +925,82 @@
                 </h3>
                 
                 <div class="segment-table" style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.95em;">
                         <thead>
                             <tr style="border-bottom: 2px solid #e5e7eb;">
-                                <th style="text-align: left; padding: 12px 8px; color: #666;">Select</th>
-                                <th style="text-align: left; padding: 12px 8px; color: #666;">Segment Characteristics</th>
-                                <th style="text-align: center; padding: 12px 8px; color: #666;">% of Sample</th>
+                                <th style="text-align: left; padding: 12px 8px; color: #666;">Target</th>
+                                <th style="text-align: left; padding: 12px 8px; color: #666;">Segment</th>
+                                <th style="text-align: center; padding: 12px 8px; color: #666;">Share</th>
                                 <th style="text-align: center; padding: 12px 8px; color: #666;">Effect</th>
                             </tr>
                         </thead>
                         <tbody id="segmentTableBody">
-                            <tr class="segment-row" data-share="19.0" data-effect="23.0">
-                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox" checked></td>
-                                <td style="padding: 12px 8px;">Very low fin. knowledge + Lower SES background</td>
-                                <td style="text-align: center; padding: 12px 8px;">19.0%</td>
-                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #10b981;">+23.0 pp</td>
+                            <tr class="segment-row" data-share="30.8" data-effect="22.0" style="background: #f0fdf4;">
+                                <td style="padding: 15px 8px;"><input type="checkbox" class="segment-checkbox" checked></td>
+                                <td style="padding: 15px 8px;">
+                                    <div class="tooltip-container">
+                                        <strong style="color: #333; font-size: 1.05em;">🎯 Knowledge Seekers</strong>
+                                        <span class="tooltip-text">
+                                            <div class="tooltip-label">Policy Tree Criteria</div>
+                                            <div class="tooltip-value">Subjective Financial Knowledge ≤ 4.5<br>+ Lower Socioeconomic Background</div>
+                                        </span>
+                                    </div>
+                                    <div style="font-size: 0.85em; color: #666; margin-top: 4px;">First-gen investors who recognize their knowledge gaps—most receptive to guidance</div>
+                                </td>
+                                <td style="text-align: center; padding: 15px 8px; font-size: 1.05em;">30.8%</td>
+                                <td style="text-align: center; padding: 15px 8px; font-weight: 700; font-size: 1.1em; color: #10b981;">+22.0 pp</td>
                             </tr>
-                            <tr class="segment-row" data-share="6.8" data-effect="21.3">
-                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox" checked></td>
-                                <td style="padding: 12px 8px;">Moderate-low fin. knowledge + Age 62+</td>
-                                <td style="text-align: center; padding: 12px 8px;">6.8%</td>
-                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #10b981;">+21.3 pp</td>
+                            <tr class="segment-row" data-share="39.3" data-effect="18.0">
+                                <td style="padding: 15px 8px;"><input type="checkbox" class="segment-checkbox"></td>
+                                <td style="padding: 15px 8px;">
+                                    <div class="tooltip-container">
+                                        <strong style="color: #333; font-size: 1.05em;">⚖️ Persuadables</strong>
+                                        <span class="tooltip-text">
+                                            <div class="tooltip-label">Policy Tree Criteria</div>
+                                            <div class="tooltip-value">Subjective Financial Knowledge 4.5–6.5<br>(Moderate knowledge level)</div>
+                                        </span>
+                                    </div>
+                                    <div style="font-size: 0.85em; color: #666; margin-top: 4px;">Largest segment—moderate engagement, respond well to clear information</div>
+                                </td>
+                                <td style="text-align: center; padding: 15px 8px; font-size: 1.05em;">39.3%</td>
+                                <td style="text-align: center; padding: 15px 8px; font-weight: 700; font-size: 1.1em; color: #059669;">+18.0 pp</td>
                             </tr>
-                            <tr class="segment-row" data-share="11.8" data-effect="20.4">
-                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox"></td>
-                                <td style="padding: 12px 8px;">Very low fin. knowledge + Higher SES background</td>
-                                <td style="text-align: center; padding: 12px 8px;">11.8%</td>
-                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #059669;">+20.4 pp</td>
+                            <tr class="segment-row" data-share="11.8" data-effect="15.9">
+                                <td style="padding: 15px 8px;"><input type="checkbox" class="segment-checkbox"></td>
+                                <td style="padding: 15px 8px;">
+                                    <div class="tooltip-container">
+                                        <strong style="color: #333; font-size: 1.05em;">💼 Informed Affluents</strong>
+                                        <span class="tooltip-text">
+                                            <div class="tooltip-label">Policy Tree Criteria</div>
+                                            <div class="tooltip-value">Subjective Financial Knowledge > 6.5<br>+ Higher Socioeconomic Background</div>
+                                        </span>
+                                    </div>
+                                    <div style="font-size: 0.85em; color: #666; margin-top: 4px;">Financially sophisticated with resources to act—moderate response</div>
+                                </td>
+                                <td style="text-align: center; padding: 15px 8px; font-size: 1.05em;">11.8%</td>
+                                <td style="text-align: center; padding: 15px 8px; font-weight: 700; font-size: 1.1em; color: #6b7280;">+15.9 pp</td>
                             </tr>
-                            <tr class="segment-row" data-share="3.9" data-effect="17.7">
-                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox"></td>
-                                <td style="padding: 12px 8px;">High fin. knowledge + Lower SES + Risk-averse</td>
-                                <td style="text-align: center; padding: 12px 8px;">3.9%</td>
-                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #059669;">+17.7 pp</td>
-                            </tr>
-                            <tr class="segment-row" data-share="32.5" data-effect="17.4">
-                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox"></td>
-                                <td style="padding: 12px 8px;">Moderate-low fin. knowledge + Age under 62</td>
-                                <td style="text-align: center; padding: 12px 8px;">32.5%</td>
-                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #6b7280;">+17.4 pp</td>
-                            </tr>
-                            <tr class="segment-row" data-share="7.9" data-effect="15.0">
-                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox"></td>
-                                <td style="padding: 12px 8px;">High fin. knowledge + Lower SES + Risk-tolerant</td>
-                                <td style="text-align: center; padding: 12px 8px;">7.9%</td>
-                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #6b7280;">+15.0 pp</td>
-                            </tr>
-                            <tr class="segment-row" data-share="5.9" data-effect="14.0">
-                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox"></td>
-                                <td style="padding: 12px 8px;">High fin. knowledge + Higher SES + Risk-averse</td>
-                                <td style="text-align: center; padding: 12px 8px;">5.9%</td>
-                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #9ca3af;">+14.0 pp</td>
-                            </tr>
-                            <tr class="segment-row" data-share="12.1" data-effect="10.9">
-                                <td style="padding: 12px 8px;"><input type="checkbox" class="segment-checkbox"></td>
-                                <td style="padding: 12px 8px;">High fin. knowledge + Higher SES + Risk-tolerant</td>
-                                <td style="text-align: center; padding: 12px 8px;">12.1%</td>
-                                <td style="text-align: center; padding: 12px 8px; font-weight: 600; color: #9ca3af;">+10.9 pp</td>
+                            <tr class="segment-row" data-share="18.1" data-effect="11.9">
+                                <td style="padding: 15px 8px;"><input type="checkbox" class="segment-checkbox"></td>
+                                <td style="padding: 15px 8px;">
+                                    <div class="tooltip-container">
+                                        <strong style="color: #333; font-size: 1.05em;">📚 Self-Taught Skeptics</strong>
+                                        <span class="tooltip-text">
+                                            <div class="tooltip-label">Policy Tree Criteria</div>
+                                            <div class="tooltip-value">Subjective Financial Knowledge > 6.5<br>+ Lower Socioeconomic Background</div>
+                                        </span>
+                                    </div>
+                                    <div style="font-size: 0.85em; color: #666; margin-top: 4px;">Built knowledge independently—already optimized, lowest intervention value</div>
+                                </td>
+                                <td style="text-align: center; padding: 15px 8px; font-size: 1.05em;">18.1%</td>
+                                <td style="text-align: center; padding: 15px 8px; font-weight: 700; font-size: 1.1em; color: #9ca3af;">+11.9 pp</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 
                 <p style="font-size: 0.85em; color: #888; margin-top: 15px; text-align: center;">
-                    Select segments to build a targeting strategy. The table shows the 8 leaf nodes from the Policy Tree.
+                    Select segments to simulate a targeting strategy. <span style="color: #667eea;">Hover over segment names</span> to see the underlying Policy Tree criteria.
                 </p>
             </div>
 
@@ -933,24 +1009,25 @@
                     <div style="padding: 20px; background: #f9fafb; border-radius: 10px;">
                         <div style="font-size: 0.85em; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Treat Everyone</div>
                         <div style="font-size: 2.2em; font-weight: 700; color: #6b7280;">+17.9 pp</div>
-                        <div style="font-size: 0.85em; color: #999; margin-top: 5px;">100% of sample reached</div>
+                        <div style="font-size: 0.85em; color: #999; margin-top: 5px;">100% of sample</div>
                     </div>
                     <div style="padding: 20px; background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-radius: 10px; border: 2px solid #10b981;">
                         <div style="font-size: 0.85em; color: #059669; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Your Targeting Strategy</div>
-                        <div style="font-size: 2.2em; font-weight: 700; color: #10b981;" id="selectedEffect">+22.4 pp</div>
-                        <div style="font-size: 0.85em; color: #059669; margin-top: 5px;" id="selectedReach">25.8% of sample reached</div>
+                        <div style="font-size: 2.2em; font-weight: 700; color: #10b981;" id="selectedEffect">+22.0 pp</div>
+                        <div style="font-size: 0.85em; color: #059669; margin-top: 5px;" id="selectedReach">30.8% of sample</div>
                     </div>
                 </div>
                 
                 <div style="background: #f9fafb; padding: 20px; border-radius: 10px; text-align: center;">
-                    <div style="font-size: 0.9em; color: #666; margin-bottom: 8px;">Efficiency Gain from Policy Tree Targeting</div>
-                    <div style="font-size: 1.8em; font-weight: 700; color: #667eea;" id="efficiencyGain">+25% effect</div>
-                    <div style="font-size: 0.85em; color: #888; margin-top: 5px;" id="efficiencyDetail">while reaching only 26% of the population</div>
+                    <div style="font-size: 0.9em; color: #666; margin-bottom: 8px;">Efficiency Gain from Targeting</div>
+                    <div style="font-size: 1.8em; font-weight: 700; color: #667eea;" id="efficiencyGain">+23% effect per person</div>
+                    <div style="font-size: 0.85em; color: #888; margin-top: 5px;" id="efficiencyDetail">while reaching only 31% of the population</div>
                 </div>
 
                 <div class="roi-caveat">
-                    💡 <strong>The business case:</strong> If your intervention has a cost (marketing spend, sales rep time, etc.), 
-                    targeting high-responders first maximizes impact per dollar. The Policy Tree provides the exact rules to implement this.
+                    💡 <strong>The insight:</strong> People who recognize their knowledge gaps respond most strongly. 
+                    Those who've already built expertise (especially independently) gain less from additional information. 
+                    Targeting lets you focus resources where they create the most impact.
                 </div>
             </div>
         </div>
